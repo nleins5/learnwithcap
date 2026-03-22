@@ -59,7 +59,8 @@ export default function LoginForm() {
                 });
 
                 if (isAdmin) {
-                    window.location.href = `https://admin-cap.vercel.app/?key=${data.token}`;
+                    const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'https://admin-cap.vercel.app';
+                    window.location.href = `${adminUrl}/?key=${data.token}`;
                 } else {
                     router.push("/profile");
                 }

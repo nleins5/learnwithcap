@@ -1,64 +1,115 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
-import { MOCK_HERO } from "@/lib/mock-data";
-import AnimatedHeading from "@/components/ui/AnimatedHeading";
+import { cn } from "@/lib/utils";
+import { HeroData } from "@/lib/types";
+
+// Mock fallbacks if needed
+const MOCK_IMAGES = [
+  "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1920&q=80",
+  "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1920&q=80",
+];
 
 interface HeroProps {
-    hero: {
-        title?: string;
-        images?: string[];
-    } | null;
+  hero: HeroData | null;
 }
 
 const Hero = ({ hero }: HeroProps) => {
-    const [currentSlide, setCurrentSlide] = useState(0);
-    const heroImages = hero?.images || MOCK_HERO.images;
-    const title = hero?.title || MOCK_HERO.title;
+  // Media sources
+  const videoUrlLocal = "/videos/hero-video.mp4";
+  const videoUrlRemote = hero?.video_url || "https://design-e.learnwithcap.com/wp-content/uploads/2025/07/0701.mp4";
+  const videoUrlFallback = "https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4";
+  
+  const images = hero?.images || MOCK_IMAGES;
+  const title = hero?.title || "Tiếng Anh giao tiếp \n chuyên ngành xây dựng";
+  
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [useVideo, setUseVideo] = useState(hero?.media_type !== 'slider');
+  const [showControls, setShowControls] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-        }, 3000);
-        return () => clearInterval(interval);
-    }, [heroImages.length]);
+  // Sync state with prop
+  useEffect(() => {
+    setUseVideo(hero?.media_type !== 'slider');
+  }, [hero?.media_type]);
 
-    return (
-        <section className="h-[80vh] md:h-screen w-full bg-white pt-[84px] pb-4 px-4 md:pb-8 md:px-8 overflow-hidden">
-            <div className="relative h-full w-full rounded-[24px] md:rounded-[32px] overflow-hidden group hero-container">
-                {heroImages.map((image: string, index: number) => (
-                    <div
-                        key={index}
-                        className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? "opacity-100 z-[1]" : "opacity-0 z-0"
-                            }`}
-                    >
-                        <Image
-                            src={image}
-                            alt={`Hero slide ${index + 1}`}
-                            fill
-                            priority={index === 0}
-                            quality={85}
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
-                            className="object-cover animate-zoom-in"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#002A4C]/90 via-[#002A4C]/40 to-transparent"></div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#002A4C]/80 via-transparent to-transparent"></div>
-                    </div>
-                ))}
-                <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-16 max-w-4xl hero-content text-left">
-                    <div className="font-extrabold leading-tight text-white mb-6 drop-shadow-lg tracking-tight whitespace-pre-line">
-                        <AnimatedHeading
-                            text={title}
-                            tag="h1"
-                            fillColor="#ffffff"
-                            ghostColor="rgba(255, 255, 255, 0.2)"
-                            className="text-white"
-                        />
-                    </div>
-                </div>
+  // Auto-slide logic for images
+  useEffect(() => {
+    if (!useVideo && images && images.length > 1) {
+      const timer = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % images.length);
+      }, 5000);
+      return () => clearInterval(timer);
+    }
+  }, [useVideo, images]);
+
+  // Handle video load error to fallback to images
+  const handleVideoError = () => {
+    console.log("Video failed to load, falling back to image slider.");
+    setUseVideo(false);
+  };
+
+  return (
+    <section className="relative w-full h-auto md:h-[calc(100vh-68px)] flex flex-col justify-center pt-1 pb-1 px-4 md:px-8 overflow-hidden font-sans">
+      <div className="relative w-full min-h-[400px] md:min-h-[300px] md:max-w-[95vw] mx-auto aspect-video md:aspect-[2.5/1] max-h-[calc(100vh-76px)] rounded-[24px] md:rounded-[32px] overflow-hidden group hero-container border border-gray-100 shadow-sm isolate bg-gray-900">
+        
+        {useVideo ? (
+          <video
+            ref={videoRef}
+            className="absolute inset-0 w-full h-full object-cover z-0"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            crossOrigin="anonymous"
+            onError={handleVideoError}
+            key={videoUrlRemote}
+            controls={showControls}
+            onMouseEnter={() => setShowControls(true)}
+            onMouseLeave={() => setShowControls(false)}
+          >
+            <source src={videoUrlLocal} type="video/mp4" />
+            <source src={videoUrlRemote} type="video/mp4" />
+            <source src={videoUrlFallback} type="video/mp4" />
+          </video>
+        ) : (
+          <div className="absolute inset-0 w-full h-full">
+            {images && images.map((img, idx) => (
+              <div
+                key={idx}
+                className={cn(
+                  "absolute inset-0 transition-opacity duration-1000 ease-in-out",
+                  idx === currentImageIndex ? "opacity-100" : "opacity-0"
+                )}
+              >
+                <Image
+                  src={img}
+                  alt={`Herobg ${idx}`}
+                  fill
+                  className="object-cover"
+                  priority={idx === 0}
+                />
+                <div className="absolute inset-0 bg-blue-950/60 mix-blend-multiply" />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-transparent to-transparent opacity-80" />
+              </div>
+            ))}
+          </div>
+        )}
+        
+        {!useVideo && (
+          <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-16 max-w-4xl hero-content text-left pointer-events-none">
+            <div className="font-extrabold leading-snug text-white mb-2 md:mb-6 drop-shadow-lg tracking-tight whitespace-pre-line pointer-events-auto">
+              <h1 className="text-white !text-[19px] md:!text-6xl drop-shadow-xl" style={{ textShadow: "2px 2px 10px rgba(0,0,0,0.8)" }}>
+                {title}
+              </h1>
             </div>
-        </section>
-    );
+          </div>
+        )}
+      </div>
+    </section>
+  );
 };
 
 export default Hero;

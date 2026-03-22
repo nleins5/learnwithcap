@@ -19,6 +19,7 @@ import {
     fetchTeam,
     fetchVisionMission,
     fetchResources,
+    fetchHeroData,
     processPageSections,
     processInsights,
 } from "@/lib/api";
@@ -67,14 +68,16 @@ export const usePageData = () => {
                     insightsData,
                     teamData,
                     visionMissionData,
-                    resourcesData
+                    resourcesData,
+                    heroData
                 ] = await Promise.all([
                     fetchPageSections(),
                     fetchFooterData(),
                     fetchInsights(),
                     fetchTeam(),
                     fetchVisionMission(),
-                    fetchResources()
+                    fetchResources(),
+                    fetchHeroData()
                 ]);
 
                 // Process page sections
@@ -88,7 +91,7 @@ export const usePageData = () => {
                     setServicesHeader(processed.servicesHeader);
                     setClients(processed.clients || MOCK_CLIENTS);
                     setClientsHeader(processed.clientsHeader);
-                    setHero(processed.hero || MOCK_HERO);
+                    setHero(heroData || processed.hero || MOCK_HERO);
                     setSolutionsHeader(processed.solutionsHeader);
                     setWantsHeader(processed.wantsHeader);
                     setDifficultiesHeader(processed.difficultiesHeader);

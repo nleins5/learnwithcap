@@ -31,7 +31,9 @@ export interface FooterSettings {
 // Page Data Types
 export interface HeroData {
     title: string;
+    video_url?: string;
     images: string[];
+    media_type?: 'video' | 'slider';
 }
 
 export interface ServiceItem {

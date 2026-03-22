@@ -5,7 +5,8 @@ import {
     TeamMember,
     ResourceData,
     FooterSettings,
-    CoursePageData
+    CoursePageData,
+    HeroData
 } from './types';
 import { TABLES, SECTION_KEYS, INSIGHT_SECTIONS } from './constants';
 
@@ -42,6 +43,19 @@ export async function fetchFooterData() {
     }
 
     return data as FooterSettings;
+}
+
+/**
+ * Fetch hero data from centralized table
+ */
+export async function fetchHeroData() {
+    const { data } = await supabase
+        .from('main_hp_hero')
+        .select('*')
+        .eq('site_key', 'main')
+        .maybeSingle();
+    
+    return data as HeroData | null;
 }
 
 /**

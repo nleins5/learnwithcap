@@ -19,9 +19,9 @@ const Footer: React.FC<FooterProps> = ({ footerData }) => {
                     <div className="flex flex-col items-start gap-4 space-y-6">
                         <Link href="/" className="flex items-center gap-2">
                             <img
-                                src={settings?.logo_url || "https://learnwithcap.com/wp-content/uploads/2025/06/cap-logo-1.png"}
+                                src={settings?.logo_url || "https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp"}
                                 alt="CAP English"
-                                className="brightness-0 invert object-contain h-10 w-auto"
+                                className="object-contain h-12 w-auto opacity-80 brightness-110"
                             />
                         </Link>
                         <p className="text-gray-300 leading-relaxed font-light">

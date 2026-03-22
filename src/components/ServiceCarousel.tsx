@@ -104,20 +104,20 @@ const ServiceCarousel: React.FC<ServiceCarouselProps> = ({
         <section className="bg-white py-4 min-h-screen flex flex-col justify-center overflow-hidden">
             <div className="container mx-auto px-4 md:px-8">
                 {/* Header */}
-                <div className="section-header mb-4">
-                    <div>
-                        <SectionBadge>
-                            {subtitle}
-                        </SectionBadge>
-                    </div>
-                    <div className="mb-1 leading-tight">
-                        <AnimatedHeading
-                            text={`${titlePrefix} | ${titleSuffix}`}
-                            tag="h2"
-                            className="font-bold text-[#002A4C] text-sub-h2"
-                        />
-                    </div>
-                    <h3 className="font-normal text-[#002A4C] leading-tight mb-4 mt-1">{description}</h3>
+                <div className="section-header mb-12">
+                    <SectionBadge className="mb-3">
+                        {subtitle}
+                    </SectionBadge>
+                    <AnimatedHeading
+                        text={`${titlePrefix} | ${titleSuffix}`}
+                        tag="h2"
+                        fillColor="#002A4C"
+                        ghostColor="rgba(0, 42, 76, 0.2)"
+                        className="font-bold text-[#002A4C] text-sub-h2 mb-3"
+                    />
+                    <p className="!text-[19px] text-[#002A4C]/80 leading-relaxed max-w-4xl">
+                        {description}
+                    </p>
                 </div>
 
                 {/* Carousel Container */}
@@ -146,11 +146,11 @@ const ServiceCarousel: React.FC<ServiceCarouselProps> = ({
                     <div className="mt-4 flex items-center justify-between">
                         {/* Tracking Counter */}
                         <div className="flex items-center gap-3">
-                            <span className="text-xl font-bold text-[#7E4FD3]">
+                            <span className="text-2xl font-bold text-[#7E4FD3]">
                                 {(currentIndex + 1).toString()}
                             </span>
                             <div className="w-8 h-[1.5px] bg-[#7E4FD3]"></div>
-                            <span className="text-xl font-bold text-[#7E4FD3]">
+                            <span className="text-2xl font-bold text-[#7E4FD3]">
                                 {items.length.toString()}
                             </span>
                         </div>

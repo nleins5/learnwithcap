@@ -19,7 +19,7 @@ interface AnimatedHeadingProps {
     triggerStart?: string; // scrollTrigger start position
 }
 
-const AnimatedHeading: React.FC<AnimatedHeadingProps> = ({
+const AnimatedHeading: React.FC<AnimatedHeadingProps> = React.memo(({
     text,
     className,
     tag: Tag = 'h2', // Default to h2 as requested
@@ -31,41 +31,43 @@ const AnimatedHeading: React.FC<AnimatedHeadingProps> = ({
     const fillRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
-        const el = containerRef.current;
-        const fill = fillRef.current;
+        const ctx = gsap.context(() => {
+            const el = containerRef.current;
+            const fill = fillRef.current;
+            if (!el || !fill) return;
 
-        if (!el || !fill) return;
+            gsap.set(fill, { clipPath: 'inset(0 100% 0 0)' });
+            gsap.to(fill, {
+                clipPath: 'inset(0 0% 0 0)',
+                duration: 1.5,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: el,
+                    start: triggerStart,
+                    toggleActions: 'play none none reverse',
+                }
+            });
+        }, containerRef);
 
-        // Reset state
-        gsap.set(fill, { clipPath: 'inset(0 100% 0 0)' });
-
-        const anim = gsap.to(fill, {
-            clipPath: 'inset(0 0% 0 0)',
-            duration: 1.5,
-            ease: 'power2.out',
-            scrollTrigger: {
-                trigger: el,
-                start: triggerStart,
-                toggleActions: 'play none none reverse', // Re-plays if you scroll back up
-            }
-        });
-
-        return () => {
-            anim.kill();
-        };
-    }, [triggerStart]);
+        return () => ctx.revert();
+    }, [triggerStart, text]);
 
     return (
-        <Tag ref={containerRef} className={cn("relative inline-block w-fit", className)}>
-            {/* Ghost Text (Background) */}
-            <span className="block" style={{ color: ghostColor }}>
+        <Tag ref={containerRef} className={cn("relative block w-fit antialiased select-none", className)}>
+            {/* Size Anchor (Invisible) */}
+            <span className="block opacity-0 pointer-events-none" aria-hidden="true">
                 {text}
             </span>
 
-            {/* Fill Text (Foreground - Absolute Overlay) */}
+            {/* Ghost Text Layer */}
+            <span className="absolute inset-0 block" style={{ color: ghostColor }}>
+                {text}
+            </span>
+
+            {/* Fill Text Layer */}
             <span
                 ref={fillRef}
-                className="absolute top-0 left-0 block"
+                className="absolute inset-0 block"
                 aria-hidden="true"
                 style={{
                     color: fillColor,
@@ -77,6 +79,6 @@ const AnimatedHeading: React.FC<AnimatedHeadingProps> = ({
             </span>
         </Tag>
     );
-};
+});
 
 export default AnimatedHeading;

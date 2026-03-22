@@ -14,7 +14,7 @@ export default function RegisterPage() {
                 <div className="hidden sm:flex flex-col items-center justify-center">
                     <Link href="/">
                         <Image
-                            src="https://learnwithcap.com/wp-content/uploads/2025/06/cap-logo-1.png"
+                            src="https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp"
                             alt="CAP English Logo"
                             width={180}
                             height={60}

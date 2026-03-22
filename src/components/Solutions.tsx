@@ -34,12 +34,12 @@ const Solutions = ({ solutions, solutionsHeader }: SolutionsProps) => {
     return (
         <section id="solutions" className="bg-[#002A4C] text-white py-10">
             <div className="container mx-auto px-6">
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6 items-center">
                     <div className="md:col-span-2 flex flex-col items-start text-left">
-                        <SectionBadge className="mb-2.5">
+                        <SectionBadge className="mb-6">
                             {solutionsHeader?.badge || "GIẢI PHÁP"}
                         </SectionBadge>
-                        <div className="font-bold leading-tight mb-4">
+                        <div className="font-bold leading-tight mb-3">
                             <AnimatedHeading
                                 text={solutionsHeader?.title?.replace(/<[^>]*>?/gm, '') || "CAP thiết kế cho bạn"}
                                 tag="h2"
@@ -48,7 +48,7 @@ const Solutions = ({ solutions, solutionsHeader }: SolutionsProps) => {
                                 ghostColor="rgba(255, 255, 255, 0.2)"
                             />
                         </div>
-                        <p className="text-base text-gray-400 max-w-lg leading-relaxed">
+                        <p className="!text-[19px] text-gray-400 max-w-lg leading-relaxed">
                             {solutionsHeader?.description ||
                                 "Chúng tôi cung cấp lộ trình học tập được cá nhân hóa, giúp bạn làm chủ tiếng Anh và tự tin trong môi trường làm việc quốc tế."}
                         </p>

@@ -37,12 +37,12 @@ const Courses = ({ courses }: CoursesProps) => {
                         } py-10 text-white`}
                 >
                     <div className="container mx-auto px-5 md:px-8">
-                        <div className="grid grid-cols-1 md:grid-cols-[3fr_7fr] gap-16 items-start">
+                        <div className="grid grid-cols-1 md:grid-cols-[3fr_7fr] gap-16 items-center">
                             <div className="section-header reveal-staggered">
                                 <SectionBadge className="mb-2.5">
                                     KHÓA HỌC
                                 </SectionBadge>
-                                <div className="font-bold mb-2 whitespace-pre-line">
+                                <div className="font-bold mb-3 whitespace-pre-line">
                                     <AnimatedHeading
                                         text={course.type}
                                         tag="h2"
@@ -77,7 +77,7 @@ const Courses = ({ courses }: CoursesProps) => {
                                     </Link>
                                 </div>
                             </div>
-                            <div className="text-sm text-white/80 space-y-4 max-w-2xl mx-auto">
+                            <div className="!text-[19px] text-white/80 space-y-4 max-w-2xl mx-auto leading-relaxed">
                                 <p dangerouslySetInnerHTML={{ __html: course.desc1 }} />
                                 <p dangerouslySetInnerHTML={{ __html: course.desc2 }} />
                                 <button className="mt-4 px-6 py-2 bg-[#59B4E9] text-white font-bold rounded text-sm hover:bg-[#3690F8] transition">

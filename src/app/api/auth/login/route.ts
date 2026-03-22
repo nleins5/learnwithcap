@@ -36,20 +36,81 @@ export async function POST(req: NextRequest) {
         }
 
         // 1. Get JWT token
-        const response = await fetch(`${WP_URL}/wp-json/jwt-auth/v1/token`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "username": username,
+            "password": password
         });
 
-        const data = await response.json();
+        const requestOptions: RequestInit = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        const response = await fetch(`${WP_URL}/wp-json/jwt-auth/v1/token`, requestOptions);
+
+        // Check if response is JSON
+        const contentType = response.headers.get("content-type");
+        let data;
+
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            data = await response.json();
+        } else {
+            // If not JSON, it's likely an HTML error page (e.g. DB error, 404, 500)
+            const text = await response.text();
+            console.error("Upstream returned non-JSON:", text.substring(0, 200)); // Log snippet
+
+            // Check for known WP errors like DB connection
+            if (text.includes("Lỗi kết nối tới cơ sở dữ liệu") || text.includes("Database")) {
+                return NextResponse.json({
+                    message: 'Hệ thống đang bảo trì hoặc gặp sự cố kết nối. Vui lòng thử lại sau.'
+                }, { status: 503 });
+            }
+
+            return NextResponse.json({
+                message: 'Lỗi phản hồi từ máy chủ xác thực.'
+            }, { status: response.status === 200 ? 500 : response.status });
+        }
 
         if (!response.ok) {
+            // Strip HTML tags from message if present
+            let cleanMessage = data.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
+            if (typeof cleanMessage === 'string' && cleanMessage.includes('<')) {
+                cleanMessage = cleanMessage.replace(/<[^>]*>?/gm, '');
+            }
+
             return NextResponse.json({
-                message: data.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.'
+                message: cleanMessage
             }, { status: response.status });
+        }
+
+        // Optimization: Use user data from token response if available (from custom JWT auth plugin)
+        if (data.user && data.user.id) {
+            const user = data.user;
+            return NextResponse.json({
+                ...data,
+                id: user.id,
+                username: user.username,
+                name: user.name || user.first_name + ' ' + user.last_name,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                email: user.email,
+                role: user.roles?.[0] || 'subscriber',
+                roles: user.roles,
+                avatar_urls: {
+                    '96': user.avatar
+                },
+                url: user.url || '',
+                link: user.link || '',
+                slug: user.slug || '',
+                description: user.description || '',
+                meta: user.meta || {},
+                registered_date: user.registered_date
+            });
         }
 
         const token = data.token;
