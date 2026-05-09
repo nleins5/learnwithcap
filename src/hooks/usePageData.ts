@@ -1,18 +1,5 @@
 import { useState, useEffect } from "react";
 import {
-    MOCK_HERO,
-    MOCK_SERVICES,
-    MOCK_WANTS,
-    MOCK_DIFFICULTIES,
-    MOCK_SOLUTIONS,
-    MOCK_COURSES,
-    MOCK_CLIENTS,
-    MOCK_TESTIMONIALS,
-    MOCK_TEAM,
-    MOCK_VISION_MISSION,
-    MOCK_RESOURCES,
-} from "@/lib/mock-data";
-import {
     fetchPageSections,
     fetchFooterData,
     fetchInsights,
@@ -84,18 +71,18 @@ export const usePageData = () => {
                 if (sectionsData) {
                     const processed = processPageSections(sectionsData);
 
-                    setCourses(processed.courses || MOCK_COURSES);
-                    setTestimonials(processed.testimonials || MOCK_TESTIMONIALS);
+                    setCourses(processed.courses || []);
+                    setTestimonials(processed.testimonials || []);
                     setTestimonialsHeader(processed.testimonialsHeader);
-                    setServiceItems(processed.serviceItems || MOCK_SERVICES);
+                    setServiceItems(processed.serviceItems || []);
                     setServicesHeader(processed.servicesHeader);
-                    setClients(processed.clients || MOCK_CLIENTS);
+                    setClients(processed.clients || []);
                     setClientsHeader(processed.clientsHeader);
-                    setHero(heroData || processed.hero || MOCK_HERO);
+                    setHero(heroData || processed.hero || null);
                     setSolutionsHeader(processed.solutionsHeader);
                     setWantsHeader(processed.wantsHeader);
                     setDifficultiesHeader(processed.difficultiesHeader);
-                    setSolutions(processed.solutions || MOCK_SOLUTIONS);
+                    setSolutions(processed.solutions || []);
                     setCtaSection(processed.ctaSection);
 
                     // Process navbar
@@ -119,29 +106,17 @@ export const usePageData = () => {
 
                 // Process insights
                 const { wants: wantsData, difficulties: difficultiesData } = processInsights(insightsData);
-                setWants(wantsData || MOCK_WANTS);
-                setDifficulties(difficultiesData || MOCK_DIFFICULTIES);
+                setWants(wantsData || []);
+                setDifficulties(difficultiesData || []);
 
                 // Process team
-                if (teamData && teamData.length > 0) {
-                    setTeam(teamData);
-                } else {
-                    setTeam(MOCK_TEAM);
-                }
+                setTeam(teamData || []);
 
                 // Process vision & mission
-                if (visionMissionData) {
-                    setVisionMission(visionMissionData);
-                } else {
-                    setVisionMission(MOCK_VISION_MISSION);
-                }
+                setVisionMission(visionMissionData || null);
 
                 // Process resources
-                if (resourcesData && resourcesData.length > 0) {
-                    setResources(resourcesData);
-                } else {
-                    setResources(MOCK_RESOURCES);
-                }
+                setResources(resourcesData || []);
             } catch (error) {
                 console.error("Error fetching page data:", error);
             } finally {
