@@ -20,6 +20,31 @@ import {
     ResourceData
 } from "@/lib/types";
 
+// Mock data fallbacks for when database is empty
+const MOCK_HERO = {
+    title: "NÂNG TẦM KỸ NĂNG CÙNG LEARNWITHCAP",
+    video_url: "https://lv-vod.wpscdn.com/wps-v/v/2024/04/15/1713174400.mp4",
+    media_type: 'video' as const,
+    images: []
+};
+
+const MOCK_SERVICES = [
+    { title: "Kỹ sư & Kiến trúc sư", image: "https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp", href: "/courses" },
+    { title: "Quản lý dự án", image: "https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp", href: "/courses" },
+    { title: "Sinh viên & Newbie", image: "https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp", href: "/courses" },
+    { title: "Kỹ sư MEP", image: "https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp", href: "/courses" },
+    { title: "Kỹ sư Kết cấu", image: "https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp", href: "/courses" },
+    { title: "Nhà thầu", image: "https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp", href: "/courses" },
+    { title: "Chủ đầu tư", image: "https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp", href: "/courses" },
+    { title: "Thiết kế nội thất", image: "https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp", href: "/courses" },
+    { title: "Kỹ sư Hạ tầng", image: "https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp", href: "/courses" },
+];
+
+const MOCK_COURSES: any[] = [];
+const MOCK_TESTIMONIALS: any[] = [];
+const MOCK_CLIENTS: any[] = [];
+const MOCK_SOLUTIONS: any[] = [];
+
 export const usePageData = () => {
     // State initialized with empty values - mock data only used as fallback
     const [courses, setCourses] = useState<any[]>([]);
@@ -68,21 +93,21 @@ export const usePageData = () => {
                 ]);
 
                 // Process page sections
-                if (sectionsData) {
+                if (sectionsData && sectionsData.length > 0) {
                     const processed = processPageSections(sectionsData);
 
-                    setCourses(processed.courses || []);
-                    setTestimonials(processed.testimonials || []);
-                    setTestimonialsHeader(processed.testimonialsHeader);
-                    setServiceItems(processed.serviceItems || []);
-                    setServicesHeader(processed.servicesHeader);
-                    setClients(processed.clients || []);
-                    setClientsHeader(processed.clientsHeader);
-                    setHero(heroData || processed.hero || null);
-                    setSolutionsHeader(processed.solutionsHeader);
-                    setWantsHeader(processed.wantsHeader);
-                    setDifficultiesHeader(processed.difficultiesHeader);
-                    setSolutions(processed.solutions || []);
+                    setCourses(processed.courses || MOCK_COURSES);
+                    setTestimonials(processed.testimonials || MOCK_TESTIMONIALS);
+                    setTestimonialsHeader(processed.testimonialsHeader || { title: '', subtitle: '' });
+                    setServiceItems(processed.serviceItems || MOCK_SERVICES);
+                    setServicesHeader(processed.servicesHeader || { title: 'BẠN LÀ', subtitle: '' });
+                    setClients(processed.clients || MOCK_CLIENTS);
+                    setClientsHeader(processed.clientsHeader || { title: '', subtitle: '' });
+                    setHero(heroData || processed.hero || MOCK_HERO);
+                    setSolutionsHeader(processed.solutionsHeader || { title: '', subtitle: '' });
+                    setWantsHeader(processed.wantsHeader || { title: '', subtitle: '' });
+                    setDifficultiesHeader(processed.difficultiesHeader || { title: '', subtitle: '' });
+                    setSolutions(processed.solutions || MOCK_SOLUTIONS);
                     setCtaSection(processed.ctaSection);
 
                     // Process navbar
@@ -90,12 +115,12 @@ export const usePageData = () => {
                         setNavbar(processed.navbar);
                     }
                 } else {
-                    // Fallback to all mock data if sectionsData is null
+                    // Fallback to all mock data if sectionsData is null or empty
                     setCourses(MOCK_COURSES);
                     setTestimonials(MOCK_TESTIMONIALS);
                     setServiceItems(MOCK_SERVICES);
                     setClients(MOCK_CLIENTS);
-                    setHero(MOCK_HERO);
+                    setHero(heroData || MOCK_HERO);
                     setSolutions(MOCK_SOLUTIONS);
                 }
 
