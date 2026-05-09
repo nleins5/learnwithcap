@@ -13,7 +13,7 @@ export default function PrivacyPage() {
 
                 <div className="prose prose-lg text-gray-600">
                     <p className="mb-4">
-                        Chính sách bảo mật này mô tả cách CAP ("chúng tôi") thu thập, sử dụng và bảo vệ thông tin cá nhân của bạn khi bạn sử dụng website learnwithcap.com.
+                        Chính sách bảo mật này mô tả cách CAP (&quot;chúng tôi&quot;) thu thập, sử dụng và bảo vệ thông tin cá nhân của bạn khi bạn sử dụng website learnwithcap.com.
                     </p>
 
                     <h3 className="text-xl font-bold text-[#0b2b4d] mt-8 mb-4">1. Thu thập thông tin</h3>
