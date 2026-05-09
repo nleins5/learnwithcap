@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -20,6 +20,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
     href = "#",
     className = ""
 }) => {
+    const [imgSrc, setImgSrc] = useState(image);
+
+    useEffect(() => {
+        setImgSrc(image);
+    }, [image]);
+
     return (
         <Link
             href={href}
@@ -42,12 +48,13 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
             {/* Background Image with Zoom Effect */}
             <div className="absolute inset-0 transition-transform duration-1000 ease-out group-hover:scale-110">
                 <Image
-                    src={image}
+                    src={imgSrc || 'https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp'}
                     alt={title}
                     fill
                     className="object-cover"
                     sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, 33vw"
                     priority={false}
+                    onError={() => setImgSrc('https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp')}
                 />
             </div>
 
