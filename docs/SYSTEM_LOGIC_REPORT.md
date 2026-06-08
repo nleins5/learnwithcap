@@ -381,21 +381,7 @@ Thu lead tư vấn
 → Theo dõi tiến độ
 ```
 
----
-
-## 13. Các quyết định cần chốt trước khi clean hoặc sửa
-
-1. Website chỉ làm marketing và lấy lead, hay phải hỗ trợ mua/học E-Learning?
-2. `/profile` sẽ nằm trong repository này hay chuyển sang Tutor LMS/WordPress?
-3. Course content chuẩn sẽ lấy từ Supabase hay WordPress/Tutor LMS?
-4. Admin app `admin-cap.vercel.app` có phải hệ thống quản trị chính thức?
-5. Contact lead cần lưu Supabase, gửi email hay đẩy sang CRM?
-6. Có giữ các route legacy hay chỉ giữ `/courses/[slug]`?
-7. Persona cards cần dẫn tới khóa học phù hợp hay dùng để lọc danh sách?
-
----
-
-## 14. Trạng thái clean
+## 13. Trạng thái clean
 
 Tại thời điểm tạo tài liệu:
 
