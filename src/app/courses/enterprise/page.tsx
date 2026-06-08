@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CheckCircle2, PlayCircle, Layers, MessageSquare, Presentation, Users, LucideIcon } from 'lucide-react';
@@ -76,9 +75,9 @@ export default function EnterpriseCoursePage() {
                                         <span className="text-xs text-white/60 uppercase font-bold">{pageData.stats.rightLabel}</span>
                                     </div>
                                 )}
-                                <a href="#course-structure" className="bg-white text-[#0b2b4d] px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors flex items-center gap-2">
+                                <button className="bg-white text-[#0b2b4d] px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors flex items-center gap-2">
                                     Chi tiết
-                                </a>
+                                </button>
                             </div>
                         </div>
 
@@ -145,7 +144,7 @@ export default function EnterpriseCoursePage() {
 
             {/* Course Structure Section */}
             {pageData.structure && (
-                <section id="course-structure" className="py-24 bg-[#f4faff]">
+                <section className="py-24 bg-[#f4faff]">
                     <div className="container mx-auto px-4 md:px-8 text-center">
                         <h2 className="text-[40px] font-bold text-[#0b2b4d] mb-16">{pageData.structure.title}</h2>
 
@@ -164,9 +163,9 @@ export default function EnterpriseCoursePage() {
                                         ))}
                                     </ul>
 
-                                    <Link href="/contact?course=enterprise" className="w-full py-4 bg-[#0b2b4d] text-white rounded-xl font-bold hover:bg-[#671D9D] transition-colors text-center">
+                                    <button className="w-full py-4 bg-[#0b2b4d] text-white rounded-xl font-bold hover:bg-[#671D9D] transition-colors">
                                         Tư Vấn
-                                    </Link>
+                                    </button>
                                 </div>
                             ))}
                         </div>
@@ -226,9 +225,9 @@ export default function EnterpriseCoursePage() {
                         <p className="text-white/60 text-lg mb-10 max-w-2xl mx-auto">
                             {pageData.cta_banner.desc}
                         </p>
-                        <Link href="/contact?course=enterprise" className="inline-block bg-[#59B4E9] text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-[#0b2b4d] transition-all">
+                        <button className="bg-[#59B4E9] text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-[#0b2b4d] transition-all">
                             {pageData.cta_banner.buttonText}
-                        </Link>
+                        </button>
                     </div>
                 </section>
             )}

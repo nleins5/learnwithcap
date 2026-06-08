@@ -8,28 +8,6 @@ interface CoursesProps {
     courses: any[];
 }
 
-const courseRouteByKeyword = [
-    { keyword: "online", href: "/courses/online-1-1", slug: "online-1-1" },
-    { keyword: "e-learning", href: "/courses/e-learning", slug: "e-learning" },
-    { keyword: "elearning", href: "/courses/e-learning", slug: "e-learning" },
-    { keyword: "doanh", href: "/courses/enterprise", slug: "enterprise" },
-    { keyword: "enterprise", href: "/courses/enterprise", slug: "enterprise" },
-];
-
-const getCourseMeta = (course: any) => {
-    if (course.detailHref || course.href) {
-        const href = course.detailHref || course.href;
-        const pathParts = href.split("/").filter(Boolean);
-        const slug = course.slug || pathParts[pathParts.length - 1] || "enterprise";
-        return { href, slug };
-    }
-
-    const courseLabel = `${course.slug || ""} ${course.type || ""} ${course.title || ""}`.toLowerCase();
-    const match = courseRouteByKeyword.find((item) => courseLabel.includes(item.keyword));
-
-    return match || { href: "/courses/enterprise", slug: "enterprise" };
-};
-
 const Courses = ({ courses }: CoursesProps) => {
     React.useEffect(() => {
         const observer = new IntersectionObserver(
@@ -52,17 +30,12 @@ const Courses = ({ courses }: CoursesProps) => {
 
     return (
         <>
-            {courses.map((course, idx) => {
-                const { href, slug } = getCourseMeta(course);
-                const consultHref = course.consultHref || `/contact?course=${encodeURIComponent(slug)}`;
-
-                return (
-                    <section
-                        key={idx}
-                        id={idx === 0 ? "courses" : undefined}
-                        className={`${idx === 0 ? "bg-[#002A4C]" : idx % 2 !== 0 ? "bg-[#001e3d]" : "bg-[#002A4C]"
-                            } py-10 text-white`}
-                    >
+            {courses.map((course, idx) => (
+                <section
+                    key={idx}
+                    className={`${idx === 0 ? "bg-[#002A4C]" : idx % 2 !== 0 ? "bg-[#001e3d]" : "bg-[#002A4C]"
+                        } py-10 text-white`}
+                >
                     <div className="container mx-auto px-5 md:px-8">
                         <div className="grid grid-cols-1 md:grid-cols-[3fr_7fr] gap-16 items-center">
                             <div className="section-header reveal-staggered">
@@ -93,11 +66,11 @@ const Courses = ({ courses }: CoursesProps) => {
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mb-8">
-                                    <Link href={consultHref} className="px-6 py-2 bg-white text-[#002A4C] font-bold rounded text-sm hover:bg-gray-100 transition">
+                                    <button className="px-6 py-2 bg-white text-[#002A4C] font-bold rounded text-sm hover:bg-gray-100 transition">
                                         {course.cta1_label || "Tư Vấn Ngay"}
-                                    </Link>
+                                    </button>
                                     <Link
-                                        href={href}
+                                        href="/course-detail"
                                         className="px-6 py-2 border border-white text-white font-bold rounded text-sm hover:bg-white/10 transition block"
                                     >
                                         {course.cta2_label || "Xem Chi Tiết"}
@@ -107,9 +80,9 @@ const Courses = ({ courses }: CoursesProps) => {
                             <div className="!text-[19px] text-white/80 space-y-4 max-w-2xl mx-auto leading-relaxed">
                                 <p dangerouslySetInnerHTML={{ __html: course.desc1 }} />
                                 <p dangerouslySetInnerHTML={{ __html: course.desc2 }} />
-                                <Link href={consultHref} className="inline-block mt-4 px-6 py-2 bg-[#59B4E9] text-white font-bold rounded text-sm hover:bg-[#3690F8] transition">
+                                <button className="mt-4 px-6 py-2 bg-[#59B4E9] text-white font-bold rounded text-sm hover:bg-[#3690F8] transition">
                                     Tư Vấn Ngay
-                                </Link>
+                                </button>
                             </div>
                         </div>
                         <div className="flex overflow-x-auto gap-8 mt-6 reveal-piano pb-8 scrollbar-hide snap-x pr-4">
@@ -130,8 +103,7 @@ const Courses = ({ courses }: CoursesProps) => {
                         </div>
                     </div>
                 </section>
-                );
-            })}
+            ))}
         </>
     );
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CheckCircle2, PlayCircle, Layers, MessageSquare, Presentation, MonitorPlay, LucideIcon } from 'lucide-react';
@@ -58,9 +57,9 @@ export default async function ELearningCoursePage() {
                                         <span className="text-[10px] md:text-xs text-white/60 uppercase font-bold">{pageData.stats.rightLabel}</span>
                                     </div>
                                 )}
-                                <a href="#course-structure" className="bg-white text-[#0b2b4d] px-6 py-3 md:px-8 rounded-lg font-bold hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm md:text-base">
+                                <button className="bg-white text-[#0b2b4d] px-6 py-3 md:px-8 rounded-lg font-bold hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm md:text-base">
                                     Chi tiết
-                                </a>
+                                </button>
                             </div>
                         </div>
 
@@ -127,7 +126,7 @@ export default async function ELearningCoursePage() {
 
             {/* Course Structure Section */}
             {pageData.structure && (
-                <section id="course-structure" className="py-12 md:py-24 bg-[#f4faff]">
+                <section className="py-12 md:py-24 bg-[#f4faff]">
                     <div className="container mx-auto px-4 md:px-8 text-center">
                         <h2 className="font-bold text-[#0b2b4d] mb-8 md:mb-16">{pageData.structure.title}</h2>
 
@@ -146,9 +145,9 @@ export default async function ELearningCoursePage() {
                                         ))}
                                     </ul>
 
-                                    <Link href="/contact?course=e-learning" className="w-full py-3 md:py-4 bg-[#0b2b4d] text-white rounded-xl font-bold hover:bg-[#671D9D] transition-colors mt-auto text-center">
+                                    <button className="w-full py-3 md:py-4 bg-[#0b2b4d] text-white rounded-xl font-bold hover:bg-[#671D9D] transition-colors mt-auto">
                                         Tư Vấn
-                                    </Link>
+                                    </button>
                                 </div>
                             ))}
                         </div>
@@ -208,9 +207,9 @@ export default async function ELearningCoursePage() {
                         <p className="text-white/60 text-base md:text-lg mb-8 md:mb-10 max-w-2xl mx-auto">
                             {pageData.cta_banner.desc}
                         </p>
-                        <Link href="/contact?course=e-learning" className="inline-block bg-[#59B4E9] text-white px-8 md:px-10 py-3 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-white hover:text-[#0b2b4d] transition-all w-full md:w-auto">
+                        <button className="bg-[#59B4E9] text-white px-8 md:px-10 py-3 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-white hover:text-[#0b2b4d] transition-all w-full md:w-auto">
                             {pageData.cta_banner.buttonText}
-                        </Link>
+                        </button>
                     </div>
                 </section>
             )}
