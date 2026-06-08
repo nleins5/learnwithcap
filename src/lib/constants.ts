@@ -34,7 +34,7 @@ export const INSIGHT_SECTIONS = {
 
 // Default navbar links
 export const DEFAULT_NAVBAR_LINKS = [
-    { label: "Khóa Học", href: "/shop" },
+    { label: "Khóa Học", href: "/#courses" },
     { label: "Tài Nguyên", href: "/resources" },
     { label: "Về Chúng Tôi", href: "/about" }
 ] as const;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -25,7 +25,17 @@ export default function LoginForm() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [redirectTo, setRedirectTo] = useState("/profile");
     const setUser = useAuthStore((state) => state.setUser);
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const redirectParam = params.get("redirect");
+
+        if (redirectParam?.startsWith("/") && !redirectParam.startsWith("//")) {
+            setRedirectTo(redirectParam);
+        }
+    }, []);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -62,7 +72,7 @@ export default function LoginForm() {
                     const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'https://admin-cap.vercel.app';
                     window.location.href = `${adminUrl}/?key=${data.token}`;
                 } else {
-                    router.push("/profile");
+                    router.push(redirectTo);
                 }
             }
         } catch (error: any) {
@@ -133,7 +143,7 @@ export default function LoginForm() {
                     </Button>
                     <p className="text-sm text-center text-gray-600">
                         Chưa có tài khoản?{" "}
-                        <Link href="/register" className="font-medium text-purple-600 hover:underline">
+                        <Link href={`/register?redirect=${encodeURIComponent(redirectTo)}`} className="font-medium text-purple-600 hover:underline">
                             Đăng ký ngay
                         </Link>
                     </p>

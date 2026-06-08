@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -25,8 +25,18 @@ export default function RegisterForm() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [redirectTo, setRedirectTo] = useState("/profile");
     const router = useRouter();
     const setUser = useAuthStore((state) => state.setUser);
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const redirectParam = params.get("redirect");
+
+        if (redirectParam?.startsWith("/") && !redirectParam.startsWith("//")) {
+            setRedirectTo(redirectParam);
+        }
+    }, []);
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -58,12 +68,12 @@ export default function RegisterForm() {
                 toast.success("Đăng ký thành công! Đang chuyển hướng...", {
                     id: loadingToast,
                 });
-                router.push("/profile");
+                router.push(redirectTo);
             } else if (data.success) {
                 toast.success(data.message || "Đăng ký thành công. Vui lòng đăng nhập.", {
                     id: loadingToast,
                 });
-                router.push("/login");
+                router.push(`/login?redirect=${encodeURIComponent(redirectTo)}`);
             }
         } catch (error: any) {
             toast.error(error.message || "Đăng ký thất bại. Vui lòng thử lại.", {
@@ -155,7 +165,7 @@ export default function RegisterForm() {
                     </Button>
                     <p className="text-sm text-center text-gray-600">
                         Đã có tài khoản?{" "}
-                        <Link href="/login" className="font-medium text-purple-600 hover:underline">
+                        <Link href={`/login?redirect=${encodeURIComponent(redirectTo)}`} className="font-medium text-purple-600 hover:underline">
                             Đăng nhập ngay
                         </Link>
                     </p>

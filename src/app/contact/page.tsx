@@ -8,11 +8,12 @@ import { TABLES } from '@/lib/constants';
 
 export default function ContactPage() {
     const [contactInfo, setContactInfo] = useState<any>(null);
+    const [selectedInterest, setSelectedInterest] = useState("Tư vấn khóa học");
 
     useEffect(() => {
         const fetchContactInfo = async () => {
             // Reusing the same table as Footer to ensure consistency
-            const { data, error } = await supabase
+            const { data } = await supabase
                 .from(TABLES.HOMEPAGE_FOOTER)
                 .select('*')
                 .single();
@@ -22,6 +23,12 @@ export default function ContactPage() {
             }
         };
         fetchContactInfo();
+
+        const params = new URLSearchParams(window.location.search);
+        const course = params.get("course");
+        if (course) {
+            setSelectedInterest(`Tư vấn khóa học: ${course}`);
+        }
     }, []);
 
 
@@ -105,8 +112,15 @@ export default function ContactPage() {
                                         </div>
                                         <div className="space-y-2">
                                             <label className="text-sm font-bold text-[#0b2b4d]">Vấn đề quan tâm</label>
-                                            <select className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-[#59B4E9] focus:ring-1 focus:ring-[#59B4E9] transition-all text-gray-600">
+                                            <select
+                                                className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-[#59B4E9] focus:ring-1 focus:ring-[#59B4E9] transition-all text-gray-600"
+                                                value={selectedInterest}
+                                                onChange={(event) => setSelectedInterest(event.target.value)}
+                                            >
                                                 <option>Tư vấn khóa học</option>
+                                                {selectedInterest.startsWith("Tư vấn khóa học:") && (
+                                                    <option>{selectedInterest}</option>
+                                                )}
                                                 <option>Hợp tác doanh nghiệp</option>
                                                 <option>Hỗ trợ kỹ thuật</option>
                                                 <option>Khác</option>

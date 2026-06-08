@@ -3,11 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter, usePathname } from "next/navigation";
 import { Menu, User, LogOut, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/auth";
-import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { NavbarData, NavbarLink } from '@/lib/types';
 
@@ -16,8 +14,6 @@ interface HeaderProps {
 }
 
 export default function Header({ navbar }: HeaderProps) {
-  const router = useRouter();
-  const pathname = usePathname();
   const { token, user, logout } = useAuthStore();
   const isAuthenticated = !!token;
   
@@ -40,14 +36,16 @@ export default function Header({ navbar }: HeaderProps) {
             label: "Khóa Học",
             href: "#",
             dropdown: [
-                { label: "Trực tiếp tại Doanh Nghiệp", href: "/course-detail" },
-                { label: "Online 1:1", href: "/online-1-1" },
-                { label: "E-Learning", href: "/e-learning" }
+                { label: "Trực tiếp tại Doanh Nghiệp", href: "/courses/enterprise" },
+                { label: "Online 1:1", href: "/courses/online-1-1" },
+                { label: "E-Learning", href: "/courses/e-learning" }
             ]
         },
         { label: "Tài Nguyên", href: "/resources" },
         { label: "Về Chúng Tôi", href: "/about" }
   ];
+
+  const getHref = (href: string) => href === "#" ? "/#courses" : href;
 
   return (
     <>
@@ -72,7 +70,7 @@ export default function Header({ navbar }: HeaderProps) {
                  return (
                      <div key={lIdx} className="relative group/item">
                          <Link
-                             href={link.href.startsWith('#') ? `/${link.href}` : link.href}
+                             href={getHref(link.href)}
                              className="rounded-full px-4 py-1.5 text-base font-medium transition-colors text-gray-900 group-hover/nav:text-gray-400 hover:!text-gray-900 group-hover/item:!text-gray-900 block"
                          >
                              {link.label}
@@ -83,7 +81,7 @@ export default function Header({ navbar }: HeaderProps) {
                                  {link.dropdown?.map((dropLink: NavbarLink, dIdx: number) => (
                                      <Link
                                          key={dIdx}
-                                         href={dropLink.href}
+                                         href={getHref(dropLink.href)}
                                          className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-purple-600 transition-colors"
                                      >
                                          {dropLink.label}
@@ -160,7 +158,7 @@ export default function Header({ navbar }: HeaderProps) {
                   return (
                       <div key={i} className="flex flex-col">
                           <div className="flex justify-between items-center py-2 border-b border-gray-50">
-                             <Link href={link.href} className="text-lg font-medium text-gray-800 hover:text-purple-600" onClick={() => !hasDropdown && setIsMobileMenuOpen(false)}>
+                             <Link href={getHref(link.href)} className="text-lg font-medium text-gray-800 hover:text-purple-600" onClick={() => !hasDropdown && setIsMobileMenuOpen(false)}>
                                  {link.label}
                              </Link>
                              {hasDropdown && (
@@ -172,7 +170,7 @@ export default function Header({ navbar }: HeaderProps) {
                           {hasDropdown && openDropdownIndex === i && (
                                <div className="flex flex-col pl-4 mt-2 space-y-3 bg-gray-50 p-4 rounded-xl">
                                   {link.dropdown?.map((dropLink: NavbarLink, dIdx: number) => (
-                                      <Link key={dIdx} href={dropLink.href} className="text-gray-600 font-medium hover:text-purple-600" onClick={() => setIsMobileMenuOpen(false)}>
+                                      <Link key={dIdx} href={getHref(dropLink.href)} className="text-gray-600 font-medium hover:text-purple-600" onClick={() => setIsMobileMenuOpen(false)}>
                                           {dropLink.label}
                                       </Link>
                                   ))}
