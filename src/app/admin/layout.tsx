@@ -6,9 +6,11 @@ import {
   Search,
   Bell,
   Users,
+  User,
   BookOpen,
   TrendingUp,
   Shield,
+  Lock,
   Settings,
   LogOut,
   LayoutDashboard,
@@ -18,6 +20,7 @@ import {
   FileText,
   Megaphone,
   Eye,
+  EyeOff,
   Building2,
   Lightbulb,
   Target,
@@ -135,13 +138,13 @@ export default function AdminLayout({
   /* ── Login Screen ── */
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#f0f4f8] flex flex-col items-center justify-center p-4">
-        <div className="w-full max-w-sm">
-          <div className="bg-white rounded-2xl p-8 shadow-lg">
+      <div className="min-h-screen bg-[#eef2f7] flex flex-col items-center justify-center p-4">
+        <div className="w-full max-w-[380px]">
+          <div className="bg-white rounded-2xl p-8" style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.06)' }}>
             {/* Header */}
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">Sign In</h1>
-              <p className="text-gray-400 text-sm mt-1">
+            <div className="mb-7">
+              <h1 className="text-[26px] font-bold text-[#1e293b]">Sign In</h1>
+              <p className="text-[#94a3b8] text-[14px] mt-1">
                 Access your control panel
               </p>
             </div>
@@ -149,53 +152,55 @@ export default function AdminLayout({
             <form onSubmit={handleLogin} className="space-y-5">
               {/* Username */}
               <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                <label className="block text-[11px] font-bold text-[#334155] uppercase tracking-[0.08em] mb-2">
                   Username
                 </label>
                 <div className="relative">
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                    <Users className="w-4 h-4" />
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94a3b8]">
+                    <User className="w-[18px] h-[18px]" />
                   </div>
                   <input
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all text-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-white border border-[#e2e8f0] rounded-xl text-[#334155] placeholder-[#94a3b8] focus:outline-none focus:ring-2 focus:ring-[#4361ee]/30 focus:border-[#4361ee] transition-all text-sm"
                     placeholder="johndoe"
                     autoFocus
+                    autoComplete="off"
                   />
                 </div>
               </div>
 
               {/* Password */}
               <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                <label className="block text-[11px] font-bold text-[#334155] uppercase tracking-[0.08em] mb-2">
                   Password
                 </label>
                 <div className="relative">
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                    <Shield className="w-4 h-4" />
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94a3b8]">
+                    <Lock className="w-[18px] h-[18px]" />
                   </div>
                   <input
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all text-sm"
+                    className="w-full pl-11 pr-11 py-3 bg-white border border-[#e2e8f0] rounded-xl text-[#334155] placeholder-[#94a3b8] focus:outline-none focus:ring-2 focus:ring-[#4361ee]/30 focus:border-[#4361ee] transition-all text-sm"
                     placeholder="••••••••"
+                    autoComplete="off"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#64748b] transition-colors"
                   >
-                    <Eye className="w-4 h-4" />
+                    {showPassword ? <EyeOff className="w-[18px] h-[18px]" /> : <Eye className="w-[18px] h-[18px]" />}
                   </button>
                 </div>
               </div>
 
               {/* Error */}
               {error && (
-                <p className="text-red-500 text-sm text-center bg-red-50 py-2 rounded-lg">
+                <p className="text-[#ef4444] text-sm text-center bg-[#fef2f2] py-2.5 rounded-xl font-medium">
                   {error}
                 </p>
               )}
@@ -203,7 +208,7 @@ export default function AdminLayout({
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full py-3 bg-[#4a9fd5] text-white font-semibold rounded-xl hover:bg-[#3d8fc2] active:scale-[0.98] transition-all text-sm shadow-sm"
+                className="w-full py-3.5 bg-[#4361ee] text-white font-semibold rounded-xl hover:bg-[#3a56d4] active:scale-[0.98] transition-all text-[14px]"
               >
                 Login to Dashboard
               </button>
@@ -212,7 +217,7 @@ export default function AdminLayout({
         </div>
 
         {/* Copyright */}
-        <p className="mt-8 text-xs text-gray-400 uppercase tracking-wider">
+        <p className="mt-10 text-[11px] text-[#94a3b8] uppercase tracking-[0.15em] font-medium">
           © 2026 CAP EDUCATION
         </p>
       </div>
