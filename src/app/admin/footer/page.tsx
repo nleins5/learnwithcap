@@ -14,7 +14,6 @@ import {
   ArrowDown,
   LayoutTemplate,
   FileJson,
-  Link2,
 } from "lucide-react";
 
 /* ─── Media Preview Helper ─── */
@@ -88,7 +87,7 @@ export default function FooterAdmin() {
           ...parsed,
           links: Array.isArray(parsed.links) ? parsed.links : [],
         });
-      } catch (e) {
+      } catch {
         alert("Dữ liệu JSON hiện tại không hợp lệ. Vui lòng sửa lỗi trước khi chuyển sang tab Biểu mẫu.");
         return;
       }
@@ -108,11 +107,17 @@ export default function FooterAdmin() {
           links: Array.isArray(parsed.links) ? parsed.links : [],
         };
         setFooter(prepared);
-        const { id, created_at, updated_at, ...rest } = prepared;
-        updateData = rest;
+        const preparedCopy = { ...prepared };
+        delete (preparedCopy as any).id;
+        delete (preparedCopy as any).created_at;
+        delete (preparedCopy as any).updated_at;
+        updateData = preparedCopy;
       } else {
-        const { id, created_at, updated_at, ...rest } = footer;
-        updateData = rest;
+        const footerCopy = { ...footer };
+        delete (footerCopy as any).id;
+        delete (footerCopy as any).created_at;
+        delete (footerCopy as any).updated_at;
+        updateData = footerCopy;
       }
 
       if (footer?.id) {

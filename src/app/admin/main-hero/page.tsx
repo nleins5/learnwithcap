@@ -80,7 +80,7 @@ export default function MainHeroAdmin() {
       try {
         const parsed = JSON.parse(rawJson);
         setHero(parsed);
-      } catch (e) {
+      } catch {
         alert("Dữ liệu JSON hiện tại không hợp lệ. Vui lòng sửa lỗi trước khi chuyển sang tab Biểu mẫu.");
         return;
       }
@@ -96,11 +96,15 @@ export default function MainHeroAdmin() {
       if (activeTab === "json") {
         const parsed = JSON.parse(rawJson);
         setHero(parsed);
-        const { id, created_at, ...rest } = parsed;
-        updateData = rest;
+        const parsedCopy = { ...parsed };
+        delete (parsedCopy as any).id;
+        delete (parsedCopy as any).created_at;
+        updateData = parsedCopy;
       } else {
-        const { id, created_at, ...rest } = hero;
-        updateData = rest;
+        const heroCopy = { ...hero };
+        delete (heroCopy as any).id;
+        delete (heroCopy as any).created_at;
+        updateData = heroCopy;
       }
 
       if (hero?.id) {
