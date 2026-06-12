@@ -516,7 +516,7 @@ const InputField = ({ label, value, onChange, isTextArea = false }: any) => (
   </div>
 );
 
-const ImageField = ({ label, value, onChange }: any) => {
+export const ImageField = ({ label, value, onChange }: any) => {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

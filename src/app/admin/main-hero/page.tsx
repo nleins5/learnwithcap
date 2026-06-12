@@ -14,6 +14,7 @@ import {
   LayoutTemplate,
   FileJson,
 } from "lucide-react";
+import { ImageField } from "../components";
 
 /* ─── Media Preview Helper ─── */
 function MediaPreview({ url }: { url: string }) {
@@ -311,20 +312,11 @@ export default function MainHeroAdmin() {
               </div>
 
               {/* Background Image / Thumbnail */}
-              <div>
-                <label htmlFor="background_image" className="block text-sm font-medium text-gray-700 mb-1">
-                  Ảnh nền mặc định / Thumbnail Video (background_image)
-                </label>
-                <input
-                  id="background_image"
-                  type="text"
-                  value={hero.background_image || ""}
-                  onChange={(e) => updateHeroField("background_image", e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all mb-2"
-                  placeholder="https://..."
-                />
-                <MediaPreview url={hero.background_image} />
-              </div>
+              <ImageField
+                label="Ảnh nền mặc định / Thumbnail Video (background_image)"
+                value={hero.background_image}
+                onChange={(v: string) => updateHeroField("background_image", v)}
+              />
 
               {/* Images list for Slider */}
               <div className="pt-4 border-t border-gray-100">
@@ -357,19 +349,12 @@ export default function MainHeroAdmin() {
                         key={idx}
                         className="flex gap-3 items-start bg-gray-50 p-4 rounded-xl border border-gray-200"
                       >
-                        <div className="flex-1 space-y-2">
-                          <label htmlFor={`slider_img_${idx}`} className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                            Hình ảnh {idx + 1}
-                          </label>
-                          <input
-                            id={`slider_img_${idx}`}
-                            type="text"
+                        <div className="flex-1">
+                          <ImageField
+                            label={`Hình ảnh ${idx + 1}`}
                             value={img}
-                            onChange={(e) => updateImageAt(idx, e.target.value)}
-                            className="w-full px-3 py-2 bg-white border border-gray-350 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                            placeholder="URL hình ảnh slider (https://...)"
+                            onChange={(v: string) => updateImageAt(idx, v)}
                           />
-                          <MediaPreview url={img} />
                         </div>
                         <div className="flex flex-col gap-1 pt-6">
                           <button

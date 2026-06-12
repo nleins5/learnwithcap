@@ -15,6 +15,7 @@ import {
   LayoutTemplate,
   FileJson,
 } from "lucide-react";
+import { ImageField } from "../components";
 
 /* ─── Media Preview Helper ─── */
 function MediaPreview({ url }: { url: string }) {
@@ -295,18 +296,11 @@ export default function FooterAdmin() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
-                  <label htmlFor="logo_url" className="block text-sm font-medium text-gray-700 mb-1">
-                    Logo URL
-                  </label>
-                  <input
-                    id="logo_url"
-                    type="text"
-                    value={footer.logo_url || ""}
-                    onChange={(e) => updateField("logo_url", e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                    placeholder="https://..."
+                  <ImageField
+                    label="Logo URL"
+                    value={footer.logo_url}
+                    onChange={(v: string) => updateField("logo_url", v)}
                   />
-                  <MediaPreview url={footer.logo_url} />
                 </div>
                 <div className="md:col-span-2">
                   <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
