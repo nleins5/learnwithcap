@@ -74,6 +74,7 @@ interface CmsEditorProps {
   filter?: { column: string; value: string };
   defaultValues?: Record<string, any>;
   readonlyList?: boolean;
+  primaryKey?: string;
 }
 
 export function CmsEditor({
@@ -86,6 +87,7 @@ export function CmsEditor({
   filter,
   defaultValues = {},
   readonlyList = false,
+  primaryKey = "id",
 }: CmsEditorProps) {
   const [rows, setRows] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -128,16 +130,22 @@ export function CmsEditor({
     setSaving(true);
     setStatus(null);
     const row = rows[index];
-    const id = row.id;
+    const pkValue = row[primaryKey];
+    const isNew = row._isNew;
+
     const updateData = { ...row };
-    delete updateData.id;
+    delete updateData._isNew;
     delete updateData.created_at;
+    if (primaryKey === "id") {
+      delete updateData.id;
+    }
+
     try {
-      if (id) {
+      if (!isNew && pkValue) {
         const { error } = await supabase
           .from(table)
           .update({ ...updateData, updated_at: new Date().toISOString() })
-          .eq("id", id);
+          .eq(primaryKey, pkValue);
         if (error) throw error;
       } else {
         const insertData = { ...defaultValues, ...updateData };
@@ -151,7 +159,7 @@ export function CmsEditor({
         if (data) {
           setRows((prev) => {
             const updated = [...prev];
-            updated[index] = data;
+            updated[index] = { ...data, _isNew: false };
             return updated;
           });
         }
@@ -172,19 +180,40 @@ export function CmsEditor({
     setSaving(true);
     setStatus(null);
     try {
-      for (const row of rows) {
-        const id = row.id;
+      const updatedRows = [...rows];
+      for (let i = 0; i < updatedRows.length; i++) {
+        const row = updatedRows[i];
+        const pkValue = row[primaryKey];
+        const isNew = row._isNew;
+
         const updateData = { ...row };
-        delete updateData.id;
+        delete updateData._isNew;
         delete updateData.created_at;
-        if (id) {
+        if (primaryKey === "id") {
+          delete updateData.id;
+        }
+
+        if (!isNew && pkValue) {
           const { error } = await supabase
             .from(table)
             .update({ ...updateData, updated_at: new Date().toISOString() })
-            .eq("id", id);
+            .eq(primaryKey, pkValue);
           if (error) throw error;
+        } else {
+          const insertData = { ...defaultValues, ...updateData };
+          if (filter) insertData[filter.column] = filter.value;
+          const { data, error } = await supabase
+            .from(table)
+            .insert(insertData)
+            .select()
+            .single();
+          if (error) throw error;
+          if (data) {
+            updatedRows[i] = { ...data, _isNew: false };
+          }
         }
       }
+      setRows(updatedRows);
       setStatus({ type: "success", message: "Đã lưu tất cả thành công!" });
       setTimeout(() => setStatus(null), 3000);
     } catch (error: any) {
@@ -207,14 +236,16 @@ export function CmsEditor({
     });
     if (filter) newRow[filter.column] = filter.value;
     newRow.display_order = rows.length + 1;
+    newRow._isNew = true;
     setRows((prev) => [...prev, newRow]);
   };
 
   const deleteRow = async (index: number) => {
     const row = rows[index];
     if (!confirm("Bạn có chắc muốn xóa?")) return;
-    if (row.id) {
-      const { error } = await supabase.from(table).delete().eq("id", row.id);
+    const pkValue = row[primaryKey];
+    if (!row._isNew && pkValue) {
+      const { error } = await supabase.from(table).delete().eq(primaryKey, pkValue);
       if (error) {
         setStatus({ type: "error", message: error.message });
         return;
@@ -317,7 +348,7 @@ export function CmsEditor({
       {/* Rows */}
       {rows.map((row, index) => (
         <div
-          key={row.id || `new-${index}`}
+          key={row[primaryKey] || `new-${index}`}
           className="bg-white rounded-xl border border-gray-200 overflow-hidden"
         >
           {/* Row Header */}
@@ -326,9 +357,9 @@ export function CmsEditor({
               <GripVertical className="w-4 h-4 text-gray-300" />
               <span className="text-sm font-medium text-gray-500">
                 #{index + 1}
-                {row.id && (
+                {row[primaryKey] && (
                   <span className="text-gray-300 ml-2 font-mono text-xs">
-                    ID: {row.id}
+                    {primaryKey.toUpperCase()}: {row[primaryKey]}
                   </span>
                 )}
               </span>

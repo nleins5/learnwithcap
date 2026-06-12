@@ -7,6 +7,7 @@ export default function CoursePagesAdmin() {
       title="Course Pages (Chi tiết khóa học)"
       description="Quản lý nội dung chi tiết từng trang khóa học (e-learning, online 1-1, enterprise)"
       table="ld_course_pages"
+      primaryKey="slug"
       orderBy="slug"
       fields={[
         {
