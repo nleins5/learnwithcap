@@ -470,6 +470,12 @@ export function CmsEditor({
                       </option>
                     ))}
                   </select>
+                ) : field.type === "url" ? (
+                  <ImageField
+                    label=""
+                    value={row[field.key] || ""}
+                    onChange={(v: string) => updateField(index, field.key, v)}
+                  />
                 ) : (
                   <input
                     type={field.type === "number" ? "number" : "text"}
@@ -564,7 +570,7 @@ export const ImageField = ({ label, value, onChange }: any) => {
 
   return (
     <div className="mb-4">
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+      {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
       <div className="flex gap-2 mb-2">
         <input
           type="text"
