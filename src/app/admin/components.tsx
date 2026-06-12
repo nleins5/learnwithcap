@@ -516,13 +516,84 @@ const InputField = ({ label, value, onChange, isTextArea = false }: any) => (
   </div>
 );
 
-const ImageField = ({ label, value, onChange }: any) => (
-  <div className="mb-4">
-    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-    <input type="text" value={value || ""} onChange={(e) => onChange(e.target.value)} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all mb-2" placeholder="URL hình ảnh..." />
-    <MediaPreview url={value} />
-  </div>
-);
+const ImageField = ({ label, value, onChange }: any) => {
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    
+    const file = files[0];
+    setUploading(true);
+    setError(null);
+
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+      const bucketName = 'media';
+
+      const { data, error: uploadError } = await supabase.storage
+        .from(bucketName)
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from(bucketName)
+        .getPublicUrl(fileName);
+
+      onChange(publicUrl);
+    } catch (err: any) {
+      console.error('Lỗi tải ảnh:', err);
+      setError(
+        err?.message || "Lỗi không xác định. Vui lòng tạo public bucket tên là 'media' trên Supabase."
+      );
+      alert(
+        "Lỗi tải lên: Vui lòng đảm bảo bạn đã tạo một Public Storage Bucket tên là 'media' trên Supabase Dashboard và phân quyền truy cập (RUA policies) cho Anon role."
+      );
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="mb-4">
+      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+      <div className="flex gap-2 mb-2">
+        <input
+          type="text"
+          value={value || ""}
+          onChange={(e) => onChange(e.target.value)}
+          className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+          placeholder="URL hình ảnh hoặc chọn tải lên bên cạnh..."
+        />
+        <label className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-200 cursor-pointer transition-all select-none shrink-0">
+          <Plus className="w-3.5 h-3.5" />
+          {uploading ? "Đang tải..." : "Tải ảnh lên"}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="hidden"
+            disabled={uploading}
+          />
+        </label>
+      </div>
+      {error && (
+        <p className="text-xs text-red-500 mt-1 mb-2">
+          {error}
+        </p>
+      )}
+      <MediaPreview url={value} />
+    </div>
+  );
+};
 
 export function SectionEditor({
   title,
