@@ -58,7 +58,7 @@ export default function RegisterForm() {
                 toast.success("Đăng ký thành công! Đang chuyển hướng...", {
                     id: loadingToast,
                 });
-                router.push("/profile");
+                window.location.href = "https://course.learnwithcap.com/my-account/";
             } else if (data.success) {
                 toast.success(data.message || "Đăng ký thành công. Vui lòng đăng nhập.", {
                     id: loadingToast,

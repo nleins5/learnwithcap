@@ -80,7 +80,7 @@ const Footer: React.FC<FooterProps> = ({ footerData }) => {
                             <div className="footer-col flex flex-col gap-4">
                                 <h4 className="font-bold text-white">LIÊN KẾT</h4>
                                 <ul className="flex flex-col gap-3">
-                                    <li><Link href="/online-1-1" className="text-gray-300 hover:text-white transition-colors font-light">Khóa học</Link></li>
+                                    <li><Link href="/courses/online-1-1" className="text-gray-300 hover:text-white transition-colors font-light">Khóa học</Link></li>
                                     <li><Link href="/#solutions" className="text-gray-300 hover:text-white transition-colors font-light">Giải pháp</Link></li>
                                 </ul>
                             </div>

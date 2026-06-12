@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CheckCircle2, PlayCircle, Layers, MessageSquare, Presentation, MonitorPlay, LucideIcon } from 'lucide-react';
-import { fetchCoursePageData } from '@/lib/api';
+import { fetchCoursePageData, fetchPageSections, fetchFooterData, processPageSections } from '@/lib/api';
 import { CoursePageFeature, CoursePageStructureItem } from '@/lib/types';
 import { notFound } from 'next/navigation';
 
@@ -17,15 +17,22 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export default async function ELearningCoursePage() {
-    const pageData = await fetchCoursePageData('e-learning');
+    const [pageData, sectionsData, footerData] = await Promise.all([
+        fetchCoursePageData('e-learning'),
+        fetchPageSections(),
+        fetchFooterData()
+    ]);
 
     if (!pageData) {
         notFound();
     }
 
+    const processed = processPageSections(sectionsData);
+    const navbar = processed.navbar;
+
     return (
         <div className="bg-white min-h-screen">
-            <Header />
+            <Header navbar={navbar} />
 
             {/* Hero Section */}
             <section className="bg-[#0b2b4d] text-white overflow-hidden pt-[84px]">
@@ -214,7 +221,7 @@ export default async function ELearningCoursePage() {
                 </section>
             )}
 
-            <Footer />
+            <Footer footerData={footerData} />
         </div>
     );
 }

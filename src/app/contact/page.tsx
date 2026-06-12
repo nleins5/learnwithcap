@@ -1,33 +1,16 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
-import { TABLES } from '@/lib/constants';
+import { usePageData } from '@/hooks/usePageData';
 
 export default function ContactPage() {
-    const [contactInfo, setContactInfo] = useState<any>(null);
-
-    useEffect(() => {
-        const fetchContactInfo = async () => {
-            // Reusing the same table as Footer to ensure consistency
-            const { data, error } = await supabase
-                .from(TABLES.HOMEPAGE_FOOTER)
-                .select('*')
-                .single();
-
-            if (data) {
-                setContactInfo(data);
-            }
-        };
-        fetchContactInfo();
-    }, []);
-
+    const { navbar, footer: contactInfo } = usePageData();
 
     return (
         <div className="bg-white min-h-screen flex flex-col">
-            <Header />
+            <Header navbar={navbar} />
 
             <div className="flex-grow">
                 <div className="bg-[#f0f4f8] py-12 md:py-20">
@@ -130,7 +113,7 @@ export default function ContactPage() {
                 </div>
             </div>
 
-            <Footer />
+            <Footer footerData={contactInfo} />
         </div>
     );
 }

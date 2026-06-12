@@ -77,6 +77,7 @@ const CMS_PAGES = [
   { label: "Vision & Mission", href: "/admin/vision-mission", icon: Eye },
   { label: "Resources", href: "/admin/resources", icon: FileText },
   { label: "Footer", href: "/admin/footer", icon: Settings },
+  { label: "Main Footer", href: "/admin/main-footer", icon: Settings },
 ];
 
 export default function AdminLayout({

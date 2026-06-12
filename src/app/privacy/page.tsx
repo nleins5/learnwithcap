@@ -2,11 +2,14 @@
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { usePageData } from '@/hooks/usePageData';
 
 export default function PrivacyPage() {
+    const { navbar, footer } = usePageData();
+
     return (
         <div className="bg-white min-h-screen">
-            <Header />
+            <Header navbar={navbar} />
 
             <div className="container mx-auto px-4 md:px-8 py-16 max-w-4xl">
                 <h1 className="text-[40px] font-bold text-[#0b2b4d] mb-8 pb-4 border-b border-gray-100">Chính Sách Bảo Mật</h1>
@@ -49,7 +52,7 @@ export default function PrivacyPage() {
                 </div>
             </div>
 
-            <Footer />
+            <Footer footerData={footer} />
         </div>
     );
 }

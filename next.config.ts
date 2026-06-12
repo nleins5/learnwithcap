@@ -36,6 +36,27 @@ const nextConfig: NextConfig = {
 
   // Remove X-Powered-By header
   poweredByHeader: false,
+
+  // Redirect legacy static pages to the new dynamic paths
+  async redirects() {
+    return [
+      {
+        source: "/online-1-1",
+        destination: "/courses/online-1-1",
+        permanent: true,
+      },
+      {
+        source: "/e-learning",
+        destination: "/courses/e-learning",
+        permanent: true,
+      },
+      {
+        source: "/course-detail",
+        destination: "/courses/enterprise",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

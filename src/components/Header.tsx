@@ -40,9 +40,9 @@ export default function Header({ navbar }: HeaderProps) {
             label: "Khóa Học",
             href: "#",
             dropdown: [
-                { label: "Trực tiếp tại Doanh Nghiệp", href: "/course-detail" },
-                { label: "Online 1:1", href: "/online-1-1" },
-                { label: "E-Learning", href: "/e-learning" }
+                { label: "Trực tiếp tại Doanh Nghiệp", href: "/courses/enterprise" },
+                { label: "Online 1:1", href: "/courses/online-1-1" },
+                { label: "E-Learning", href: "/courses/e-learning" }
             ]
         },
         { label: "Tài Nguyên", href: "/resources" },
@@ -115,9 +115,9 @@ export default function Header({ navbar }: HeaderProps) {
                              <p className="text-sm font-bold text-gray-900">{displayName}</p>
                              <p className="text-xs font-medium text-gray-500 truncate mt-0.5">{user.email}</p>
                           </div>
-                          <Link href="/profile" className="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-purple-600 transition-colors">
+                          <a href="https://course.learnwithcap.com/my-account/" className="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-purple-600 transition-colors">
                              <User className="mr-2 h-4 w-4" /> Tài khoản
-                          </Link>
+                          </a>
                           <button onClick={handleLogout} className="flex w-full items-center px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-red-500 text-left transition-colors">
                              <LogOut className="mr-2 h-4 w-4" /> Đăng xuất
                           </button>
@@ -187,9 +187,9 @@ export default function Header({ navbar }: HeaderProps) {
               {isAuthenticated && user ? (
                  <div className="flex flex-col space-y-2">
                    <div className="font-bold text-gray-900 px-1 py-1">{displayName}&apos;s HUB</div>
-                   <Link href="/profile" className="flex items-center text-gray-700 font-medium text-sm py-3 px-2 hover:bg-purple-50 hover:text-purple-600 rounded-xl transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                   <a href="https://course.learnwithcap.com/my-account/" className="flex items-center text-gray-700 font-medium text-sm py-3 px-2 hover:bg-purple-50 hover:text-purple-600 rounded-xl transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
                       <User className="mr-3 h-5 w-5" /> Tài khoản quản lý
-                   </Link>
+                   </a>
                    <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} className="flex w-full items-center font-medium text-red-500 text-sm py-3 px-2 hover:bg-red-50 rounded-xl text-left transition-colors">
                       <LogOut className="mr-3 h-5 w-5" /> Đăng xuất phiên
                    </button>

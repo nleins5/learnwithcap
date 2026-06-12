@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CheckCircle2, PlayCircle, Layers, MessageSquare, Presentation, MonitorPlay, LucideIcon } from 'lucide-react';
-import { fetchCoursePageData } from '@/lib/api';
+import { fetchCoursePageData, fetchPageSections, fetchFooterData, processPageSections } from '@/lib/api';
 import Counter from '@/components/ui/Counter';
 import { CoursePageFeature, CoursePageStructureItem } from '@/lib/types';
 import { notFound } from 'next/navigation';
@@ -18,15 +18,22 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export default async function OnlineCoursePage() {
-    const pageData = await fetchCoursePageData('online-1-1');
+    const [pageData, sectionsData, footerData] = await Promise.all([
+        fetchCoursePageData('online-1-1'),
+        fetchPageSections(),
+        fetchFooterData()
+    ]);
 
     if (!pageData) {
         notFound();
     }
 
+    const processed = processPageSections(sectionsData);
+    const navbar = processed.navbar;
+
     return (
         <div className="bg-white min-h-screen">
-            <Header />
+            <Header navbar={navbar} />
 
             <section className="bg-[#0b2b4d] text-white overflow-hidden pt-[84px]">
                 <div className="container mx-auto px-4 md:px-8">
@@ -228,7 +235,7 @@ export default async function OnlineCoursePage() {
                 </section>
             )}
 
-            <Footer />
+            <Footer footerData={footerData} />
         </div>
     );
 }
