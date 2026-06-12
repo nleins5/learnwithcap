@@ -60,7 +60,6 @@ const MAIN_TABS = [
 
 const CMS_PAGES = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Hero Section", href: "/admin/hero", icon: Image },
   { label: "Main Hero", href: "/admin/main-hero", icon: Image },
   { label: "Navbar", href: "/admin/navbar", icon: MenuIcon },
   { label: "Services", href: "/admin/services", icon: Building2 },
@@ -78,7 +77,6 @@ const CMS_PAGES = [
   { label: "Vision & Mission", href: "/admin/vision-mission", icon: Eye },
   { label: "Resources", href: "/admin/resources", icon: FileText },
   { label: "Footer", href: "/admin/footer", icon: Settings },
-  { label: "Main Footer", href: "/admin/main-footer", icon: Settings },
 ];
 
 export default function AdminLayout({

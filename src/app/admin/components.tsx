@@ -873,7 +873,7 @@ export function SectionEditor({
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <label className="block text-sm font-medium text-gray-700">Khóa học</label>
-            <button onClick={() => updateData([...arr, { type: "", desc1: "", desc2: "", stats: { left: "", right: "", leftLabel: "", rightLabel: "" }, modules: [] }])} className="text-xs flex items-center text-blue-600 hover:text-blue-700">
+            <button onClick={() => updateData([...arr, { type: "", desc1: "", desc2: "", stats: { left: "", right: "", leftLabel: "", rightLabel: "" }, modules: [], cta1_label: "Tư Vấn Ngay", cta2_label: "Xem Chi Tiết", cta2_link: "/course-detail" }])} className="text-xs flex items-center text-blue-600 hover:text-blue-700">
               <Plus className="w-3 h-3 mr-1" /> Thêm khóa học
             </button>
           </div>
@@ -893,6 +893,12 @@ export function SectionEditor({
                   <InputField label="Mô tả 1" value={item.desc1} onChange={(v: string) => { const na = [...arr]; na[idx].desc1 = v; updateData(na); }} isTextArea />
                   <InputField label="Mô tả 2" value={item.desc2} onChange={(v: string) => { const na = [...arr]; na[idx].desc2 = v; updateData(na); }} isTextArea />
                   
+                  <div className="grid grid-cols-3 gap-4">
+                    <InputField label="Label nút 1 (Ví dụ: Tư Vấn Ngay)" value={item.cta1_label || ""} onChange={(v: string) => { const na = [...arr]; na[idx].cta1_label = v; updateData(na); }} />
+                    <InputField label="Label nút 2 (Ví dụ: Xem Chi Tiết)" value={item.cta2_label || ""} onChange={(v: string) => { const na = [...arr]; na[idx].cta2_label = v; updateData(na); }} />
+                    <InputField label="Link nút 2 (Ví dụ: /courses/enterprise)" value={item.cta2_link || ""} onChange={(v: string) => { const na = [...arr]; na[idx].cta2_link = v; updateData(na); }} />
+                  </div>
+
                   <div className="grid grid-cols-2 gap-4 bg-white p-3 rounded-lg border">
                     <div>
                       <InputField label="Chỉ số trái (Ví dụ: 3)" value={item.stats?.left} onChange={(v: string) => { const na = [...arr]; na[idx].stats = { ...na[idx].stats, left: v }; updateData(na); }} />
