@@ -55,6 +55,21 @@ const nextConfig: NextConfig = {
         destination: "/courses/enterprise",
         permanent: true,
       },
+      {
+        source: "/learning-hub",
+        destination: "https://course.learnwithcap.com/my-account/",
+        permanent: true,
+      },
+      {
+        source: "/shop",
+        destination: "https://course.learnwithcap.com/courses/",
+        permanent: true,
+      },
+      {
+        source: "/courses",
+        destination: "https://course.learnwithcap.com/courses/",
+        permanent: true,
+      },
     ];
   },
 };
