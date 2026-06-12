@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "22"
+  # Public anon keys — already committed in src/env.local
+  NEXT_PUBLIC_SUPABASE_URL: "https://yvsbrspvwovaocbbkmqg.supabase.co"
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2c2Jyc3B2d292YW9jYmJrbXFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NTY1NTEsImV4cCI6MjA4MTQzMjU1MX0.v46KORe57_BJ2-C3k7T_gvd17dje-wES19L8hvgpFu8"
+
+jobs:
+  # ────────────────────────────────────────────
+  # 1. Lint + Type-check (fast feedback)
+  # ────────────────────────────────────────────
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: ESLint
+        run: npx eslint src/
+
+      - name: TypeScript type check
+        run: npx tsc --noEmit
+
+  # ────────────────────────────────────────────
+  # 2. Build (validates everything compiles)
+  # ────────────────────────────────────────────
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js
+        run: npm run build
+
+  # ────────────────────────────────────────────
+  # 3. Security audit (non-blocking, advisory)
+  # ────────────────────────────────────────────
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: npm audit (production deps)
+        run: npm audit --omit=dev || true
