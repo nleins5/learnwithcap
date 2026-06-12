@@ -41,108 +41,7 @@ function MediaPreview({ url }: { url: string }) {
   );
 }
 
-function JsonField({
-  value,
-  onChange,
-  placeholder,
-  rows = 8,
-}: {
-  value: any;
-  onChange: (val: any) => void;
-  placeholder?: string;
-  rows?: number;
-}) {
-  const [text, setText] = useState("");
-  const [isValid, setIsValid] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
 
-  useEffect(() => {
-    try {
-      const stringifiedValue = typeof value === "object" && value !== null
-        ? JSON.stringify(value, null, 2)
-        : String(value || "");
-      
-      let currentParsed;
-      try {
-        currentParsed = JSON.parse(text);
-      } catch {
-        currentParsed = text;
-      }
-
-      if (JSON.stringify(currentParsed) !== JSON.stringify(value)) {
-        setText(stringifiedValue);
-        setIsValid(true);
-        setErrorMsg("");
-      }
-    } catch (e) {
-      // ignore
-    }
-  }, [value]);
-
-  const handleChange = (val: string) => {
-    setText(val);
-    if (!val.trim()) {
-      setIsValid(true);
-      setErrorMsg("");
-      onChange(null);
-      return;
-    }
-    try {
-      const parsed = JSON.parse(val);
-      setIsValid(true);
-      setErrorMsg("");
-      onChange(parsed);
-    } catch (e: any) {
-      setIsValid(false);
-      setErrorMsg(e.message || "JSON không hợp lệ");
-      onChange(val);
-    }
-  };
-
-  const handleFormat = () => {
-    try {
-      const parsed = JSON.parse(text);
-      const formatted = JSON.stringify(parsed, null, 2);
-      setText(formatted);
-      setIsValid(true);
-      setErrorMsg("");
-      onChange(parsed);
-    } catch (e: any) {
-      // ignore
-    }
-  };
-
-  return (
-    <div className="space-y-1.5">
-      <div className="flex items-center justify-between">
-        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded ${
-          isValid 
-            ? "bg-green-50 text-green-700 border border-green-200" 
-            : "bg-red-50 text-red-700 border border-red-200"
-        }`}>
-          {isValid ? "✓ JSON hợp lệ" : `✗ Lỗi: ${errorMsg}`}
-        </span>
-        {isValid && text.trim() && (
-          <button
-            type="button"
-            onClick={handleFormat}
-            className="text-xs text-blue-650 hover:text-blue-800 font-medium hover:underline cursor-pointer"
-          >
-            Định dạng JSON
-          </button>
-        )}
-      </div>
-      <textarea
-        value={text}
-        onChange={(e) => handleChange(e.target.value)}
-        rows={rows}
-        className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-xs font-mono resize-y"
-        placeholder={placeholder || "{}"}
-        spellCheck={false}
-      />
-    </div>
-  );
-}
 
 /* ─── Generic CMS helpers ─── */
 
@@ -229,7 +128,10 @@ export function CmsEditor({
     setSaving(true);
     setStatus(null);
     const row = rows[index];
-    const { id, created_at, ...updateData } = row;
+    const id = row.id;
+    const updateData = { ...row };
+    delete updateData.id;
+    delete updateData.created_at;
     try {
       if (id) {
         const { error } = await supabase
@@ -271,7 +173,10 @@ export function CmsEditor({
     setStatus(null);
     try {
       for (const row of rows) {
-        const { id, created_at, ...updateData } = row;
+        const id = row.id;
+        const updateData = { ...row };
+        delete updateData.id;
+        delete updateData.created_at;
         if (id) {
           const { error } = await supabase
             .from(table)
@@ -509,6 +414,8 @@ export function CmsEditor({
                     className={`relative w-11 h-6 rounded-full transition-colors ${
                       row[field.key] ? "bg-blue-500" : "bg-gray-300"
                     }`}
+                    title={field.label}
+                    aria-label={field.label}
                   >
                     <span
                       className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${
@@ -523,6 +430,7 @@ export function CmsEditor({
                       updateField(index, field.key, e.target.value)
                     }
                     className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+                    title={field.label}
                   >
                     <option value="">Chọn...</option>
                     {field.options?.map((opt) => (
@@ -570,9 +478,9 @@ const InputField = ({ label, value, onChange, isTextArea = false }: any) => (
   <div className="mb-4">
     <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
     {isTextArea ? (
-      <textarea value={value || ""} onChange={(e) => onChange(e.target.value)} rows={3} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-y" />
+      <textarea value={value || ""} onChange={(e) => onChange(e.target.value)} rows={3} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-y" title={label} placeholder={label} />
     ) : (
-      <input type="text" value={value || ""} onChange={(e) => onChange(e.target.value)} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
+      <input type="text" value={value || ""} onChange={(e) => onChange(e.target.value)} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all" title={label} placeholder={label} />
     )}
   </div>
 );
@@ -657,7 +565,7 @@ export function SectionEditor({
       try {
         const parsed = JSON.parse(rawJson);
         setParsedData(parsed);
-      } catch (e) {
+      } catch {
         alert("JSON không hợp lệ. Vui lòng sửa lỗi trước khi chuyển sang tab Biểu mẫu.");
         return;
       }
@@ -755,7 +663,7 @@ export function SectionEditor({
           <InputField label="Video URL" value={parsedData.video_url} onChange={(v: string) => updateData({ ...parsedData, video_url: v })} />
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">Loại Media</label>
-            <select value={parsedData.media_type || "video"} onChange={(e) => updateData({ ...parsedData, media_type: e.target.value })} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm">
+            <select value={parsedData.media_type || "video"} onChange={(e) => updateData({ ...parsedData, media_type: e.target.value })} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm" title="Loại Media">
               <option value="video">Video</option>
               <option value="slider">Slider Hình Ảnh</option>
             </select>
@@ -774,9 +682,9 @@ export function SectionEditor({
                     <ImageField label={`Ảnh ${idx + 1}`} value={img} onChange={(v: string) => { const newImgs = [...parsedData.images]; newImgs[idx] = v; updateData({ ...parsedData, images: newImgs }); }} />
                   </div>
                   <div className="flex flex-col gap-1 pt-6">
-                    <button onClick={() => updateData({ ...parsedData, images: moveItem(parsedData.images, idx, -1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowUp className="w-3 h-3" /></button>
-                    <button onClick={() => updateData({ ...parsedData, images: moveItem(parsedData.images, idx, 1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowDown className="w-3 h-3" /></button>
-                    <button onClick={() => updateData({ ...parsedData, images: removeItem(parsedData.images, idx) })} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded"><Trash2 className="w-3 h-3" /></button>
+                    <button onClick={() => updateData({ ...parsedData, images: moveItem(parsedData.images, idx, -1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Di chuyển lên" aria-label="Di chuyển lên"><ArrowUp className="w-3 h-3" /></button>
+                    <button onClick={() => updateData({ ...parsedData, images: moveItem(parsedData.images, idx, 1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Di chuyển xuống" aria-label="Di chuyển xuống"><ArrowDown className="w-3 h-3" /></button>
+                    <button onClick={() => updateData({ ...parsedData, images: removeItem(parsedData.images, idx) })} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded" title="Xóa" aria-label="Xóa"><Trash2 className="w-3 h-3" /></button>
                   </div>
                 </div>
               ))}
@@ -808,9 +716,9 @@ export function SectionEditor({
                       <InputField label="Href" value={link.href} onChange={(v: string) => { const nl = [...parsedData.links]; nl[idx].href = v; updateData({ ...parsedData, links: nl }); }} />
                     </div>
                     <div className="flex flex-col gap-1 pt-6">
-                      <button onClick={() => updateData({ ...parsedData, links: moveItem(parsedData.links, idx, -1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowUp className="w-3 h-3" /></button>
-                      <button onClick={() => updateData({ ...parsedData, links: moveItem(parsedData.links, idx, 1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowDown className="w-3 h-3" /></button>
-                      <button onClick={() => updateData({ ...parsedData, links: removeItem(parsedData.links, idx) })} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded"><Trash2 className="w-3 h-3" /></button>
+                      <button onClick={() => updateData({ ...parsedData, links: moveItem(parsedData.links, idx, -1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Di chuyển lên" aria-label="Di chuyển lên"><ArrowUp className="w-3 h-3" /></button>
+                      <button onClick={() => updateData({ ...parsedData, links: moveItem(parsedData.links, idx, 1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Di chuyển xuống" aria-label="Di chuyển xuống"><ArrowDown className="w-3 h-3" /></button>
+                      <button onClick={() => updateData({ ...parsedData, links: removeItem(parsedData.links, idx) })} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded" title="Xóa" aria-label="Xóa"><Trash2 className="w-3 h-3" /></button>
                     </div>
                   </div>
                   {/* Dropdown support */}
@@ -828,7 +736,7 @@ export function SectionEditor({
                           <input type="text" value={dd.href || ""} onChange={(e) => { const nl = [...parsedData.links]; nl[idx].dropdown[didx].href = e.target.value; updateData({ ...parsedData, links: nl }); }} className="w-full px-2 py-1 bg-white border border-gray-300 rounded text-xs" placeholder="Href" />
                         </div>
                         <div className="flex gap-1">
-                          <button onClick={() => { const nl = [...parsedData.links]; nl[idx].dropdown = removeItem(nl[idx].dropdown, didx); updateData({ ...parsedData, links: nl }); }} className="p-1 text-gray-400 hover:text-red-600 bg-white border rounded"><Trash2 className="w-3 h-3" /></button>
+                          <button onClick={() => { const nl = [...parsedData.links]; nl[idx].dropdown = removeItem(nl[idx].dropdown, didx); updateData({ ...parsedData, links: nl }); }} className="p-1 text-gray-400 hover:text-red-600 bg-white border rounded" title="Xóa" aria-label="Xóa"><Trash2 className="w-3 h-3" /></button>
                         </div>
                       </div>
                     ))}
@@ -859,9 +767,9 @@ export function SectionEditor({
                   <InputField label="Nội dung" value={item.text} onChange={(v: string) => { const na = [...arr]; na[idx].text = v; updateData(na); }} isTextArea />
                 </div>
                 <div className="flex flex-col gap-1 pt-6">
-                  <button onClick={() => updateData(moveItem(arr, idx, -1))} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowUp className="w-3 h-3" /></button>
-                  <button onClick={() => updateData(moveItem(arr, idx, 1))} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowDown className="w-3 h-3" /></button>
-                  <button onClick={() => updateData(removeItem(arr, idx))} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded"><Trash2 className="w-3 h-3" /></button>
+                  <button onClick={() => updateData(moveItem(arr, idx, -1))} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Di chuyển lên" aria-label="Di chuyển lên"><ArrowUp className="w-3 h-3" /></button>
+                  <button onClick={() => updateData(moveItem(arr, idx, 1))} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Di chuyển xuống" aria-label="Di chuyển xuống"><ArrowDown className="w-3 h-3" /></button>
+                  <button onClick={() => updateData(removeItem(arr, idx))} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded" title="Xóa" aria-label="Xóa"><Trash2 className="w-3 h-3" /></button>
                 </div>
               </div>
             ))}
@@ -886,9 +794,9 @@ export function SectionEditor({
                 <div className="flex justify-between mb-4 pb-2 border-b">
                   <h4 className="font-semibold text-gray-800">Khóa học #{idx + 1}</h4>
                   <div className="flex gap-1">
-                    <button onClick={() => updateData(moveItem(arr, idx, -1))} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowUp className="w-3 h-3" /></button>
-                    <button onClick={() => updateData(moveItem(arr, idx, 1))} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowDown className="w-3 h-3" /></button>
-                    <button onClick={() => updateData(removeItem(arr, idx))} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded"><Trash2 className="w-3 h-3" /></button>
+                    <button onClick={() => updateData(moveItem(arr, idx, -1))} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Di chuyển lên" aria-label="Di chuyển lên"><ArrowUp className="w-3 h-3" /></button>
+                    <button onClick={() => updateData(moveItem(arr, idx, 1))} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Di chuyển xuống" aria-label="Di chuyển xuống"><ArrowDown className="w-3 h-3" /></button>
+                    <button onClick={() => updateData(removeItem(arr, idx))} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded" title="Xóa" aria-label="Xóa"><Trash2 className="w-3 h-3" /></button>
                   </div>
                 </div>
                 <div className="space-y-4">
@@ -928,9 +836,9 @@ export function SectionEditor({
                             <ImageField label="Hình ảnh Module" value={mod.img} onChange={(v: string) => { const na = [...arr]; na[idx].modules[midx].img = v; updateData(na); }} />
                           </div>
                           <div className="flex flex-col gap-1 pt-6">
-                            <button onClick={() => { const na = [...arr]; na[idx].modules = moveItem(na[idx].modules, midx, -1); updateData(na); }} className="p-1.5 text-gray-400 hover:text-blue-600 bg-gray-50 border rounded"><ArrowUp className="w-3 h-3" /></button>
-                            <button onClick={() => { const na = [...arr]; na[idx].modules = moveItem(na[idx].modules, midx, 1); updateData(na); }} className="p-1.5 text-gray-400 hover:text-blue-600 bg-gray-50 border rounded"><ArrowDown className="w-3 h-3" /></button>
-                            <button onClick={() => { const na = [...arr]; na[idx].modules = removeItem(na[idx].modules, midx); updateData(na); }} className="p-1.5 text-gray-400 hover:text-red-600 bg-gray-50 border rounded"><Trash2 className="w-3 h-3" /></button>
+                            <button onClick={() => { const na = [...arr]; na[idx].modules = moveItem(na[idx].modules, midx, -1); updateData(na); }} className="p-1.5 text-gray-400 hover:text-blue-600 bg-gray-50 border rounded" title="Di chuyển lên" aria-label="Di chuyển lên"><ArrowUp className="w-3 h-3" /></button>
+                            <button onClick={() => { const na = [...arr]; na[idx].modules = moveItem(na[idx].modules, midx, 1); updateData(na); }} className="p-1.5 text-gray-400 hover:text-blue-600 bg-gray-50 border rounded" title="Di chuyển xuống" aria-label="Di chuyển xuống"><ArrowDown className="w-3 h-3" /></button>
+                            <button onClick={() => { const na = [...arr]; na[idx].modules = removeItem(na[idx].modules, midx); updateData(na); }} className="p-1.5 text-gray-400 hover:text-red-600 bg-gray-50 border rounded" title="Xóa" aria-label="Xóa"><Trash2 className="w-3 h-3" /></button>
                           </div>
                         </div>
                       ))}
@@ -974,7 +882,7 @@ export function SectionEditor({
                       <input type="text" value={st.value || ""} onChange={(e) => { const nd = { ...parsedData }; nd.header.stats[sidx].value = e.target.value; updateData(nd); }} className="w-full px-2 py-1.5 bg-white border border-gray-300 rounded text-sm" placeholder="Value (e.g. 50+)" />
                       <input type="text" value={st.label || ""} onChange={(e) => { const nd = { ...parsedData }; nd.header.stats[sidx].label = e.target.value; updateData(nd); }} className="w-full px-2 py-1.5 bg-white border border-gray-300 rounded text-sm" placeholder="Label (e.g. Học viên)" />
                     </div>
-                    <button onClick={() => { const nd = { ...parsedData }; nd.header.stats = removeItem(nd.header.stats, sidx); updateData(nd); }} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded"><Trash2 className="w-3 h-3" /></button>
+                    <button onClick={() => { const nd = { ...parsedData }; nd.header.stats = removeItem(nd.header.stats, sidx); updateData(nd); }} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded" title="Xóa" aria-label="Xóa"><Trash2 className="w-3 h-3" /></button>
                   </div>
                 ))}
               </div>
@@ -1018,9 +926,9 @@ export function SectionEditor({
                     )}
                   </div>
                   <div className="flex flex-col gap-1 pt-6">
-                    <button onClick={() => updateData({ ...parsedData, items: moveItem(parsedData.items, idx, -1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowUp className="w-3 h-3" /></button>
-                    <button onClick={() => updateData({ ...parsedData, items: moveItem(parsedData.items, idx, 1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowDown className="w-3 h-3" /></button>
-                    <button onClick={() => updateData({ ...parsedData, items: removeItem(parsedData.items, idx) })} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded"><Trash2 className="w-3 h-3" /></button>
+                    <button onClick={() => updateData({ ...parsedData, items: moveItem(parsedData.items, idx, -1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Di chuyển lên" aria-label="Di chuyển lên"><ArrowUp className="w-3 h-3" /></button>
+                    <button onClick={() => updateData({ ...parsedData, items: moveItem(parsedData.items, idx, 1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Di chuyển xuống" aria-label="Di chuyển xuống"><ArrowDown className="w-3 h-3" /></button>
+                    <button onClick={() => updateData({ ...parsedData, items: removeItem(parsedData.items, idx) })} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded" title="Xóa" aria-label="Xóa"><Trash2 className="w-3 h-3" /></button>
                   </div>
                 </div>
               ))}
@@ -1072,9 +980,9 @@ export function SectionEditor({
                     <InputField label={`Mục ${idx + 1}: Nội dung`} value={item.content || ""} onChange={(v: string) => { const newSections = [...arr]; newSections[idx] = { ...newSections[idx], content: v }; updateData({ ...parsedData, sections: newSections }); }} isTextArea />
                   </div>
                   <div className="flex flex-col gap-1 pt-6">
-                    <button onClick={() => updateData({ ...parsedData, sections: moveItem(arr, idx, -1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowUp className="w-3 h-3" /></button>
-                    <button onClick={() => updateData({ ...parsedData, sections: moveItem(arr, idx, 1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowDown className="w-3 h-3" /></button>
-                    <button onClick={() => updateData({ ...parsedData, sections: removeItem(arr, idx) })} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded"><Trash2 className="w-3 h-3" /></button>
+                    <button onClick={() => updateData({ ...parsedData, sections: moveItem(arr, idx, -1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Di chuyển lên" aria-label="Di chuyển lên"><ArrowUp className="w-3 h-3" /></button>
+                    <button onClick={() => updateData({ ...parsedData, sections: moveItem(arr, idx, 1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Di chuyển xuống" aria-label="Di chuyển xuống"><ArrowDown className="w-3 h-3" /></button>
+                    <button onClick={() => updateData({ ...parsedData, sections: removeItem(arr, idx) })} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded" title="Xóa" aria-label="Xóa"><Trash2 className="w-3 h-3" /></button>
                   </div>
                 </div>
               ))}
@@ -1188,6 +1096,8 @@ export function SectionEditor({
                 rows={25}
                 className="w-full px-3 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-[13px] font-mono resize-y"
                 spellCheck={false}
+                title="Mã JSON"
+                placeholder="Nhập mã JSON tại đây..."
               />
             </div>
           )}

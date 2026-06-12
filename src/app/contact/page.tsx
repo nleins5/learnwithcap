@@ -91,8 +91,8 @@ export default function ContactPage() {
                                             <input type="tel" className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-[#59B4E9] focus:ring-1 focus:ring-[#59B4E9] transition-all" placeholder="0912..." />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-sm font-bold text-[#0b2b4d]">Vấn đề quan tâm</label>
-                                            <select className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-[#59B4E9] focus:ring-1 focus:ring-[#59B4E9] transition-all text-gray-600">
+                                            <label htmlFor="concern-topic" className="text-sm font-bold text-[#0b2b4d]">Vấn đề quan tâm</label>
+                                            <select id="concern-topic" title="Vấn đề quan tâm" className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-[#59B4E9] focus:ring-1 focus:ring-[#59B4E9] transition-all text-gray-600">
                                                 <option>Tư vấn khóa học</option>
                                                 <option>Hợp tác doanh nghiệp</option>
                                                 <option>Hỗ trợ kỹ thuật</option>

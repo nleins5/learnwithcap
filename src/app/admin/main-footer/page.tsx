@@ -8,8 +8,6 @@ import {
   RefreshCw,
   AlertCircle,
   CheckCircle2,
-  Plus,
-  Trash2,
 } from "lucide-react";
 
 export default function MainFooterAdmin() {
@@ -47,22 +45,26 @@ export default function MainFooterAdmin() {
     try {
       // Save footer
       if (footer?.id) {
-        const { id, created_at, ...updateData } = footer;
+        const updateData = { ...footer };
+        delete updateData.id;
+        delete updateData.created_at;
         const { error } = await supabase
           .from(TABLES.MAIN_HP_FOOTER)
           .update(updateData)
-          .eq("id", id);
+          .eq("id", footer.id);
         if (error) throw error;
       }
 
       // Save items
       for (const item of items) {
         if (item.id) {
-          const { id, created_at, ...updateData } = item;
+          const updateData = { ...item };
+          delete updateData.id;
+          delete updateData.created_at;
           const { error } = await supabase
             .from(TABLES.MAIN_HP_FOOTER_ITEMS)
             .update(updateData)
-            .eq("id", id);
+            .eq("id", item.id);
           if (error) throw error;
         }
       }
@@ -76,17 +78,7 @@ export default function MainFooterAdmin() {
     }
   }
 
-  const updateFooterField = (key: string, value: any) => {
-    setFooter((prev: any) => ({ ...prev, [key]: value }));
-  };
 
-  const updateItem = (index: number, key: string, value: any) => {
-    setItems((prev) => {
-      const updated = [...prev];
-      updated[index] = { ...updated[index], [key]: value };
-      return updated;
-    });
-  };
 
   if (loading) {
     return (

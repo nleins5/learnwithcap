@@ -295,10 +295,11 @@ export default function FooterAdmin() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="logo_url" className="block text-sm font-medium text-gray-700 mb-1">
                     Logo URL
                   </label>
                   <input
+                    id="logo_url"
                     type="text"
                     value={footer.logo_url || ""}
                     onChange={(e) => updateField("logo_url", e.target.value)}
@@ -308,10 +309,11 @@ export default function FooterAdmin() {
                   <MediaPreview url={footer.logo_url} />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
                     Mô tả ngắn ở chân trang (Footer Description)
                   </label>
                   <textarea
+                    id="description"
                     value={footer.description || ""}
                     onChange={(e) => updateField("description", e.target.value)}
                     rows={3}
@@ -320,10 +322,11 @@ export default function FooterAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="copyright_text" className="block text-sm font-medium text-gray-700 mb-1">
                     Dòng chữ Bản quyền (Copyright Text)
                   </label>
                   <input
+                    id="copyright_text"
                     type="text"
                     value={footer.copyright_text || ""}
                     onChange={(e) => updateField("copyright_text", e.target.value)}
@@ -341,10 +344,11 @@ export default function FooterAdmin() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="contact_email" className="block text-sm font-medium text-gray-700 mb-1">
                     Email liên hệ
                   </label>
                   <input
+                    id="contact_email"
                     type="email"
                     value={footer.contact_email || ""}
                     onChange={(e) => updateField("contact_email", e.target.value)}
@@ -352,10 +356,11 @@ export default function FooterAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="contact_phone" className="block text-sm font-medium text-gray-700 mb-1">
                     Điện thoại liên hệ
                   </label>
                   <input
+                    id="contact_phone"
                     type="text"
                     value={footer.contact_phone || ""}
                     onChange={(e) => updateField("contact_phone", e.target.value)}
@@ -363,10 +368,11 @@ export default function FooterAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="contact_address" className="block text-sm font-medium text-gray-700 mb-1">
                     Địa chỉ liên hệ
                   </label>
                   <input
+                    id="contact_address"
                     type="text"
                     value={footer.contact_address || ""}
                     onChange={(e) => updateField("contact_address", e.target.value)}
@@ -374,10 +380,11 @@ export default function FooterAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="facebook_url" className="block text-sm font-medium text-gray-700 mb-1">
                     Facebook URL
                   </label>
                   <input
+                    id="facebook_url"
                     type="text"
                     value={footer.facebook_url || ""}
                     onChange={(e) => updateField("facebook_url", e.target.value)}
@@ -386,10 +393,11 @@ export default function FooterAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="youtube_url" className="block text-sm font-medium text-gray-700 mb-1">
                     YouTube URL
                   </label>
                   <input
+                    id="youtube_url"
                     type="text"
                     value={footer.youtube_url || ""}
                     onChange={(e) => updateField("youtube_url", e.target.value)}
@@ -398,10 +406,11 @@ export default function FooterAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="instagram_url" className="block text-sm font-medium text-gray-700 mb-1">
                     Instagram URL
                   </label>
                   <input
+                    id="instagram_url"
                     type="text"
                     value={footer.instagram_url || ""}
                     onChange={(e) => updateField("instagram_url", e.target.value)}
@@ -410,10 +419,11 @@ export default function FooterAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="twitter_url" className="block text-sm font-medium text-gray-700 mb-1">
                     Twitter (X) URL
                   </label>
                   <input
+                    id="twitter_url"
                     type="text"
                     value={footer.twitter_url || ""}
                     onChange={(e) => updateField("twitter_url", e.target.value)}
@@ -431,10 +441,11 @@ export default function FooterAdmin() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="newsletter_title" className="block text-sm font-medium text-gray-700 mb-1">
                     Tiêu đề Bản tin
                   </label>
                   <input
+                    id="newsletter_title"
                     type="text"
                     value={footer.newsletter_title || ""}
                     onChange={(e) => updateField("newsletter_title", e.target.value)}
@@ -442,10 +453,11 @@ export default function FooterAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="newsletter_description" className="block text-sm font-medium text-gray-700 mb-1">
                     Mô tả Bản tin
                   </label>
                   <input
+                    id="newsletter_description"
                     type="text"
                     value={footer.newsletter_description || ""}
                     onChange={(e) => updateField("newsletter_description", e.target.value)}
@@ -453,10 +465,11 @@ export default function FooterAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="newsletter_placeholder" className="block text-sm font-medium text-gray-700 mb-1">
                     Chữ gợi ý trong ô nhập (Placeholder)
                   </label>
                   <input
+                    id="newsletter_placeholder"
                     type="text"
                     value={footer.newsletter_placeholder || ""}
                     onChange={(e) => updateField("newsletter_placeholder", e.target.value)}
@@ -625,11 +638,14 @@ export default function FooterAdmin() {
               </span>
             </div>
             <textarea
+              id="raw_json_footer"
               value={rawJson}
               onChange={(e) => setRawJson(e.target.value)}
               rows={22}
               className="w-full px-3 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-xs font-mono resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
               spellCheck={false}
+              aria-label="Dữ liệu JSON Footer"
+              title="Dữ liệu JSON Footer"
             />
           </div>
         )

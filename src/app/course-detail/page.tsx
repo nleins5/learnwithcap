@@ -2,9 +2,8 @@
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { CheckCircle2, PlayCircle, Image as ImageIcon, BookOpen as BookIcon, Target as TargetIcon, MessageSquare as MessageIcon, Presentation } from 'lucide-react';
+import { Image as ImageIcon, BookOpen as BookIcon, Target as TargetIcon, MessageSquare as MessageIcon, Presentation } from 'lucide-react';
 import CourseHero from '@/components/ui/CourseHero';
-import SectionBadge from '@/components/ui/SectionBadge';
 import CourseMethodology from '@/components/ui/CourseMethodology';
 import AnimatedHeading from '@/components/ui/AnimatedHeading';
 

@@ -29,17 +29,17 @@ const Footer: React.FC<FooterProps> = ({ footerData }) => {
                         </p>
                         <div className="flex gap-4 mt-2">
                             {settings?.facebook_url && (
-                                <a href={settings.facebook_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-[#59B4E9] hover:text-white transition-all">
+                                <a href={settings.facebook_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-[#59B4E9] hover:text-white transition-all" aria-label="Facebook" title="Facebook">
                                     <Facebook className="w-5 h-5" />
                                 </a>
                             )}
                             {settings?.youtube_url && (
-                                <a href={settings.youtube_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-[#59B4E9] hover:text-white transition-all">
+                                <a href={settings.youtube_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-[#59B4E9] hover:text-white transition-all" aria-label="Youtube" title="Youtube">
                                     <Youtube className="w-5 h-5" />
                                 </a>
                             )}
                             {settings?.instagram_url && (
-                                <a href={settings.instagram_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-[#59B4E9] hover:text-white transition-all">
+                                <a href={settings.instagram_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-[#59B4E9] hover:text-white transition-all" aria-label="Instagram" title="Instagram">
                                     <Instagram className="w-5 h-5" />
                                 </a>
                             )}
@@ -97,7 +97,7 @@ const Footer: React.FC<FooterProps> = ({ footerData }) => {
                                 placeholder={settings?.newsletter_placeholder || "Vui lòng nhập email"}
                                 className="bg-transparent text-white text-sm w-full px-3 py-2 focus:outline-none placeholder-gray-400"
                             />
-                            <button type="button" className="p-2 bg-[#59B4E9] text-white rounded hover:bg-[#3690F8] transition-colors">
+                            <button type="button" className="p-2 bg-[#59B4E9] text-white rounded hover:bg-[#3690F8] transition-colors" aria-label="Gửi" title="Gửi">
                                 <Send className="w-5 h-5" />
                             </button>
                         </div>

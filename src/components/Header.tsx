@@ -3,11 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter, usePathname } from "next/navigation";
 import { Menu, User, LogOut, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/auth";
-import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { NavbarData, NavbarLink } from '@/lib/types';
 
@@ -16,8 +14,6 @@ interface HeaderProps {
 }
 
 export default function Header({ navbar }: HeaderProps) {
-  const router = useRouter();
-  const pathname = usePathname();
   const { token, user, logout } = useAuthStore();
   const isAuthenticated = !!token;
   
@@ -149,7 +145,7 @@ export default function Header({ navbar }: HeaderProps) {
        <div className={`relative bg-white w-4/5 max-w-sm h-full shadow-2xl flex flex-col transition-transform duration-300 transform ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
            <div className="p-4 border-b border-gray-100 flex justify-between items-center">
                <span className="font-bold text-gray-800">Menu</span>
-               <button className="p-2 text-gray-500 hover:bg-gray-100 rounded-full" onClick={toggleMobileMenu}>
+               <button className="p-2 text-gray-500 hover:bg-gray-100 rounded-full" onClick={toggleMobileMenu} aria-label="Đóng menu" title="Đóng menu">
                    <X className="h-5 w-5"/>
                </button>
            </div>
@@ -164,7 +160,7 @@ export default function Header({ navbar }: HeaderProps) {
                                  {link.label}
                              </Link>
                              {hasDropdown && (
-                                 <button onClick={() => toggleDropdown(i)} className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg">
+                                 <button onClick={() => toggleDropdown(i)} className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg" aria-label="Mở rộng menu" title="Mở rộng menu">
                                      <ChevronDown className={`w-5 h-5 transition-transform ${openDropdownIndex === i ? 'rotate-180' : ''}`} />
                                  </button>
                              )}

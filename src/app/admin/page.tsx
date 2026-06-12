@@ -8,7 +8,6 @@ import {
   UserPlus,
   Activity,
   Clock,
-  TrendingUp,
   BarChart3,
   LineChart,
   ArrowUpRight,

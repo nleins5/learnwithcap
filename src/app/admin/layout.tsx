@@ -12,7 +12,6 @@ import {
   Shield,
   Lock,
   Settings,
-  LogOut,
   LayoutDashboard,
   Image,
   Menu as MenuIcon,
@@ -24,7 +23,6 @@ import {
   Building2,
   Lightbulb,
   Target,
-  X,
   ChevronDown,
 } from "lucide-react";
 
@@ -94,7 +92,6 @@ export default function AdminLayout({
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [showCmsNav, setShowCmsNav] = useState(false);
-  const [mobileMenu, setMobileMenu] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -108,7 +105,6 @@ export default function AdminLayout({
 
   useEffect(() => {
     setShowCmsNav(false);
-    setMobileMenu(false);
   }, [pathname]);
 
   const handleLogin = (e: React.FormEvent) => {
@@ -141,7 +137,7 @@ export default function AdminLayout({
     return (
       <div className="min-h-screen bg-[#eef2f7] flex flex-col items-center justify-center p-4">
         <div className="w-full max-w-[380px]">
-          <div className="bg-white rounded-2xl p-8" style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.06)' }}>
+          <div className="bg-white rounded-2xl p-8 shadow-[0_8px_40px_rgba(0,0,0,0.06)]">
             {/* Header */}
             <div className="mb-7">
               <h1 className="text-[26px] font-bold text-[#1e293b]">Sign In</h1>
@@ -153,7 +149,7 @@ export default function AdminLayout({
             <form onSubmit={handleLogin} className="space-y-5">
               {/* Username */}
               <div>
-                <label className="block text-[11px] font-bold text-[#334155] uppercase tracking-[0.08em] mb-2">
+                <label htmlFor="username" className="block text-[11px] font-bold text-[#334155] uppercase tracking-[0.08em] mb-2">
                   Username
                 </label>
                 <div className="relative">
@@ -161,6 +157,7 @@ export default function AdminLayout({
                     <User className="w-[18px] h-[18px]" />
                   </div>
                   <input
+                    id="username"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -174,7 +171,7 @@ export default function AdminLayout({
 
               {/* Password */}
               <div>
-                <label className="block text-[11px] font-bold text-[#334155] uppercase tracking-[0.08em] mb-2">
+                <label htmlFor="password" className="block text-[11px] font-bold text-[#334155] uppercase tracking-[0.08em] mb-2">
                   Password
                 </label>
                 <div className="relative">
@@ -182,6 +179,7 @@ export default function AdminLayout({
                     <Lock className="w-[18px] h-[18px]" />
                   </div>
                   <input
+                    id="password"
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -193,6 +191,8 @@ export default function AdminLayout({
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#64748b] transition-colors"
+                    title={showPassword ? "Ẩn mật khẩu" : "Hiển thị mật khẩu"}
+                    aria-label={showPassword ? "Ẩn mật khẩu" : "Hiển thị mật khẩu"}
                   >
                     {showPassword ? <EyeOff className="w-[18px] h-[18px]" /> : <Eye className="w-[18px] h-[18px]" />}
                   </button>
@@ -280,10 +280,18 @@ export default function AdminLayout({
                 )}
               </div>
 
-              <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+              <button 
+                title="Tìm kiếm"
+                aria-label="Tìm kiếm"
+                className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              >
                 <Search className="w-5 h-5" />
               </button>
-              <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative">
+              <button 
+                title="Thông báo"
+                aria-label="Thông báo"
+                className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative"
+              >
                 <Bell className="w-5 h-5" />
               </button>
               <a
@@ -299,6 +307,7 @@ export default function AdminLayout({
                 onClick={handleLogout}
                 className="ml-1 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
                 title="Đăng xuất"
+                aria-label="Đăng xuất"
               >
                 <span className="text-xs font-medium text-gray-600">A</span>
               </button>
