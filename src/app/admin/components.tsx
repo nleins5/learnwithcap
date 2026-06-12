@@ -815,7 +815,7 @@ export function SectionEditor({
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <label className="block text-sm font-medium text-gray-700">Khóa học</label>
-            <button onClick={() => updateData([...arr, { type: "", desc1: "", desc2: "", stats: { left: "", right: "", leftLabel: "", rightLabel: "" }, modules: [], cta1_label: "Tư Vấn Ngay", cta2_label: "Xem Chi Tiết", cta2_link: "/course-detail" }])} className="text-xs flex items-center text-blue-600 hover:text-blue-700">
+            <button onClick={() => updateData([...arr, { type: "", desc1: "", desc2: "", stats: { left: "", right: "", leftLabel: "", rightLabel: "" }, modules: [], cta1_label: "Tư Vấn Ngay", cta2_label: "Xem Chi Tiết", cta2_link: "/courses/enterprise" }])} className="text-xs flex items-center text-blue-600 hover:text-blue-700">
               <Plus className="w-3 h-3 mr-1" /> Thêm khóa học
             </button>
           </div>

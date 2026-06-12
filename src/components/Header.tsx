@@ -51,7 +51,7 @@ export default function Header({ navbar }: HeaderProps) {
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-8">
         <Link href="/" className="flex items-center space-x-2">
           <Image
-            src="https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp"
+            src={navbar?.logo_url || "https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp"}
             alt="CAP Logo"
             width={0}
             height={0}

@@ -70,7 +70,7 @@ const Courses = ({ courses }: CoursesProps) => {
                                         {course.cta1_label || "Tư Vấn Ngay"}
                                     </button>
                                     <Link
-                                        href={course.cta2_link || "/course-detail"}
+                                        href={course.cta2_link || "/courses/enterprise"}
                                         className="px-6 py-2 border border-white text-white font-bold rounded text-sm hover:bg-white/10 transition block"
                                     >
                                         {course.cta2_label || "Xem Chi Tiết"}
