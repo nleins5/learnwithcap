@@ -226,6 +226,21 @@ export function processPageSections(sections: PageSection[] | null) {
                     processed.ctaSection = section.data;
                 }
                 break;
+            case SECTION_KEYS.RESOURCES_HERO:
+                if (section.data) {
+                    processed.resourcesHero = section.data;
+                }
+                break;
+            case SECTION_KEYS.CONTACT_HERO:
+                if (section.data) {
+                    processed.contactHero = section.data;
+                }
+                break;
+            case SECTION_KEYS.PRIVACY_POLICY:
+                if (section.data) {
+                    processed.privacyPolicy = section.data;
+                }
+                break;
         }
     });
 

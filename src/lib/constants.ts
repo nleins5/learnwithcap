@@ -24,6 +24,9 @@ export const SECTION_KEYS = {
     DIFFICULTIES_HEADER: 'difficulties_header',
     SOLUTIONS: 'solutions',
     CTA_SECTION: 'cta_section',
+    RESOURCES_HERO: 'resources_hero',
+    CONTACT_HERO: 'contact_hero',
+    PRIVACY_POLICY: 'privacy_policy',
 } as const;
 
 // Insight sections

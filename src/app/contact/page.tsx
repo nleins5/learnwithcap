@@ -6,7 +6,11 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { usePageData } from '@/hooks/usePageData';
 
 export default function ContactPage() {
-    const { navbar, footer: contactInfo } = usePageData();
+    const { navbar, footer: contactInfo, contactHero } = usePageData();
+
+    const heroBadge = contactHero?.badge || "Liên Hệ";
+    const heroTitle = contactHero?.title || "Chúng tôi luôn sẵn sàng hỗ trợ bạn";
+    const heroDesc = contactHero?.description || "Để lại thông tin hoặc liên hệ trực tiếp với chúng tôi qua các kênh dưới đây. Đội ngũ tư vấn sẽ phản hồi trong thời gian sớm nhất.";
 
     return (
         <div className="bg-white min-h-screen flex flex-col">
@@ -16,10 +20,10 @@ export default function ContactPage() {
                 <div className="bg-[#f0f4f8] py-12 md:py-20">
                     <div className="container mx-auto px-4 md:px-8">
                         <div className="text-center max-w-2xl mx-auto mb-16 hero-content">
-                            <span className="text-[#59B4E9] font-bold tracking-wider text-xs uppercase bg-[#59B4E9]/10 px-3 py-1 rounded-full">Liên Hệ</span>
-                            <h1 className="text-[40px] font-bold text-[#0b2b4d] mt-4 mb-4">Chúng tôi luôn sẵn sàng hỗ trợ bạn</h1>
+                            <span className="text-[#59B4E9] font-bold tracking-wider text-xs uppercase bg-[#59B4E9]/10 px-3 py-1 rounded-full">{heroBadge}</span>
+                            <h1 className="text-[40px] font-bold text-[#0b2b4d] mt-4 mb-4">{heroTitle}</h1>
                             <p className="text-gray-500">
-                                Để lại thông tin hoặc liên hệ trực tiếp với chúng tôi qua các kênh dưới đây. Đội ngũ tư vấn sẽ phản hồi trong thời gian sớm nhất.
+                                {heroDesc}
                             </p>
                         </div>
 

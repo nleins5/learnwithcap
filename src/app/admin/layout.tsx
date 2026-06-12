@@ -75,9 +75,11 @@ const CMS_PAGES = [
   { label: "CTA Section", href: "/admin/cta", icon: Megaphone },
   { label: "Team", href: "/admin/team", icon: Users },
   { label: "Vision & Mission", href: "/admin/vision-mission", icon: Eye },
-  { label: "Resources", href: "/admin/resources", icon: FileText },
+  { label: "Resources Hero", href: "/admin/resources-hero", icon: Image },
+  { label: "Resources Items", href: "/admin/resources", icon: FileText },
+  { label: "Contact Hero", href: "/admin/contact-hero", icon: Megaphone },
+  { label: "Privacy Policy", href: "/admin/privacy-policy", icon: Lock },
   { label: "Footer", href: "/admin/footer", icon: Settings },
-  { label: "Main Footer", href: "/admin/main-footer", icon: Settings },
 ];
 
 export default function AdminLayout({

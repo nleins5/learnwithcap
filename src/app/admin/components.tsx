@@ -614,6 +614,9 @@ export function SectionEditor({
       case "clients": return { header: { title: "", badge: "" }, items: [] };
       case "testimonials": return { header: { title: "", stats: [] }, items: [] };
       case "cta_section": return { title: "", videoUrl: "", buttonLink: "", buttonText: "" };
+      case "resources_hero": return { title: "", description: "", image: "" };
+      case "contact_hero": return { badge: "", title: "", description: "" };
+      case "privacy_policy": return { title: "", introduction: "", sections: [] };
       default: return {};
     }
   };
@@ -1018,6 +1021,60 @@ export function SectionEditor({
                     <button onClick={() => updateData({ ...parsedData, items: moveItem(parsedData.items, idx, -1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowUp className="w-3 h-3" /></button>
                     <button onClick={() => updateData({ ...parsedData, items: moveItem(parsedData.items, idx, 1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowDown className="w-3 h-3" /></button>
                     <button onClick={() => updateData({ ...parsedData, items: removeItem(parsedData.items, idx) })} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded"><Trash2 className="w-3 h-3" /></button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (sectionKey === "resources_hero") {
+      return (
+        <div className="space-y-4">
+          <InputField label="Tiêu đề" value={parsedData.title || ""} onChange={(v: string) => updateData({ ...parsedData, title: v })} />
+          <InputField label="Mô tả" value={parsedData.description || ""} onChange={(v: string) => updateData({ ...parsedData, description: v })} isTextArea />
+          <ImageField label="Hình ảnh" value={parsedData.image || ""} onChange={(v: string) => updateData({ ...parsedData, image: v })} />
+        </div>
+      );
+    }
+
+    if (sectionKey === "contact_hero") {
+      return (
+        <div className="space-y-4">
+          <InputField label="Badge" value={parsedData.badge || ""} onChange={(v: string) => updateData({ ...parsedData, badge: v })} />
+          <InputField label="Tiêu đề" value={parsedData.title || ""} onChange={(v: string) => updateData({ ...parsedData, title: v })} />
+          <InputField label="Mô tả" value={parsedData.description || ""} onChange={(v: string) => updateData({ ...parsedData, description: v })} isTextArea />
+        </div>
+      );
+    }
+
+    if (sectionKey === "privacy_policy") {
+      const arr = Array.isArray(parsedData.sections) ? parsedData.sections : [];
+      return (
+        <div className="space-y-6">
+          <InputField label="Tiêu đề trang" value={parsedData.title || ""} onChange={(v: string) => updateData({ ...parsedData, title: v })} />
+          <InputField label="Giới thiệu" value={parsedData.introduction || ""} onChange={(v: string) => updateData({ ...parsedData, introduction: v })} isTextArea />
+          
+          <div>
+            <div className="flex justify-between items-center mb-3">
+              <label className="block text-sm font-medium text-gray-700">Các điều khoản / Mục chính sách</label>
+              <button onClick={() => updateData({ ...parsedData, sections: [...arr, { title: "", content: "" }] })} className="text-xs flex items-center text-blue-600 hover:text-blue-700">
+                <Plus className="w-3 h-3 mr-1" /> Thêm mục
+              </button>
+            </div>
+            <div className="space-y-4">
+              {arr.map((item: any, idx: number) => (
+                <div key={idx} className="flex gap-3 bg-gray-50 p-4 rounded-lg border">
+                  <div className="flex-1 space-y-3">
+                    <InputField label={`Mục ${idx + 1}: Tiêu đề`} value={item.title || ""} onChange={(v: string) => { const newSections = [...arr]; newSections[idx] = { ...newSections[idx], title: v }; updateData({ ...parsedData, sections: newSections }); }} />
+                    <InputField label={`Mục ${idx + 1}: Nội dung`} value={item.content || ""} onChange={(v: string) => { const newSections = [...arr]; newSections[idx] = { ...newSections[idx], content: v }; updateData({ ...parsedData, sections: newSections }); }} isTextArea />
+                  </div>
+                  <div className="flex flex-col gap-1 pt-6">
+                    <button onClick={() => updateData({ ...parsedData, sections: moveItem(arr, idx, -1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowUp className="w-3 h-3" /></button>
+                    <button onClick={() => updateData({ ...parsedData, sections: moveItem(arr, idx, 1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded"><ArrowDown className="w-3 h-3" /></button>
+                    <button onClick={() => updateData({ ...parsedData, sections: removeItem(arr, idx) })} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded"><Trash2 className="w-3 h-3" /></button>
                   </div>
                 </div>
               ))}

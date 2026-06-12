@@ -67,6 +67,9 @@ export const usePageData = () => {
     const [visionMission, setVisionMission] = useState<VisionMissionData | null>(null);
     const [ctaSection, setCtaSection] = useState<any>(null);
     const [resources, setResources] = useState<ResourceData[]>([]);
+    const [resourcesHero, setResourcesHero] = useState<any>(null);
+    const [contactHero, setContactHero] = useState<any>(null);
+    const [privacyPolicy, setPrivacyPolicy] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -109,6 +112,9 @@ export const usePageData = () => {
                     setDifficultiesHeader(processed.difficultiesHeader || { title: '', subtitle: '' });
                     setSolutions(processed.solutions || MOCK_SOLUTIONS);
                     setCtaSection(processed.ctaSection);
+                    setResourcesHero(processed.resourcesHero);
+                    setContactHero(processed.contactHero);
+                    setPrivacyPolicy(processed.privacyPolicy);
 
                     // Process navbar
                     if (processed.navbar) {
@@ -172,6 +178,9 @@ export const usePageData = () => {
         team,
         visionMission,
         resources,
+        resourcesHero,
+        contactHero,
+        privacyPolicy,
         ctaSection,
         loading
     };

@@ -40,7 +40,7 @@ const Courses = ({ courses }: CoursesProps) => {
                         <div className="grid grid-cols-1 md:grid-cols-[3fr_7fr] gap-16 items-center">
                             <div className="section-header reveal-staggered">
                                 <SectionBadge className="mb-2.5">
-                                    KHÓA HỌC
+                                    {course.section_badge || "KHÓA HỌC"}
                                 </SectionBadge>
                                 <div className="font-bold mb-3 whitespace-pre-line">
                                     <AnimatedHeading
@@ -81,7 +81,7 @@ const Courses = ({ courses }: CoursesProps) => {
                                 <p dangerouslySetInnerHTML={{ __html: course.desc1 }} />
                                 <p dangerouslySetInnerHTML={{ __html: course.desc2 }} />
                                 <button className="mt-4 px-6 py-2 bg-[#59B4E9] text-white font-bold rounded text-sm hover:bg-[#3690F8] transition">
-                                    Tư Vấn Ngay
+                                    {course.cta1_label || "Tư Vấn Ngay"}
                                 </button>
                             </div>
                         </div>
