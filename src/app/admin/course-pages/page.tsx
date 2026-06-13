@@ -1,79 +1,43 @@
 "use client";
-import { CmsEditor } from "../components";
+import { useState, useEffect } from "react";
+import { CoursePageEditor } from "../components";
+import { supabase } from "@/lib/supabase";
 
 export default function CoursePagesAdmin() {
+  const [courses, setCourses] = useState<{ slug: string; title: string }[]>([]);
+  const [selectedSlug, setSelectedSlug] = useState<string>("e-learning");
+
+  useEffect(() => {
+    async function fetchCourses() {
+      const { data } = await supabase.from("ld_course_pages").select("slug, title").order("slug");
+      if (data) setCourses(data);
+    }
+    fetchCourses();
+  }, []);
+
   return (
-    <CmsEditor
-      title="Course Pages (Chi tiết khóa học)"
-      description="Quản lý nội dung chi tiết từng trang khóa học (e-learning, online 1-1, enterprise)"
-      table="ld_course_pages"
-      primaryKey="slug"
-      orderBy="slug"
-      fields={[
-        {
-          key: "slug",
-          label: "Slug (URL)",
-          type: "text",
-          placeholder: "e-learning",
-          required: true,
-          helpText: "Dùng trong URL: /courses/{slug}",
-        },
-        {
-          key: "title",
-          label: "Tên khóa học",
-          type: "text",
-          placeholder: "Khóa E-Learning",
-          required: true,
-        },
-        {
-          key: "badge",
-          label: "Badge",
-          type: "text",
-          placeholder: "Phổ biến nhất",
-        },
-        {
-          key: "description",
-          label: "Mô tả",
-          type: "textarea",
-          placeholder: "Mô tả ngắn về khóa học...",
-        },
-        {
-          key: "hero_image",
-          label: "Ảnh Hero",
-          type: "url",
-          placeholder: "https://...",
-        },
-        {
-          key: "stats",
-          label: "Thống kê (JSON)",
-          type: "json",
-          placeholder: '{"left": "98%", "leftLabel": "Hài lòng", "right": "500+", "rightLabel": "Học viên"}',
-        },
-        {
-          key: "features",
-          label: "Tính năng (JSON)",
-          type: "json",
-          placeholder: '{"image": "...", "quote": "...", "items": [...]}',
-        },
-        {
-          key: "structure",
-          label: "Cấu trúc khóa học (JSON)",
-          type: "json",
-          placeholder: '{"title": "...", "items": [...]}',
-        },
-        {
-          key: "evaluation",
-          label: "Đánh giá (JSON)",
-          type: "json",
-          placeholder: '{"title": "...", "desc": "...", "methods": [...]}',
-        },
-        {
-          key: "cta_banner",
-          label: "CTA Banner (JSON)",
-          type: "json",
-          placeholder: '{"title": "...", "desc": "...", "buttonText": "..."}',
-        },
-      ]}
-    />
+    <div className="space-y-6">
+      <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Chọn trang khóa học để chỉnh sửa:</label>
+          <select
+            value={selectedSlug}
+            onChange={(e) => setSelectedSlug(e.target.value)}
+            className="w-full sm:w-64 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+          >
+            {courses.map((c) => (
+              <option key={c.slug} value={c.slug}>
+                {c.title} ({c.slug})
+              </option>
+            ))}
+            {!courses.find(c => c.slug === "e-learning") && <option value="e-learning">e-learning (Chưa tạo)</option>}
+            {!courses.find(c => c.slug === "online-1-1") && <option value="online-1-1">online-1-1 (Chưa tạo)</option>}
+            {!courses.find(c => c.slug === "enterprise") && <option value="enterprise">enterprise (Chưa tạo)</option>}
+          </select>
+        </div>
+      </div>
+
+      <CoursePageEditor slug={selectedSlug} />
+    </div>
   );
 }

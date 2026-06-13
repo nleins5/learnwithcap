@@ -349,10 +349,10 @@ export function CmsEditor({
       {rows.map((row, index) => (
         <div
           key={row[primaryKey] || `new-${index}`}
-          className="bg-white rounded-xl border border-gray-200 overflow-hidden"
+          className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
         >
           {/* Row Header */}
-          <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 bg-gray-50/50">
+          <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 bg-gray-50">
             <div className="flex items-center gap-2">
               <GripVertical className="w-4 h-4 text-gray-300" />
               <span className="text-sm font-medium text-gray-500">
@@ -1210,6 +1210,354 @@ export function SectionEditor({
             </div>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Course Page Editor ─── */
+
+interface CoursePageEditorProps {
+  slug: string;
+}
+
+export function CoursePageEditor({ slug }: CoursePageEditorProps) {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
+  const getInitialData = () => ({
+    title: "",
+    description: "",
+    badge: "",
+    hero_image: "",
+    stats: { left: "", leftLabel: "", right: "", rightLabel: "" },
+    features: { image: "", quote: "", items: [] },
+    structure: { title: "", items: [] },
+    evaluation: { title: "", desc: "", image: "", highlight: "", subHighlight: "", methods: [] },
+    cta_banner: { title: "", desc: "", buttonText: "" },
+  });
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    const { data: row } = await supabase
+      .from("ld_course_pages")
+      .select("*")
+      .eq("slug", slug)
+      .maybeSingle();
+
+    if (row) {
+      // Ensure complex fields exist
+      const parsedRow = { ...row };
+      const init = getInitialData();
+      parsedRow.stats = parsedRow.stats || init.stats;
+      parsedRow.features = parsedRow.features || init.features;
+      parsedRow.structure = parsedRow.structure || init.structure;
+      parsedRow.evaluation = parsedRow.evaluation || init.evaluation;
+      parsedRow.cta_banner = parsedRow.cta_banner || init.cta_banner;
+      setData(parsedRow);
+    } else {
+      setData({ slug, ...getInitialData() });
+    }
+    setLoading(false);
+  }, [slug]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const updateData = (key: string, value: any) => {
+    setData((prev: any) => ({ ...prev, [key]: value }));
+  };
+
+  async function handleSave() {
+    setSaving(true);
+    setStatus(null);
+    try {
+      const { id, created_at, ...updatePayload } = data;
+      
+      const { data: existing } = await supabase
+        .from("ld_course_pages")
+        .select("slug")
+        .eq("slug", slug)
+        .maybeSingle();
+
+      if (existing) {
+        const { error } = await supabase
+          .from("ld_course_pages")
+          .update(updatePayload)
+          .eq("slug", slug);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("ld_course_pages")
+          .insert(updatePayload);
+        if (error) throw error;
+      }
+
+      setStatus({ type: "success", message: "Đã lưu thành công!" });
+      setTimeout(() => setStatus(null), 3000);
+    } catch (error: any) {
+      setStatus({
+        type: "error",
+        message: error?.message || "Lỗi lưu dữ liệu",
+      });
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  // Generic List item actions
+  const moveItem = (list: any[], index: number, direction: -1 | 1) => {
+    if (index + direction < 0 || index + direction >= list.length) return list;
+    const newList = [...list];
+    const temp = newList[index];
+    newList[index] = newList[index + direction];
+    newList[index + direction] = temp;
+    return newList;
+  };
+  const removeItem = (list: any[], index: number) => list.filter((_, i) => i !== index);
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
+        <div className="h-4 w-40 bg-gray-100 rounded mb-4"></div>
+        <div className="h-64 bg-gray-100 rounded"></div>
+      </div>
+    );
+  }
+
+  if (!data) return null;
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-xl font-bold text-gray-900">Chi tiết khóa học: {slug}</h1>
+          <p className="text-gray-500 text-sm mt-0.5">Chỉnh sửa nội dung cho trang /courses/{slug}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={fetchData}
+            className="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            Tải lại
+          </button>
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all disabled:opacity-50"
+          >
+            <Save className="w-3.5 h-3.5" />
+            {saving ? "Đang lưu..." : "Lưu thay đổi"}
+          </button>
+        </div>
+      </div>
+
+      {status && (
+        <div
+          className={`flex items-center gap-2 px-4 py-3 rounded-lg border text-sm ${
+            status.type === "success"
+              ? "bg-green-50 border-green-200 text-green-700"
+              : "bg-red-50 border-red-200 text-red-700"
+          }`}
+        >
+          {status.type === "success" ? (
+            <CheckCircle2 className="w-4 h-4" />
+          ) : (
+            <AlertCircle className="w-4 h-4" />
+          )}
+          {status.message}
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 gap-6">
+        {/* Section 1: Hero & Intro */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">1</span>
+            Hero & Tổng quan
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <InputField label="Tên khóa học" value={data.title} onChange={(v: string) => updateData("title", v)} />
+            <InputField label="Badge (VD: Phổ biến nhất)" value={data.badge} onChange={(v: string) => updateData("badge", v)} />
+            <div className="md:col-span-2">
+              <InputField label="Mô tả" value={data.description} onChange={(v: string) => updateData("description", v)} isTextArea />
+            </div>
+            <div className="md:col-span-2">
+              <ImageField label="Ảnh Hero" value={data.hero_image} onChange={(v: string) => updateData("hero_image", v)} />
+            </div>
+          </div>
+          
+          <div className="mt-6 pt-6 border-t border-gray-100">
+            <h3 className="text-sm font-semibold text-gray-700 mb-3">Thống kê (Hero Stats)</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <p className="text-xs font-bold text-gray-500 uppercase mb-2">Chỉ số Trái</p>
+                <InputField label="Giá trị (VD: 98%)" value={data.stats.left} onChange={(v: string) => updateData("stats", { ...data.stats, left: v })} />
+                <InputField label="Nhãn (VD: Hài lòng)" value={data.stats.leftLabel} onChange={(v: string) => updateData("stats", { ...data.stats, leftLabel: v })} />
+              </div>
+              <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <p className="text-xs font-bold text-gray-500 uppercase mb-2">Chỉ số Phải</p>
+                <InputField label="Giá trị (VD: 500+)" value={data.stats.right} onChange={(v: string) => updateData("stats", { ...data.stats, right: v })} />
+                <InputField label="Nhãn (VD: Học viên)" value={data.stats.rightLabel} onChange={(v: string) => updateData("stats", { ...data.stats, rightLabel: v })} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 2: Features */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">2</span>
+            Tính năng (Features)
+          </h2>
+          <div className="space-y-4">
+            <ImageField label="Ảnh Features" value={data.features.image} onChange={(v: string) => updateData("features", { ...data.features, image: v })} />
+            <InputField label="Câu Quote nổi bật" value={data.features.quote} onChange={(v: string) => updateData("features", { ...data.features, quote: v })} />
+            
+            <div className="mt-4">
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700">Danh sách tính năng</label>
+                <button onClick={() => updateData("features", { ...data.features, items: [...(data.features.items || []), { icon: "CheckCircle2", title: "", desc: "" }] })} className="text-xs flex items-center text-blue-600 hover:text-blue-700 bg-blue-50 px-2 py-1 rounded">
+                  <Plus className="w-3 h-3 mr-1" /> Thêm
+                </button>
+              </div>
+              <div className="space-y-3">
+                {(data.features.items || []).map((item: any, idx: number) => (
+                  <div key={idx} className="flex gap-3 items-start bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    <div className="flex-1 space-y-3">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <InputField label="Tiêu đề" value={item.title} onChange={(v: string) => { const newItems = [...data.features.items]; newItems[idx].title = v; updateData("features", { ...data.features, items: newItems }); }} />
+                        <InputField label="Icon (VD: PlayCircle, CheckCircle2, Layers...)" value={item.icon} onChange={(v: string) => { const newItems = [...data.features.items]; newItems[idx].icon = v; updateData("features", { ...data.features, items: newItems }); }} />
+                      </div>
+                      <InputField label="Mô tả" value={item.desc} onChange={(v: string) => { const newItems = [...data.features.items]; newItems[idx].desc = v; updateData("features", { ...data.features, items: newItems }); }} isTextArea />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <button onClick={() => updateData("features", { ...data.features, items: moveItem(data.features.items, idx, -1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Lên"><ArrowUp className="w-3 h-3" /></button>
+                      <button onClick={() => updateData("features", { ...data.features, items: moveItem(data.features.items, idx, 1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Xuống"><ArrowDown className="w-3 h-3" /></button>
+                      <button onClick={() => updateData("features", { ...data.features, items: removeItem(data.features.items, idx) })} className="p-1.5 text-red-400 hover:text-red-600 bg-white border rounded" title="Xóa"><Trash2 className="w-3 h-3" /></button>
+                    </div>
+                  </div>
+                ))}
+                {(!data.features.items || data.features.items.length === 0) && (
+                  <p className="text-xs text-gray-400 italic text-center py-4 bg-gray-50 rounded-lg border border-dashed">Chưa có mục nào</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 3: Structure */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">3</span>
+            Cấu trúc khóa học (Structure)
+          </h2>
+          <div className="space-y-4">
+            <InputField label="Tiêu đề phần cấu trúc" value={data.structure.title} onChange={(v: string) => updateData("structure", { ...data.structure, title: v })} />
+            
+            <div className="mt-4">
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700">Các phần/Module</label>
+                <button onClick={() => updateData("structure", { ...data.structure, items: [...(data.structure.items || []), { title: "", tag: "", features: [] }] })} className="text-xs flex items-center text-blue-600 hover:text-blue-700 bg-blue-50 px-2 py-1 rounded">
+                  <Plus className="w-3 h-3 mr-1" /> Thêm Module
+                </button>
+              </div>
+              <div className="space-y-3">
+                {(data.structure.items || []).map((mod: any, idx: number) => (
+                  <div key={idx} className="flex gap-3 items-start bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    <div className="flex-1 space-y-3">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <InputField label="Tên Module" value={mod.title} onChange={(v: string) => { const newItems = [...data.structure.items]; newItems[idx].title = v; updateData("structure", { ...data.structure, items: newItems }); }} />
+                        <InputField label="Tag (VD: Tháng 1)" value={mod.tag} onChange={(v: string) => { const newItems = [...data.structure.items]; newItems[idx].tag = v; updateData("structure", { ...data.structure, items: newItems }); }} />
+                      </div>
+                      
+                      {/* Sub-features of a module */}
+                      <div className="pl-4 border-l-2 border-blue-200">
+                        <div className="flex justify-between items-center mb-1">
+                          <label className="block text-xs font-semibold text-gray-600">Các điểm chính</label>
+                          <button onClick={() => { const newItems = [...data.structure.items]; newItems[idx].features = [...(newItems[idx].features || []), ""]; updateData("structure", { ...data.structure, items: newItems }); }} className="text-[10px] text-blue-600">
+                            + Thêm dòng
+                          </button>
+                        </div>
+                        {(mod.features || []).map((feat: string, fIdx: number) => (
+                          <div key={fIdx} className="flex gap-2 items-center mb-2">
+                            <input type="text" value={feat} onChange={(e) => { const newItems = [...data.structure.items]; newItems[idx].features[fIdx] = e.target.value; updateData("structure", { ...data.structure, items: newItems }); }} className="flex-1 px-2 py-1.5 bg-white border border-gray-300 rounded text-xs focus:ring-1 focus:ring-blue-500 outline-none" />
+                            <button onClick={() => { const newItems = [...data.structure.items]; newItems[idx].features = newItems[idx].features.filter((_: any, i: number) => i !== fIdx); updateData("structure", { ...data.structure, items: newItems }); }} className="text-red-400 hover:text-red-600">
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <button onClick={() => updateData("structure", { ...data.structure, items: moveItem(data.structure.items, idx, -1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Lên"><ArrowUp className="w-3 h-3" /></button>
+                      <button onClick={() => updateData("structure", { ...data.structure, items: moveItem(data.structure.items, idx, 1) })} className="p-1.5 text-gray-400 hover:text-blue-600 bg-white border rounded" title="Xuống"><ArrowDown className="w-3 h-3" /></button>
+                      <button onClick={() => updateData("structure", { ...data.structure, items: removeItem(data.structure.items, idx) })} className="p-1.5 text-red-400 hover:text-red-600 bg-white border rounded" title="Xóa"><Trash2 className="w-3 h-3" /></button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 4: Evaluation */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">4</span>
+            Đánh giá / Phương pháp học (Evaluation)
+          </h2>
+          <div className="space-y-4">
+            <InputField label="Tiêu đề" value={data.evaluation.title} onChange={(v: string) => updateData("evaluation", { ...data.evaluation, title: v })} />
+            <InputField label="Mô tả" value={data.evaluation.desc} onChange={(v: string) => updateData("evaluation", { ...data.evaluation, desc: v })} isTextArea />
+            <ImageField label="Ảnh minh họa" value={data.evaluation.image} onChange={(v: string) => updateData("evaluation", { ...data.evaluation, image: v })} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InputField label="Chữ nổi bật (Highlight)" value={data.evaluation.highlight} onChange={(v: string) => updateData("evaluation", { ...data.evaluation, highlight: v })} />
+              <InputField label="Chữ nổi bật phụ (Sub-highlight)" value={data.evaluation.subHighlight} onChange={(v: string) => updateData("evaluation", { ...data.evaluation, subHighlight: v })} />
+            </div>
+
+            <div className="mt-4">
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700">Các phương pháp / Nội dung đánh giá</label>
+                <button onClick={() => updateData("evaluation", { ...data.evaluation, methods: [...(data.evaluation.methods || []), ""] })} className="text-xs flex items-center text-blue-600 hover:text-blue-700 bg-blue-50 px-2 py-1 rounded">
+                  <Plus className="w-3 h-3 mr-1" /> Thêm
+                </button>
+              </div>
+              <div className="space-y-2">
+                {(data.evaluation.methods || []).map((method: string, mIdx: number) => (
+                  <div key={mIdx} className="flex gap-2 items-center">
+                    <input type="text" value={method} onChange={(e) => { const newMethods = [...data.evaluation.methods]; newMethods[mIdx] = e.target.value; updateData("evaluation", { ...data.evaluation, methods: newMethods }); }} className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+                    <button onClick={() => updateData("evaluation", { ...data.evaluation, methods: moveItem(data.evaluation.methods, mIdx, -1) })} className="p-2 text-gray-400 hover:text-blue-600 border rounded-lg bg-gray-50"><ArrowUp className="w-4 h-4" /></button>
+                    <button onClick={() => updateData("evaluation", { ...data.evaluation, methods: moveItem(data.evaluation.methods, mIdx, 1) })} className="p-2 text-gray-400 hover:text-blue-600 border rounded-lg bg-gray-50"><ArrowDown className="w-4 h-4" /></button>
+                    <button onClick={() => { const newMethods = data.evaluation.methods.filter((_: any, i: number) => i !== mIdx); updateData("evaluation", { ...data.evaluation, methods: newMethods }); }} className="p-2 text-red-400 hover:text-red-600 border rounded-lg bg-gray-50"><Trash2 className="w-4 h-4" /></button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 5: CTA Banner */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">5</span>
+            CTA Banner (Kêu gọi hành động)
+          </h2>
+          <div className="space-y-4">
+            <InputField label="Tiêu đề" value={data.cta_banner.title} onChange={(v: string) => updateData("cta_banner", { ...data.cta_banner, title: v })} />
+            <InputField label="Mô tả" value={data.cta_banner.desc} onChange={(v: string) => updateData("cta_banner", { ...data.cta_banner, desc: v })} isTextArea />
+            <InputField label="Chữ trên nút (Button Text)" value={data.cta_banner.buttonText} onChange={(v: string) => updateData("cta_banner", { ...data.cta_banner, buttonText: v })} />
+          </div>
+        </div>
+
       </div>
     </div>
   );

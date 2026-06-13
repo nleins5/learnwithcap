@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Báo cáo nghiệm thu CMS</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #1f2937;
+      margin: 0;
+      padding: 0;
+      line-height: 1.4;
+      font-size: 12px;
+    }
+    .container {
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+    }
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1d4ed8;
+      letter-spacing: -0.5px;
+    }
+    .meta-info {
+      text-align: right;
+      font-size: 11px;
+      color: #6b7280;
+    }
+    h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      margin: 0 0 8px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .summary {
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+    }
+    .summary p {
+      margin: 3px 0;
+    }
+    .links a {
+      color: #1d4ed8;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .links a:hover {
+      text-decoration: underline;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: middle;
+    }
+    th {
+      background-color: #f3f4f6;
+      font-weight: 600;
+      color: #374151;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    .checkbox-col {
+      width: 110px;
+      text-align: center;
+    }
+    .checkbox-container {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 6px;
+    }
+    .checkbox-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: #4b5563;
+    }
+    .box {
+      width: 12px;
+      height: 12px;
+      border: 1.5px solid #4b5563;
+      border-radius: 2px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .signature-section {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+      padding-top: 10px;
+    }
+    .signature-box {
+      width: 40%;
+      text-align: center;
+    }
+    .signature-title {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 60px;
+    }
+    .signature-line {
+      border-top: 1px dashed #9ca3af;
+      width: 70%;
+      margin: 0 auto;
+    }
+    @page {
+      size: A4;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">LearnWithCAP</div>
+      <div class="meta-info">
+        <p style="margin:0;">Mã tài liệu: BC-CMS-01</p>
+        <p style="margin:2px 0 0 0;">Ngày lập: 12/06/2026</p>
+      </div>
+    </div>
+
+    <h1>Báo Cáo Nghiệm Thu Hệ Thống CMS</h1>
+    
+    <div class="summary">
+
+      <p><strong>Môi trường Production chính thức:</strong> <span class="links"><a href="https://learnwithcap-rosy.vercel.app" target="_blank">learnwithcap-rosy.vercel.app</a></span></p>
+      <p><strong>Trang quản trị CMS:</strong> <span class="links"><a href="https://admin-cap-indol.vercel.app/admin" target="_blank">admin-cap-indol.vercel.app/admin</a></span></p>
+      <p><strong>Kho lưu trữ mã nguồn:</strong> <span class="links"><a href="https://github.com/nleins5/learnwithcap.git" target="_blank">github.com/nleins5/learnwithcap.git</a></span></p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 180px;">Phân hệ CMS cần duyệt</th>
+          <th>Chi tiết kiểm tra & Tính năng</th>
+          <th style="width: 140px;">Link kiểm tra trực tiếp</th>
+          <th class="checkbox-col">Ý kiến duyệt</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. Navbar (Thanh menu)</strong></td>
+          <td>Chỉnh sửa Logo ảnh, liên kết menu điều hướng và nút CTA đầu trang.</td>
+          <td class="links"><a href="https://admin-cap-indol.vercel.app/admin/navbar" target="_blank">Vào CMS Navbar</a></td>
+          <td class="checkbox-col">
+            <div class="checkbox-container">
+              <span class="checkbox-item"><span class="box"></span> Đạt</span>
+              <span class="checkbox-item"><span class="box"></span> Sửa</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>2. Main Hero (Banner chính)</strong></td>
+          <td>Cập nhật ảnh nền Hero, danh sách ảnh slider và tiêu đề hiển thị chính.</td>
+          <td class="links"><a href="https://admin-cap-indol.vercel.app/admin/main-hero" target="_blank">Vào CMS Main Hero</a></td>
+          <td class="checkbox-col">
+            <div class="checkbox-container">
+              <span class="checkbox-item"><span class="box"></span> Đạt</span>
+              <span class="checkbox-item"><span class="box"></span> Sửa</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>3. Testimonials (Nhận xét)</strong></td>
+          <td>Cập nhật nội dung nhận xét, tên học viên và ảnh đại diện.</td>
+          <td class="links"><a href="https://admin-cap-indol.vercel.app/admin/testimonials" target="_blank">Vào CMS Đánh giá</a></td>
+          <td class="checkbox-col">
+            <div class="checkbox-container">
+              <span class="checkbox-item"><span class="box"></span> Đạt</span>
+              <span class="checkbox-item"><span class="box"></span> Sửa</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>4. Dịch vụ & Đội ngũ</strong></td>
+          <td>Biên tập các dịch vụ khóa học chính và thông tin thành viên (Team).</td>
+          <td class="links"><a href="https://admin-cap-indol.vercel.app/admin/team" target="_blank">Vào CMS Đội ngũ</a></td>
+          <td class="checkbox-col">
+            <div class="checkbox-container">
+              <span class="checkbox-item"><span class="box"></span> Đạt</span>
+              <span class="checkbox-item"><span class="box"></span> Sửa</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>5. Vision & Mission</strong></td>
+          <td>Cập nhật Tầm nhìn - Sứ mệnh - Giá trị cốt lõi trên trang Giới thiệu.</td>
+          <td class="links"><a href="https://admin-cap-indol.vercel.app/admin/vision-mission" target="_blank">Vào CMS Sứ mệnh</a></td>
+          <td class="checkbox-col">
+            <div class="checkbox-container">
+              <span class="checkbox-item"><span class="box"></span> Đạt</span>
+              <span class="checkbox-item"><span class="box"></span> Sửa</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>6. Course Pages (Chi tiết)</strong></td>
+          <td>Chỉnh sửa cấu trúc khóa học động: E-learning, Online 1-1, Enterprise.</td>
+          <td class="links"><a href="https://admin-cap-indol.vercel.app/admin/course-pages" target="_blank">Vào CMS Khóa học</a></td>
+          <td class="checkbox-col">
+            <div class="checkbox-container">
+              <span class="checkbox-item"><span class="box"></span> Đạt</span>
+              <span class="checkbox-item"><span class="box"></span> Sửa</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>7. Resources (Tài liệu)</strong></td>
+          <td>Cập nhật file đính kèm tài nguyên, sách PDF và ảnh bìa.</td>
+          <td class="links"><a href="https://admin-cap-indol.vercel.app/admin/resources" target="_blank">Vào CMS Tài liệu</a></td>
+          <td class="checkbox-col">
+            <div class="checkbox-container">
+              <span class="checkbox-item"><span class="box"></span> Đạt</span>
+              <span class="checkbox-item"><span class="box"></span> Sửa</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>8. Footer (Chân trang)</strong></td>
+          <td>Biên tập liên kết mạng xã hội, thông tin liên lạc và bản quyền.</td>
+          <td class="links"><a href="https://admin-cap-indol.vercel.app/admin/footer" target="_blank">Vào CMS Footer</a></td>
+          <td class="checkbox-col">
+            <div class="checkbox-container">
+              <span class="checkbox-item"><span class="box"></span> Đạt</span>
+              <span class="checkbox-item"><span class="box"></span> Sửa</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</body>
+</html>
