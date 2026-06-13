@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 import {
   Search,
   Bell,
@@ -61,6 +62,7 @@ const MAIN_TABS = [
 const CMS_PAGES = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Main Hero", href: "/admin/main-hero", icon: Image },
+  { label: "E-learning Hero", href: "/admin/hero", icon: Image },
   { label: "Navbar", href: "/admin/navbar", icon: MenuIcon },
   { label: "Services", href: "/admin/services", icon: Building2 },
   { label: "Insights", href: "/admin/insights", icon: Lightbulb },
@@ -80,6 +82,7 @@ const CMS_PAGES = [
   { label: "Contact Hero", href: "/admin/contact-hero", icon: Megaphone },
   { label: "Privacy Policy", href: "/admin/privacy-policy", icon: Lock },
   { label: "Footer", href: "/admin/footer", icon: Settings },
+  { label: "Main Footer", href: "/admin/main-footer", icon: Settings },
 ];
 
 export default function AdminLayout({
@@ -234,12 +237,12 @@ export default function AdminLayout({
       >
         {/* Sidebar Header */}
         <div className="flex items-center justify-between px-4 h-12 shrink-0 bg-[#1d2327]">
-          <a href="/admin" className="flex items-center gap-2 text-[14px] font-semibold text-white tracking-tight">
+          <Link href="/admin" className="flex items-center gap-2 text-[14px] font-semibold text-white tracking-tight">
             <div className="w-7 h-7 bg-[#2271b1] text-white rounded flex items-center justify-center font-black">
               C
             </div>
             CAP Admin
-          </a>
+          </Link>
           <button
             className="lg:hidden p-1.5 -mr-1.5 text-[#a7aaad] hover:text-white rounded"
             onClick={() => setIsSidebarOpen(false)}
@@ -263,7 +266,7 @@ export default function AdminLayout({
                     ? pathname === "/admin"
                     : pathname.startsWith(tab.href);
                 return (
-                  <a
+                  <Link
                     key={tab.href}
                     href={tab.href}
                     className={`flex items-center gap-2.5 px-4 py-2 text-[13px] transition-all ${
@@ -283,7 +286,7 @@ export default function AdminLayout({
                         {tab.count}
                       </span>
                     ) : null}
-                  </a>
+                  </Link>
                 );
               })}
             </div>
@@ -299,7 +302,7 @@ export default function AdminLayout({
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
                 return (
-                  <a
+                  <Link
                     key={item.href}
                     href={item.href}
                     className={`flex items-center gap-2.5 px-4 py-2 text-[13px] transition-all ${
@@ -310,7 +313,7 @@ export default function AdminLayout({
                   >
                     <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-[#a7aaad]"}`} />
                     {item.label}
-                  </a>
+                  </Link>
                 );
               })}
             </div>
