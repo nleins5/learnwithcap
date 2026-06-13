@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import {
@@ -101,6 +101,51 @@ export default function AdminLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+
+  const [sidebarWidth, setSidebarWidth] = useState(240); // default 240px
+  const [isMounted, setIsMounted] = useState(false);
+  const isResizing = useRef(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    const savedWidth = localStorage.getItem("cap_admin_sidebar_width");
+    if (savedWidth) {
+      setSidebarWidth(parseInt(savedWidth, 10));
+    }
+  }, []);
+
+  const startResizing = (e: React.MouseEvent) => {
+    e.preventDefault();
+    isResizing.current = true;
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isResizing.current) return;
+      const newWidth = e.clientX;
+      if (newWidth >= 160 && newWidth <= 450) {
+        setSidebarWidth(newWidth);
+      }
+    };
+
+    const handleMouseUp = () => {
+      if (isResizing.current) {
+        isResizing.current = false;
+        document.body.style.cursor = "";
+        document.body.style.userSelect = "";
+        localStorage.setItem("cap_admin_sidebar_width", sidebarWidth.toString());
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [sidebarWidth]);
 
   useEffect(() => {
     const adminAuth = localStorage.getItem("cap_admin_auth");
@@ -271,9 +316,10 @@ export default function AdminLayout({
       <div className="flex flex-1 min-h-0 relative">
         {/* ── Sidebar (Desktop & Mobile) ── */}
         <aside
-          className={`fixed lg:static inset-y-0 left-0 z-50 w-60 bg-[#1d2327] flex flex-col transition-transform duration-300 ${
+          className={`fixed lg:static inset-y-0 left-0 z-50 bg-[#1d2327] flex flex-col transition-transform duration-300 ${
             isSidebarOpen ? "translate-x-0 top-8" : "-translate-x-full"
-          } lg:translate-x-0 lg:w-56 shrink-0 border-r border-[#101517]`}
+          } lg:translate-x-0 shrink-0 border-r border-[#101517] relative select-none`}
+          style={isMounted ? { width: `${sidebarWidth}px` } : { width: "240px" }}
         >
           {/* Mobile Sidebar Close Button */}
           <div className="lg:hidden flex items-center justify-between px-4 py-2 border-b border-[#2c3338] bg-[#1d2327]">
@@ -290,7 +336,7 @@ export default function AdminLayout({
           <div className="flex-1 overflow-y-auto py-2 space-y-4 custom-scrollbar">
             {/* Main Business Tabs */}
             <div>
-              <h3 className="px-3 text-[10px] font-bold text-[#787c82] uppercase tracking-wider mb-1">
+              <h3 className="px-3 text-[10px] font-bold text-[#787c82] uppercase tracking-wider mb-1 whitespace-nowrap truncate">
                 Quản lý
               </h3>
               <div className="space-y-0.5">
@@ -302,9 +348,9 @@ export default function AdminLayout({
                       : pathname.startsWith(tab.href);
                   return (
                     <Link
-                      key={tab.href}
-                      href={tab.href}
-                      className={`flex items-center gap-2.5 px-3 py-1.5 text-[13px] border-l-[3px] transition-all ${
+                       key={tab.href}
+                       href={tab.href}
+                       className={`flex items-center gap-2.5 px-3 py-1.5 text-[13px] border-l-[3px] transition-all ${
                         isActive
                           ? "bg-[#0f1416] text-[#72aee6] border-[#72aee6] font-medium"
                           : "text-[#c3c4c7] border-transparent hover:bg-[#1d2327] hover:text-[#72aee6]"
@@ -329,7 +375,7 @@ export default function AdminLayout({
 
             {/* CMS Homepage Pages */}
             <div>
-              <h3 className="px-3 text-[10px] font-bold text-[#787c82] uppercase tracking-wider mb-1">
+              <h3 className="px-3 text-[10px] font-bold text-[#787c82] uppercase tracking-wider mb-1 whitespace-nowrap truncate">
                 CMS Trang Chủ
               </h3>
               <div className="space-y-0.5 border-b border-[#2c3338]/40 pb-2">
@@ -356,7 +402,7 @@ export default function AdminLayout({
 
             {/* CMS E-learning Pages */}
             <div className="pb-4">
-              <h3 className="px-3 text-[10px] font-bold text-[#787c82] uppercase tracking-wider mb-1">
+              <h3 className="px-3 text-[10px] font-bold text-[#787c82] uppercase tracking-wider mb-1 whitespace-nowrap truncate">
                 CMS E-learning
               </h3>
               <div className="space-y-0.5">
@@ -380,6 +426,14 @@ export default function AdminLayout({
                 })}
               </div>
             </div>
+          </div>
+
+          {/* Resize Handle */}
+          <div
+            onMouseDown={startResizing}
+            className="absolute top-0 right-0 w-1.5 h-full cursor-col-resize hover:bg-[#72aee6]/40 active:bg-[#72aee6]/70 transition-colors z-50 group"
+          >
+            <div className="hidden group-hover:block absolute top-1/2 -translate-y-1/2 right-0 w-[3px] h-10 bg-[#72aee6] rounded-l" />
           </div>
         </aside>
 
