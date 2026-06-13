@@ -63,7 +63,6 @@ const Hero = ({ hero }: HeroProps) => {
             muted
             playsInline
             preload="auto"
-            crossOrigin="anonymous"
             onError={handleVideoError}
             key={videoUrlRemote}
             controls={showControls}

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "Tiếng Anh Giao Tiếp Chuyên Ngành Xây Dựng - CAP",
   description: "Khóa học Tiếng Anh giao tiếp chuyên ngành Xây dựng, Kiến trúc và Nội thất. Nâng cao kỹ năng giao tiếp, từ vựng và tư duy ngoại ngữ.",
   icons: {
-    icon: 'http://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp',
+    icon: 'https://course.learnwithcap.com/wp-content/uploads/2025/10/cap-logo-1.webp',
   },
   metadataBase: new URL('https://learnwithcap.com'),
   openGraph: {
