@@ -59,30 +59,32 @@ const MAIN_TABS = [
   },
 ];
 
-const CMS_PAGES = [
-  { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Main Hero", href: "/admin/main-hero", icon: Image },
-  { label: "E-learning Hero", href: "/admin/hero", icon: Image },
-  { label: "Navbar", href: "/admin/navbar", icon: MenuIcon },
-  { label: "Services", href: "/admin/services", icon: Building2 },
-  { label: "Insights", href: "/admin/insights", icon: Lightbulb },
-  { label: "Wants Header", href: "/admin/wants-header", icon: Lightbulb },
-  { label: "Difficulties Header", href: "/admin/difficulties-header", icon: Lightbulb },
-  { label: "Solutions", href: "/admin/solutions", icon: Target },
-  { label: "Solutions Header", href: "/admin/solutions-header", icon: Target },
-  { label: "Courses", href: "/admin/courses", icon: BookOpen },
-  { label: "Course Pages", href: "/admin/course-pages", icon: FileText },
-  { label: "Clients", href: "/admin/clients", icon: Building2 },
-  { label: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
-  { label: "CTA Section", href: "/admin/cta", icon: Megaphone },
-  { label: "Team", href: "/admin/team", icon: Users },
-  { label: "Vision & Mission", href: "/admin/vision-mission", icon: Eye },
-  { label: "Resources Hero", href: "/admin/resources-hero", icon: Image },
-  { label: "Resources Items", href: "/admin/resources", icon: FileText },
-  { label: "Contact Hero", href: "/admin/contact-hero", icon: Megaphone },
-  { label: "Privacy Policy", href: "/admin/privacy-policy", icon: Lock },
-  { label: "Footer", href: "/admin/footer", icon: Settings },
-  { label: "Main Footer", href: "/admin/main-footer", icon: Settings },
+const HOMEPAGE_CMS_PAGES = [
+  { label: "Trang chủ - Hero", href: "/admin/main-hero", icon: Image },
+  { label: "Trang chủ - Footer", href: "/admin/main-footer", icon: Settings },
+  { label: "Dịch vụ (Carousel)", href: "/admin/services", icon: Building2 },
+  { label: "Nhận thức (Insights)", href: "/admin/insights", icon: Lightbulb },
+  { label: "Mong muốn (Wants Header)", href: "/admin/wants-header", icon: Lightbulb },
+  { label: "Khó khăn (Difficulties Header)", href: "/admin/difficulties-header", icon: Lightbulb },
+  { label: "Giải pháp (Solutions)", href: "/admin/solutions", icon: Target },
+  { label: "Giải pháp Header", href: "/admin/solutions-header", icon: Target },
+  { label: "Khóa học (Courses)", href: "/admin/courses", icon: BookOpen },
+  { label: "Đối tác & Khách hàng", href: "/admin/clients", icon: Building2 },
+  { label: "Ý kiến học viên (Testimonials)", href: "/admin/testimonials", icon: MessageSquare },
+  { label: "Kêu gọi hành động (CTA)", href: "/admin/cta", icon: Megaphone },
+  { label: "Đội ngũ giảng viên (Team)", href: "/admin/team", icon: Users },
+  { label: "Tầm nhìn & Sứ mệnh", href: "/admin/vision-mission", icon: Eye },
+  { label: "Tài nguyên - Hero", href: "/admin/resources-hero", icon: Image },
+  { label: "Tài nguyên - Bài viết", href: "/admin/resources", icon: FileText },
+  { label: "Liên hệ - Hero", href: "/admin/contact-hero", icon: Megaphone },
+  { label: "Chính sách bảo mật", href: "/admin/privacy-policy", icon: Lock },
+];
+
+const ELEARNING_CMS_PAGES = [
+  { label: "Trang khóa học (Templates)", href: "/admin/course-pages", icon: FileText },
+  { label: "E-learning - Hero", href: "/admin/hero", icon: Image },
+  { label: "E-learning - Footer", href: "/admin/footer", icon: Settings },
+  { label: "Thanh điều hướng (Navbar)", href: "/admin/navbar", icon: MenuIcon },
 ];
 
 export default function AdminLayout({
@@ -292,20 +294,47 @@ export default function AdminLayout({
             </div>
           </div>
 
-          {/* CMS Pages */}
-          <div>
-            <h3 className="px-4 text-[11px] font-semibold text-[#a7aaad] uppercase tracking-wide mb-2">
-              CMS Giao diện
+          {/* CMS Homepage Pages */}
+          <div className="space-y-1">
+            <h3 className="px-4 text-[11px] font-semibold text-[#a7aaad] uppercase tracking-wide mb-1.5">
+              CMS Trang Chủ
             </h3>
-            <div className="space-y-0.5">
-              {CMS_PAGES.map((item) => {
+            <div className="space-y-0.5 max-h-[300px] overflow-y-auto custom-scrollbar border-b border-[#2c3338] pb-2">
+              {HOMEPAGE_CMS_PAGES.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center gap-2.5 px-4 py-2 text-[13px] transition-all ${
+                    className={`flex items-center gap-2.5 px-4 py-1.5 text-[13px] transition-all ${
+                      isActive
+                        ? "bg-[#2271b1] text-white font-medium"
+                        : "text-[#a7aaad] hover:text-white hover:bg-[#2c3338]"
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-[#a7aaad]"}`} />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* CMS E-learning Pages */}
+          <div className="space-y-1 mt-4">
+            <h3 className="px-4 text-[11px] font-semibold text-[#a7aaad] uppercase tracking-wide mb-1.5">
+              CMS E-learning
+            </h3>
+            <div className="space-y-0.5 pb-4">
+              {ELEARNING_CMS_PAGES.map((item) => {
+                const Icon = item.icon;
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`flex items-center gap-2.5 px-4 py-1.5 text-[13px] transition-all ${
                       isActive
                         ? "bg-[#2271b1] text-white font-medium"
                         : "text-[#a7aaad] hover:text-white hover:bg-[#2c3338]"
@@ -368,7 +397,8 @@ export default function AdminLayout({
               <span className="text-gray-300">/</span>
               <span className="text-[#1d2327]">
                 {MAIN_TABS.find((t) => t.href === pathname)?.label || 
-                 CMS_PAGES.find((t) => t.href === pathname)?.label || 
+                 HOMEPAGE_CMS_PAGES.find((t) => t.href === pathname)?.label || 
+                 ELEARNING_CMS_PAGES.find((t) => t.href === pathname)?.label || 
                  "Dashboard"}
               </span>
             </div>

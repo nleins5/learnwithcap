@@ -411,3 +411,22 @@ p,
 .client-description a:hover {
   opacity: 0.8;
 }
+
+/* Custom Scrollbar for Admin Sidebar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #4f5d66;
+  border-radius: 2px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #627480;
+}
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #4f5d66 transparent;
+}
