@@ -225,23 +225,23 @@ export default function AdminLayout({
 
   /* ── Main Admin Layout ── */
   return (
-    <div className="flex min-h-screen bg-[#f8fafc] text-gray-900 font-sans">
+    <div className="flex min-h-screen bg-[#f0f0f1] text-[#3c434a] font-sans">
       {/* ── Sidebar (Desktop) ── */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#1d2327] flex flex-col transition-transform duration-300 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 lg:static lg:w-72`}
+        } lg:translate-x-0 lg:static lg:w-48 xl:w-64`}
       >
         {/* Sidebar Header */}
-        <div className="flex items-center justify-between px-6 h-16 border-b border-gray-100 shrink-0">
-          <a href="/admin" className="flex items-center gap-2 text-lg font-bold text-gray-800 tracking-tight">
-            <div className="w-8 h-8 bg-blue-600 text-white rounded-lg flex items-center justify-center font-black">
+        <div className="flex items-center justify-between px-4 h-12 shrink-0 bg-[#1d2327]">
+          <a href="/admin" className="flex items-center gap-2 text-[14px] font-semibold text-white tracking-tight">
+            <div className="w-7 h-7 bg-[#2271b1] text-white rounded flex items-center justify-center font-black">
               C
             </div>
             CAP Admin
           </a>
           <button
-            className="lg:hidden p-2 -mr-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg"
+            className="lg:hidden p-1.5 -mr-1.5 text-[#a7aaad] hover:text-white rounded"
             onClick={() => setIsSidebarOpen(false)}
           >
             <MenuIcon className="w-5 h-5" />
@@ -249,13 +249,13 @@ export default function AdminLayout({
         </div>
 
         {/* Sidebar Scrollable Area */}
-        <div className="flex-1 overflow-y-auto py-6 px-4 space-y-8 scrollbar-thin scrollbar-thumb-gray-200">
+        <div className="flex-1 overflow-y-auto py-4 space-y-6 scrollbar-thin scrollbar-thumb-[#2c3338]">
           {/* Main Business Tabs */}
           <div>
-            <h3 className="px-3 text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+            <h3 className="px-4 text-[11px] font-semibold text-[#a7aaad] uppercase tracking-wide mb-2">
               Quản lý
             </h3>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {MAIN_TABS.map((tab) => {
                 const Icon = tab.icon;
                 const isActive =
@@ -266,20 +266,20 @@ export default function AdminLayout({
                   <a
                     key={tab.href}
                     href={tab.href}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                    className={`flex items-center gap-2.5 px-4 py-2 text-[13px] transition-all ${
                       isActive
-                        ? "bg-blue-50 text-blue-700 shadow-sm shadow-blue-100/50"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        ? "bg-[#2271b1] text-white font-medium"
+                        : "text-[#a7aaad] hover:text-white hover:bg-[#2c3338]"
                     }`}
                   >
-                    <Icon className={`w-5 h-5 ${isActive ? "text-blue-600" : "text-gray-400"}`} />
+                    <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-[#a7aaad]"}`} />
                     <span className="flex-1">{tab.label}</span>
                     {tab.countSuffix ? (
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${isActive ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-500"}`}>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${isActive ? "bg-[#135e96] text-white" : "bg-[#2c3338] text-[#a7aaad]"}`}>
                         {tab.countSuffix}
                       </span>
                     ) : tab.count !== null ? (
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${isActive ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-500"}`}>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${isActive ? "bg-[#135e96] text-white" : "bg-[#2c3338] text-[#a7aaad]"}`}>
                         {tab.count}
                       </span>
                     ) : null}
@@ -291,10 +291,10 @@ export default function AdminLayout({
 
           {/* CMS Pages */}
           <div>
-            <h3 className="px-3 text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+            <h3 className="px-4 text-[11px] font-semibold text-[#a7aaad] uppercase tracking-wide mb-2">
               CMS Giao diện
             </h3>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {CMS_PAGES.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
@@ -302,13 +302,13 @@ export default function AdminLayout({
                   <a
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
+                    className={`flex items-center gap-2.5 px-4 py-2 text-[13px] transition-all ${
                       isActive
-                        ? "bg-gray-900 text-white shadow-md shadow-gray-900/10"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                        ? "bg-[#2271b1] text-white font-medium"
+                        : "text-[#a7aaad] hover:text-white hover:bg-[#2c3338]"
                     }`}
                   >
-                    <Icon className={`w-4 h-4 ${isActive ? "text-gray-300" : "text-gray-400"}`} />
+                    <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-[#a7aaad]"}`} />
                     {item.label}
                   </a>
                 );
@@ -318,23 +318,22 @@ export default function AdminLayout({
         </div>
 
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-gray-100 shrink-0">
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200/60">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-sm font-bold text-sm">
+        <div className="mt-auto">
+          <div className="flex items-center justify-between p-3 bg-[#2c3338]">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-sm bg-[#1d2327] flex items-center justify-center text-white text-[11px] font-bold">
                 AD
               </div>
               <div>
-                <p className="text-sm font-bold text-gray-800">Admin</p>
-                <p className="text-xs text-gray-500 font-medium">Administrator</p>
+                <p className="text-[13px] font-medium text-white">Admin</p>
               </div>
             </div>
             <button
               onClick={handleLogout}
-              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              className="p-1.5 text-[#a7aaad] hover:text-white hover:bg-[#1d2327] rounded transition-colors"
               title="Đăng xuất"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
@@ -351,20 +350,20 @@ export default function AdminLayout({
       {/* ── Main Content Area ── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Header */}
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-8 shrink-0 sticky top-0 z-30 shadow-sm">
+        <header className="h-12 bg-white border-b border-[#c3c4c7] flex items-center justify-between px-4 sm:px-6 shrink-0 sticky top-0 z-30">
           <div className="flex items-center gap-4">
             <button
-              className="lg:hidden p-2 -ml-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              className="lg:hidden p-1.5 -ml-1.5 text-gray-500 hover:text-[#2271b1] hover:bg-gray-100 rounded transition-colors"
               onClick={() => setIsSidebarOpen(true)}
             >
               <MenuIcon className="w-5 h-5" />
             </button>
             
             {/* Breadcrumb / Page Title */}
-            <div className="hidden sm:flex items-center gap-2 text-sm font-medium text-gray-500">
-              <span className="text-gray-400">Admin</span>
+            <div className="hidden sm:flex items-center gap-2 text-[13px] font-medium text-[#50575e]">
+              <span className="text-[#50575e]">Admin</span>
               <span className="text-gray-300">/</span>
-              <span className="text-gray-800">
+              <span className="text-[#1d2327]">
                 {MAIN_TABS.find((t) => t.href === pathname)?.label || 
                  CMS_PAGES.find((t) => t.href === pathname)?.label || 
                  "Dashboard"}
@@ -376,32 +375,32 @@ export default function AdminLayout({
             <a
               href="/"
               target="_blank"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-gray-600 hover:text-blue-600 bg-gray-50 hover:bg-blue-50 border border-gray-200 rounded-lg transition-all"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-[13px] font-medium text-[#2271b1] hover:text-[#135e96] bg-white border border-[#2271b1] rounded-[3px] hover:bg-[#f6f7f7] transition-all"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Xem Website</span>
             </a>
 
-            <div className="w-px h-6 bg-gray-200 mx-1"></div>
+            <div className="w-px h-5 bg-[#c3c4c7] mx-1"></div>
 
             <button
               title="Tìm kiếm"
-              className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+              className="p-1.5 text-[#50575e] hover:text-[#2271b1] rounded transition-colors"
             >
-              <Search className="w-5 h-5" />
+              <Search className="w-[18px] h-[18px]" />
             </button>
             <button
               title="Thông báo"
-              className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors relative"
+              className="p-1.5 text-[#50575e] hover:text-[#2271b1] rounded transition-colors relative"
             >
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 border-2 border-white rounded-full"></span>
+              <Bell className="w-[18px] h-[18px]" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#d63638] rounded-full"></span>
             </button>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-5">
           <div className="max-w-6xl mx-auto w-full">
             {children}
           </div>

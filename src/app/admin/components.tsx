@@ -30,11 +30,11 @@ function MediaPreview({ url }: { url: string }) {
   if (!url.startsWith("http") && !url.startsWith("/") && !url.startsWith("data:")) return null;
 
   return (
-    <div className="mt-2 inline-flex items-center justify-center p-1 bg-gray-50 border border-gray-200 rounded-xl max-w-[240px]">
+    <div className="mt-2 inline-flex items-center justify-center p-1 bg-[#f0f0f1] border border-[#c3c4c7] rounded-[4px] max-w-[240px]">
       <img
         src={url}
         alt="Preview"
-        className="max-h-24 max-w-full rounded-lg object-contain"
+        className="max-h-24 max-w-full rounded-[4px] object-contain"
         onError={() => setHasError(true)}
       />
     </div>
@@ -262,11 +262,11 @@ export function CmsEditor({
         {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={i}
-            className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse"
+            className="bg-white rounded-sm border border-[#c3c4c7] p-5 animate-pulse shadow-sm"
           >
-            <div className="h-4 w-40 bg-gray-100 rounded mb-4"></div>
-            <div className="h-10 bg-gray-100 rounded mb-3"></div>
-            <div className="h-10 bg-gray-100 rounded"></div>
+            <div className="h-4 w-40 bg-gray-200 rounded mb-4"></div>
+            <div className="h-9 bg-gray-100 rounded mb-3"></div>
+            <div className="h-9 bg-gray-100 rounded"></div>
           </div>
         ))}
       </div>
@@ -276,15 +276,15 @@ export function CmsEditor({
   return (
     <div className="space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
         <div>
-          <h1 className="text-lg font-bold text-gray-900">{title}</h1>
-          <p className="text-gray-500 text-sm mt-0.5">{description}</p>
+          <h1 className="text-[23px] font-normal text-[#1d2327]">{title}</h1>
+          <p className="text-[#50575e] text-[13px] mt-1">{description}</p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={fetchData}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-700 transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] text-[#2271b1] border border-[#2271b1] bg-[#f6f7f7] rounded-[3px] hover:bg-[#f0f0f1] transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Tải lại
@@ -292,7 +292,7 @@ export function CmsEditor({
           {!readonlyList && !singleRow && (
             <button
               onClick={addRow}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] bg-[#2271b1] text-white border border-[#2271b1] rounded-[3px] hover:bg-[#135e96] transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               Thêm mới
@@ -302,7 +302,7 @@ export function CmsEditor({
             <button
               onClick={saveAll}
               disabled={saving}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] bg-[#2271b1] text-white border border-[#2271b1] rounded-[3px] hover:bg-[#135e96] transition-colors disabled:opacity-50"
             >
               <Save className="w-3.5 h-3.5" />
               {saving ? "Đang lưu..." : "Lưu tất cả"}
@@ -314,7 +314,7 @@ export function CmsEditor({
       {/* Status */}
       {status && (
         <div
-          className={`flex items-center gap-2 px-4 py-3 rounded-lg border text-sm ${
+          className={`flex items-center gap-2 px-4 py-3 rounded-[4px] border text-sm ${
             status.type === "success"
               ? "bg-green-50 border-green-200 text-green-700"
               : "bg-red-50 border-red-200 text-red-700"
@@ -331,12 +331,12 @@ export function CmsEditor({
 
       {/* Empty */}
       {rows.length === 0 && (
-        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-          <p className="text-gray-400 mb-4">Chưa có dữ liệu nào</p>
+        <div className="bg-white rounded-sm border border-[#c3c4c7] p-10 text-center shadow-sm">
+          <p className="text-[#50575e] mb-4 text-[13px]">Chưa có dữ liệu nào</p>
           {!readonlyList && (
             <button
               onClick={addRow}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all text-sm"
+              className="px-3 py-1.5 bg-[#2271b1] text-white border border-[#2271b1] rounded-[3px] hover:bg-[#135e96] transition-colors text-[13px]"
             >
               <Plus className="w-4 h-4 inline mr-1" />
               Thêm mục đầu tiên
@@ -349,17 +349,17 @@ export function CmsEditor({
       {rows.map((row, index) => (
         <div
           key={row[primaryKey] || `new-${index}`}
-          className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
+          className="bg-white rounded-sm border border-[#c3c4c7] shadow-sm mb-4"
         >
           {/* Row Header */}
-          <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 bg-gray-50">
+          <div className="flex items-center justify-between px-4 py-2.5 border-b border-[#c3c4c7] bg-[#f6f7f7]">
             <div className="flex items-center gap-2">
-              <GripVertical className="w-4 h-4 text-gray-300" />
-              <span className="text-sm font-medium text-gray-500">
-                #{index + 1}
+              <GripVertical className="w-4 h-4 text-[#8c8f94] cursor-move" />
+              <span className="text-[13px] font-semibold text-[#1d2327]">
+                Mục #{index + 1}
                 {row[primaryKey] && (
-                  <span className="text-gray-300 ml-2 font-mono text-xs">
-                    {primaryKey.toUpperCase()}: {row[primaryKey]}
+                  <span className="text-[#50575e] ml-2 font-normal text-[12px]">
+                    ({primaryKey.toUpperCase()}: {row[primaryKey]})
                   </span>
                 )}
               </span>
@@ -368,7 +368,7 @@ export function CmsEditor({
               <button
                 onClick={() => saveRow(index)}
                 disabled={saving}
-                className="flex items-center gap-1 px-2.5 py-1.5 text-xs bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-all font-medium"
+                className="flex items-center gap-1 px-2.5 py-1 text-[12px] bg-white border border-[#2271b1] text-[#2271b1] rounded hover:bg-[#f0f0f1] transition-colors font-medium"
               >
                 <Save className="w-3 h-3" />
                 Lưu
@@ -376,7 +376,7 @@ export function CmsEditor({
               {!readonlyList && (
                 <button
                   onClick={() => deleteRow(index)}
-                  className="flex items-center gap-1 px-2.5 py-1.5 text-xs text-red-500 rounded-md hover:bg-red-50 transition-all"
+                  className="flex items-center gap-1 px-2.5 py-1 text-[12px] text-[#d63638] bg-white border border-[#d63638] rounded hover:bg-[#fef0f0] transition-colors"
                 >
                   <Trash2 className="w-3 h-3" />
                   Xóa
@@ -396,14 +396,14 @@ export function CmsEditor({
                     : ""
                 }
               >
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-[13px] font-medium text-[#1d2327] mb-1">
                   {field.label}
                   {field.required && (
-                    <span className="text-red-400 ml-0.5">*</span>
+                    <span className="text-[#d63638] ml-0.5">*</span>
                   )}
                 </label>
                 {field.helpText && (
-                  <p className="text-xs text-gray-400 mb-1">
+                  <p className="text-[12px] text-[#646970] mb-1">
                     {field.helpText}
                   </p>
                 )}
@@ -415,7 +415,7 @@ export function CmsEditor({
                       updateField(index, field.key, e.target.value)
                     }
                     rows={4}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm resize-y"
+                    className="w-full px-3 py-2 bg-white border border-[#8c8f94] rounded-[4px] text-[#2c3338] placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#2271b1] focus:border-[#2271b1] transition-all text-[13px] resize-y"
                     placeholder={field.placeholder}
                   />
                 ) : field.type === "json" ? (
@@ -434,7 +434,7 @@ export function CmsEditor({
                       }
                     }}
                     rows={8}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-xs font-mono resize-y"
+                    className="w-full px-3 py-2 bg-[#f0f0f1] border border-[#8c8f94] rounded-[4px] text-[#2c3338] focus:outline-none focus:ring-1 focus:ring-[#2271b1] focus:border-[#2271b1] transition-all text-[12px] font-mono resize-y"
                     placeholder={field.placeholder || "{}"}
                   />
                 ) : field.type === "toggle" ? (
@@ -442,15 +442,15 @@ export function CmsEditor({
                     onClick={() =>
                       updateField(index, field.key, !row[field.key])
                     }
-                    className={`relative w-11 h-6 rounded-full transition-colors ${
-                      row[field.key] ? "bg-blue-500" : "bg-gray-300"
+                    className={`relative w-9 h-5 rounded-full transition-colors ${
+                      row[field.key] ? "bg-[#2271b1]" : "bg-[#c3c4c7]"
                     }`}
                     title={field.label}
                     aria-label={field.label}
                   >
                     <span
-                      className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${
-                        row[field.key] ? "translate-x-5" : "translate-x-0.5"
+                      className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${
+                        row[field.key] ? "translate-x-4" : "translate-x-0.5"
                       }`}
                     />
                   </button>
@@ -460,7 +460,7 @@ export function CmsEditor({
                     onChange={(e) =>
                       updateField(index, field.key, e.target.value)
                     }
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+                    className="w-full px-3 py-2 bg-white border border-[#8c8f94] rounded-[4px] text-[#2c3338] focus:outline-none focus:ring-1 focus:ring-[#2271b1] focus:border-[#2271b1] transition-all text-[13px]"
                     title={field.label}
                   >
                     <option value="">Chọn...</option>
@@ -489,7 +489,7 @@ export function CmsEditor({
                           : e.target.value
                       )
                     }
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+                    className="w-full px-3 py-2 bg-white border border-[#8c8f94] rounded-[4px] text-[#2c3338] placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#2271b1] focus:border-[#2271b1] transition-all text-[13px]"
                     placeholder={field.placeholder}
                   />
                 )}
@@ -513,11 +513,11 @@ interface SectionEditorProps {
 /* ─── Generic Input Components for SectionEditor ─── */
 const InputField = ({ label, value, onChange, isTextArea = false }: any) => (
   <div className="mb-4">
-    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+    <label className="block text-[13px] font-medium text-[#1d2327] mb-1">{label}</label>
     {isTextArea ? (
-      <textarea value={value || ""} onChange={(e) => onChange(e.target.value)} rows={3} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-y" title={label} placeholder={label} />
+      <textarea value={value || ""} onChange={(e) => onChange(e.target.value)} rows={3} className="w-full px-3 py-2 bg-white border border-[#8c8f94] rounded-[4px] text-[13px] text-[#2c3338] focus:ring-1 focus:ring-[#2271b1] focus:border-[#2271b1] outline-none transition-all resize-y" title={label} placeholder={label} />
     ) : (
-      <input type="text" value={value || ""} onChange={(e) => onChange(e.target.value)} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all" title={label} placeholder={label} />
+      <input type="text" value={value || ""} onChange={(e) => onChange(e.target.value)} className="w-full px-3 py-2 bg-white border border-[#8c8f94] rounded-[4px] text-[13px] text-[#2c3338] focus:ring-1 focus:ring-[#2271b1] focus:border-[#2271b1] outline-none transition-all" title={label} placeholder={label} />
     )}
   </div>
 );
@@ -570,16 +570,16 @@ export const ImageField = ({ label, value, onChange }: any) => {
 
   return (
     <div className="mb-4">
-      {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
+      {label && <label className="block text-[13px] font-medium text-[#1d2327] mb-1">{label}</label>}
       <div className="flex gap-2 mb-2">
         <input
           type="text"
           value={value || ""}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+          className="flex-1 px-3 py-2 bg-white border border-[#8c8f94] rounded-[4px] text-[13px] text-[#2c3338] focus:ring-1 focus:ring-[#2271b1] focus:border-[#2271b1] outline-none transition-all"
           placeholder="URL hình ảnh hoặc chọn tải lên bên cạnh..."
         />
-        <label className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-200 cursor-pointer transition-all select-none shrink-0">
+        <label className="flex items-center gap-1.5 px-3 py-1.5 bg-[#f6f7f7] border border-[#2271b1] rounded-[3px] text-[13px] font-medium text-[#2271b1] hover:bg-[#f0f0f1] cursor-pointer transition-colors select-none shrink-0">
           <Plus className="w-3.5 h-3.5" />
           {uploading ? "Đang tải..." : "Tải ảnh lên"}
           <input
@@ -771,7 +771,7 @@ export function SectionEditor({
           <InputField label="Video URL" value={parsedData.video_url} onChange={(v: string) => updateData({ ...parsedData, video_url: v })} />
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">Loại Media</label>
-            <select value={parsedData.media_type || "video"} onChange={(e) => updateData({ ...parsedData, media_type: e.target.value })} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm" title="Loại Media">
+            <select value={parsedData.media_type || "video"} onChange={(e) => updateData({ ...parsedData, media_type: e.target.value })} className="w-full px-3 py-2 bg-white border border-[#8c8f94] rounded-[4px] text-sm" title="Loại Media">
               <option value="video">Video</option>
               <option value="slider">Slider Hình Ảnh</option>
             </select>
@@ -785,7 +785,7 @@ export function SectionEditor({
             </div>
             <div className="space-y-3">
               {(parsedData.images || []).map((img: string, idx: number) => (
-                <div key={idx} className="flex gap-2 items-start bg-gray-50 p-3 rounded-lg border">
+                <div key={idx} className="flex gap-2 items-start bg-[#f0f0f1] p-3 rounded-[4px] border">
                   <div className="flex-1">
                     <ImageField label={`Ảnh ${idx + 1}`} value={img} onChange={(v: string) => { const newImgs = [...parsedData.images]; newImgs[idx] = v; updateData({ ...parsedData, images: newImgs }); }} />
                   </div>
@@ -817,7 +817,7 @@ export function SectionEditor({
             </div>
             <div className="space-y-3">
               {(parsedData.links || []).map((link: any, idx: number) => (
-                <div key={idx} className="bg-gray-50 p-4 rounded-lg border">
+                <div key={idx} className="bg-[#f0f0f1] p-4 rounded-[4px] border">
                   <div className="flex gap-2 items-start">
                     <div className="flex-1 grid grid-cols-2 gap-3">
                       <InputField label="Label" value={link.label} onChange={(v: string) => { const nl = [...parsedData.links]; nl[idx].label = v; updateData({ ...parsedData, links: nl }); }} />
@@ -830,7 +830,7 @@ export function SectionEditor({
                     </div>
                   </div>
                   {/* Dropdown support */}
-                  <div className="mt-3 pl-4 border-l-2 border-gray-200">
+                  <div className="mt-3 pl-4 border-l-2 border-[#c3c4c7]">
                     <div className="flex justify-between items-center mb-2">
                       <label className="block text-xs font-medium text-gray-600">Menu thả xuống (Dropdown)</label>
                       <button onClick={() => { const nl = [...parsedData.links]; nl[idx].dropdown = [...(nl[idx].dropdown || []), { label: "", href: "" }]; updateData({ ...parsedData, links: nl }); }} className="text-[11px] flex items-center text-blue-600 hover:text-blue-700">
@@ -840,8 +840,8 @@ export function SectionEditor({
                     {(link.dropdown || []).map((dd: any, didx: number) => (
                       <div key={didx} className="flex gap-2 items-start mt-2">
                         <div className="flex-1 grid grid-cols-2 gap-2">
-                          <input type="text" value={dd.label || ""} onChange={(e) => { const nl = [...parsedData.links]; nl[idx].dropdown[didx].label = e.target.value; updateData({ ...parsedData, links: nl }); }} className="w-full px-2 py-1 bg-white border border-gray-300 rounded text-xs" placeholder="Label" />
-                          <input type="text" value={dd.href || ""} onChange={(e) => { const nl = [...parsedData.links]; nl[idx].dropdown[didx].href = e.target.value; updateData({ ...parsedData, links: nl }); }} className="w-full px-2 py-1 bg-white border border-gray-300 rounded text-xs" placeholder="Href" />
+                          <input type="text" value={dd.label || ""} onChange={(e) => { const nl = [...parsedData.links]; nl[idx].dropdown[didx].label = e.target.value; updateData({ ...parsedData, links: nl }); }} className="w-full px-2 py-1 bg-white border border-[#8c8f94] rounded text-xs" placeholder="Label" />
+                          <input type="text" value={dd.href || ""} onChange={(e) => { const nl = [...parsedData.links]; nl[idx].dropdown[didx].href = e.target.value; updateData({ ...parsedData, links: nl }); }} className="w-full px-2 py-1 bg-white border border-[#8c8f94] rounded text-xs" placeholder="Href" />
                         </div>
                         <div className="flex gap-1">
                           <button onClick={() => { const nl = [...parsedData.links]; nl[idx].dropdown = removeItem(nl[idx].dropdown, didx); updateData({ ...parsedData, links: nl }); }} className="p-1 text-gray-400 hover:text-red-600 bg-white border rounded" title="Xóa" aria-label="Xóa"><Trash2 className="w-3 h-3" /></button>
@@ -869,7 +869,7 @@ export function SectionEditor({
           </div>
           <div className="space-y-3">
             {arr.map((item: any, idx: number) => (
-              <div key={idx} className="flex gap-3 bg-gray-50 p-4 rounded-lg border">
+              <div key={idx} className="flex gap-3 bg-[#f0f0f1] p-4 rounded-[4px] border">
                 <div className="flex-1 space-y-3">
                   <InputField label="Icon Name (Lucide)" value={item.icon} onChange={(v: string) => { const na = [...arr]; na[idx].icon = v; updateData(na); }} />
                   <InputField label="Nội dung" value={item.text} onChange={(v: string) => { const na = [...arr]; na[idx].text = v; updateData(na); }} isTextArea />
@@ -898,7 +898,7 @@ export function SectionEditor({
           </div>
           <div className="space-y-6">
             {arr.map((item: any, idx: number) => (
-              <div key={idx} className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+              <div key={idx} className="bg-[#f0f0f1] p-4 rounded-[4px] border border-[#c3c4c7]">
                 <div className="flex justify-between mb-4 pb-2 border-b">
                   <h4 className="font-semibold text-gray-800">Khóa học #{idx + 1}</h4>
                   <div className="flex gap-1">
@@ -918,7 +918,7 @@ export function SectionEditor({
                     <InputField label="Link nút 2 (Ví dụ: /courses/enterprise)" value={item.cta2_link || ""} onChange={(v: string) => { const na = [...arr]; na[idx].cta2_link = v; updateData(na); }} />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 bg-white p-3 rounded-lg border">
+                  <div className="grid grid-cols-2 gap-4 bg-white p-3 rounded-[4px] border">
                     <div>
                       <InputField label="Chỉ số trái (Ví dụ: 3)" value={item.stats?.left} onChange={(v: string) => { const na = [...arr]; na[idx].stats = { ...na[idx].stats, left: v }; updateData(na); }} />
                       <InputField label="Label trái (Ví dụ: Modules)" value={item.stats?.leftLabel} onChange={(v: string) => { const na = [...arr]; na[idx].stats = { ...na[idx].stats, leftLabel: v }; updateData(na); }} />
@@ -938,15 +938,15 @@ export function SectionEditor({
                     </div>
                     <div className="space-y-3">
                       {(item.modules || []).map((mod: any, midx: number) => (
-                        <div key={midx} className="flex gap-2 items-start bg-white p-3 rounded-lg border">
+                        <div key={midx} className="flex gap-2 items-start bg-white p-3 rounded-[4px] border">
                           <div className="flex-1">
                             <InputField label="Tên Module" value={mod.title} onChange={(v: string) => { const na = [...arr]; na[idx].modules[midx].title = v; updateData(na); }} />
                             <ImageField label="Hình ảnh Module" value={mod.img} onChange={(v: string) => { const na = [...arr]; na[idx].modules[midx].img = v; updateData(na); }} />
                           </div>
                           <div className="flex flex-col gap-1 pt-6">
-                            <button onClick={() => { const na = [...arr]; na[idx].modules = moveItem(na[idx].modules, midx, -1); updateData(na); }} className="p-1.5 text-gray-400 hover:text-blue-600 bg-gray-50 border rounded" title="Di chuyển lên" aria-label="Di chuyển lên"><ArrowUp className="w-3 h-3" /></button>
-                            <button onClick={() => { const na = [...arr]; na[idx].modules = moveItem(na[idx].modules, midx, 1); updateData(na); }} className="p-1.5 text-gray-400 hover:text-blue-600 bg-gray-50 border rounded" title="Di chuyển xuống" aria-label="Di chuyển xuống"><ArrowDown className="w-3 h-3" /></button>
-                            <button onClick={() => { const na = [...arr]; na[idx].modules = removeItem(na[idx].modules, midx); updateData(na); }} className="p-1.5 text-gray-400 hover:text-red-600 bg-gray-50 border rounded" title="Xóa" aria-label="Xóa"><Trash2 className="w-3 h-3" /></button>
+                            <button onClick={() => { const na = [...arr]; na[idx].modules = moveItem(na[idx].modules, midx, -1); updateData(na); }} className="p-1.5 text-gray-400 hover:text-blue-600 bg-[#f0f0f1] border rounded" title="Di chuyển lên" aria-label="Di chuyển lên"><ArrowUp className="w-3 h-3" /></button>
+                            <button onClick={() => { const na = [...arr]; na[idx].modules = moveItem(na[idx].modules, midx, 1); updateData(na); }} className="p-1.5 text-gray-400 hover:text-blue-600 bg-[#f0f0f1] border rounded" title="Di chuyển xuống" aria-label="Di chuyển xuống"><ArrowDown className="w-3 h-3" /></button>
+                            <button onClick={() => { const na = [...arr]; na[idx].modules = removeItem(na[idx].modules, midx); updateData(na); }} className="p-1.5 text-gray-400 hover:text-red-600 bg-[#f0f0f1] border rounded" title="Xóa" aria-label="Xóa"><Trash2 className="w-3 h-3" /></button>
                           </div>
                         </div>
                       ))}
@@ -964,7 +964,7 @@ export function SectionEditor({
       // They all have { header: {}, items: [] } pattern
       return (
         <div className="space-y-6">
-          <div className="bg-gray-50 p-4 rounded-xl border">
+          <div className="bg-[#f0f0f1] p-4 rounded-[4px] border">
             <h4 className="font-semibold text-gray-800 mb-3">Phần Header</h4>
             <InputField label="Tiêu đề (Title)" value={parsedData.header?.title} onChange={(v: string) => updateData({ ...parsedData, header: { ...parsedData.header, title: v } })} />
             {sectionKey === "services" && (
@@ -987,8 +987,8 @@ export function SectionEditor({
                 {(parsedData.header?.stats || []).map((st: any, sidx: number) => (
                   <div key={sidx} className="flex gap-2 items-start mb-2">
                     <div className="flex-1 grid grid-cols-2 gap-2">
-                      <input type="text" value={st.value || ""} onChange={(e) => { const nd = { ...parsedData }; nd.header.stats[sidx].value = e.target.value; updateData(nd); }} className="w-full px-2 py-1.5 bg-white border border-gray-300 rounded text-sm" placeholder="Value (e.g. 50+)" />
-                      <input type="text" value={st.label || ""} onChange={(e) => { const nd = { ...parsedData }; nd.header.stats[sidx].label = e.target.value; updateData(nd); }} className="w-full px-2 py-1.5 bg-white border border-gray-300 rounded text-sm" placeholder="Label (e.g. Học viên)" />
+                      <input type="text" value={st.value || ""} onChange={(e) => { const nd = { ...parsedData }; nd.header.stats[sidx].value = e.target.value; updateData(nd); }} className="w-full px-2 py-1.5 bg-white border border-[#8c8f94] rounded text-sm" placeholder="Value (e.g. 50+)" />
+                      <input type="text" value={st.label || ""} onChange={(e) => { const nd = { ...parsedData }; nd.header.stats[sidx].label = e.target.value; updateData(nd); }} className="w-full px-2 py-1.5 bg-white border border-[#8c8f94] rounded text-sm" placeholder="Label (e.g. Học viên)" />
                     </div>
                     <button onClick={() => { const nd = { ...parsedData }; nd.header.stats = removeItem(nd.header.stats, sidx); updateData(nd); }} className="p-1.5 text-gray-400 hover:text-red-600 bg-white border rounded" title="Xóa" aria-label="Xóa"><Trash2 className="w-3 h-3" /></button>
                   </div>
@@ -1006,7 +1006,7 @@ export function SectionEditor({
             </div>
             <div className="space-y-4">
               {(parsedData.items || []).map((item: any, idx: number) => (
-                <div key={idx} className="flex gap-3 bg-gray-50 p-4 rounded-lg border">
+                <div key={idx} className="flex gap-3 bg-[#f0f0f1] p-4 rounded-[4px] border">
                   <div className="flex-1">
                     {sectionKey === "services" && (
                       <>
@@ -1082,7 +1082,7 @@ export function SectionEditor({
             </div>
             <div className="space-y-4">
               {arr.map((item: any, idx: number) => (
-                <div key={idx} className="flex gap-3 bg-gray-50 p-4 rounded-lg border">
+                <div key={idx} className="flex gap-3 bg-[#f0f0f1] p-4 rounded-[4px] border">
                   <div className="flex-1 space-y-3">
                     <InputField label={`Mục ${idx + 1}: Tiêu đề`} value={item.title || ""} onChange={(v: string) => { const newSections = [...arr]; newSections[idx] = { ...newSections[idx], title: v }; updateData({ ...parsedData, sections: newSections }); }} />
                     <InputField label={`Mục ${idx + 1}: Nội dung`} value={item.content || ""} onChange={(v: string) => { const newSections = [...arr]; newSections[idx] = { ...newSections[idx], content: v }; updateData({ ...parsedData, sections: newSections }); }} isTextArea />
@@ -1101,7 +1101,7 @@ export function SectionEditor({
     }
 
     return (
-      <div className="text-sm text-gray-500 py-10 text-center bg-gray-50 rounded-lg border border-dashed">
+      <div className="text-sm text-gray-500 py-10 text-center bg-[#f0f0f1] rounded-[4px] border border-dashed">
         Chưa hỗ trợ Form Editor cho section <strong>{sectionKey}</strong>. Vui lòng chuyển sang tab JSON.
       </div>
     );
@@ -1109,8 +1109,8 @@ export function SectionEditor({
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
-        <div className="h-4 w-40 bg-gray-100 rounded mb-4"></div>
+      <div className="bg-white rounded-sm border border-[#c3c4c7] p-5 animate-pulse shadow-sm">
+        <div className="h-4 w-40 bg-gray-200 rounded mb-4"></div>
         <div className="h-64 bg-gray-100 rounded"></div>
       </div>
     );
@@ -1118,15 +1118,15 @@ export function SectionEditor({
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
         <div>
-          <h1 className="text-lg font-bold text-gray-900">{title}</h1>
-          <p className="text-gray-500 text-sm mt-0.5">{description}</p>
+          <h1 className="text-[23px] font-normal text-[#1d2327]">{title}</h1>
+          <p className="text-[#50575e] text-[13px] mt-1">{description}</p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={fetchSection}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] text-[#2271b1] border border-[#2271b1] bg-[#f6f7f7] rounded-[3px] hover:bg-[#f0f0f1] transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Tải lại
@@ -1134,7 +1134,7 @@ export function SectionEditor({
           <button
             onClick={saveSection}
             disabled={saving}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] bg-[#2271b1] text-white border border-[#2271b1] rounded-[3px] hover:bg-[#135e96] transition-colors disabled:opacity-50"
           >
             <Save className="w-3.5 h-3.5" />
             {saving ? "Đang lưu..." : "Lưu thay đổi"}
@@ -1144,7 +1144,7 @@ export function SectionEditor({
 
       {status && (
         <div
-          className={`flex items-center gap-2 px-4 py-3 rounded-lg border text-sm ${
+          className={`flex items-center gap-2 px-4 py-3 rounded-[4px] border text-sm ${
             status.type === "success"
               ? "bg-green-50 border-green-200 text-green-700"
               : "bg-red-50 border-red-200 text-red-700"
@@ -1159,25 +1159,26 @@ export function SectionEditor({
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <div className="flex items-center border-b border-gray-200 bg-gray-50/50">
+      <div className="bg-white rounded-sm border border-[#c3c4c7] shadow-sm">
+        <div className="flex items-center border-b border-[#c3c4c7] bg-[#f6f7f7]">
           <button
             onClick={() => handleTabChange("form")}
-            className={`flex-1 flex items-center justify-center gap-2 py-3.5 text-sm font-medium transition-all border-b-2 ${
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-[13px] font-medium transition-all border-b-2 ${
               activeTab === "form"
-                ? "border-blue-600 text-blue-600 bg-white"
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                ? "border-[#2271b1] text-[#1d2327] bg-white"
+                : "border-transparent text-[#50575e] hover:text-[#2271b1] hover:bg-white"
             }`}
           >
             <LayoutTemplate className="w-4 h-4" />
             Biểu mẫu (Form)
           </button>
+          <div className="w-px h-6 bg-[#c3c4c7]"></div>
           <button
             onClick={() => handleTabChange("json")}
-            className={`flex-1 flex items-center justify-center gap-2 py-3.5 text-sm font-medium transition-all border-b-2 ${
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-[13px] font-medium transition-all border-b-2 ${
               activeTab === "json"
-                ? "border-blue-600 text-blue-600 bg-white"
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                ? "border-[#2271b1] text-[#1d2327] bg-white"
+                : "border-transparent text-[#50575e] hover:text-[#2271b1] hover:bg-white"
             }`}
           >
             <FileJson className="w-4 h-4" />
@@ -1191,10 +1192,10 @@ export function SectionEditor({
           ) : (
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-[13px] font-medium text-[#1d2327]">
                   Chỉnh sửa trực tiếp mã JSON
                 </label>
-                <code className="text-xs text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">
+                <code className="text-[12px] text-[#2271b1] bg-[#f0f0f1] px-1.5 py-0.5 rounded">
                   {sectionKey}
                 </code>
               </div>
@@ -1202,7 +1203,7 @@ export function SectionEditor({
                 value={rawJson}
                 onChange={(e) => setRawJson(e.target.value)}
                 rows={25}
-                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-[13px] font-mono resize-y"
+                className="w-full px-3 py-2.5 bg-[#f0f0f1] border border-[#8c8f94] rounded-[4px] text-[#2c3338] focus:outline-none focus:ring-1 focus:ring-[#2271b1] focus:border-[#2271b1] transition-all text-[12px] font-mono resize-y"
                 spellCheck={false}
                 title="Mã JSON"
                 placeholder="Nhập mã JSON tại đây..."
@@ -1324,8 +1325,8 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
-        <div className="h-4 w-40 bg-gray-100 rounded mb-4"></div>
+      <div className="bg-white rounded-sm border border-[#c3c4c7] p-5 animate-pulse shadow-sm">
+        <div className="h-4 w-40 bg-gray-200 rounded mb-4"></div>
         <div className="h-64 bg-gray-100 rounded"></div>
       </div>
     );
@@ -1336,15 +1337,15 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">Chi tiết khóa học: {slug}</h1>
-          <p className="text-gray-500 text-sm mt-0.5">Chỉnh sửa nội dung cho trang /courses/{slug}</p>
+          <h1 className="text-[23px] font-normal text-[#1d2327]">Chi tiết khóa học: {slug}</h1>
+          <p className="text-[#50575e] text-[13px] mt-1">Chỉnh sửa nội dung cho trang /courses/{slug}</p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={fetchData}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] text-[#2271b1] border border-[#2271b1] bg-[#f6f7f7] rounded-[3px] hover:bg-[#f0f0f1] transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Tải lại
@@ -1352,7 +1353,7 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] bg-[#2271b1] text-white border border-[#2271b1] rounded-[3px] hover:bg-[#135e96] transition-colors disabled:opacity-50"
           >
             <Save className="w-3.5 h-3.5" />
             {saving ? "Đang lưu..." : "Lưu thay đổi"}
@@ -1362,7 +1363,7 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
 
       {status && (
         <div
-          className={`flex items-center gap-2 px-4 py-3 rounded-lg border text-sm ${
+          className={`flex items-center gap-2 px-4 py-3 rounded-[4px] border text-sm ${
             status.type === "success"
               ? "bg-green-50 border-green-200 text-green-700"
               : "bg-red-50 border-red-200 text-red-700"
@@ -1379,9 +1380,9 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
 
       <div className="grid grid-cols-1 gap-6">
         {/* Section 1: Hero & Intro */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">1</span>
+        <div className="bg-white rounded-sm border border-[#c3c4c7] p-5 shadow-sm">
+          <h2 className="text-[14px] font-semibold text-[#1d2327] mb-4 flex items-center gap-2 pb-2 border-b border-[#c3c4c7]">
+            <span className="w-5 h-5 rounded-sm bg-[#2271b1] text-white flex items-center justify-center text-[11px]">1</span>
             Hero & Tổng quan
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1398,12 +1399,12 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
           <div className="mt-6 pt-6 border-t border-gray-100">
             <h3 className="text-sm font-semibold text-gray-700 mb-3">Thống kê (Hero Stats)</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="p-4 bg-[#f0f0f1] rounded-[4px] border border-[#c3c4c7]">
                 <p className="text-xs font-bold text-gray-500 uppercase mb-2">Chỉ số Trái</p>
                 <InputField label="Giá trị (VD: 98%)" value={data.stats.left} onChange={(v: string) => updateData("stats", { ...data.stats, left: v })} />
                 <InputField label="Nhãn (VD: Hài lòng)" value={data.stats.leftLabel} onChange={(v: string) => updateData("stats", { ...data.stats, leftLabel: v })} />
               </div>
-              <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="p-4 bg-[#f0f0f1] rounded-[4px] border border-[#c3c4c7]">
                 <p className="text-xs font-bold text-gray-500 uppercase mb-2">Chỉ số Phải</p>
                 <InputField label="Giá trị (VD: 500+)" value={data.stats.right} onChange={(v: string) => updateData("stats", { ...data.stats, right: v })} />
                 <InputField label="Nhãn (VD: Học viên)" value={data.stats.rightLabel} onChange={(v: string) => updateData("stats", { ...data.stats, rightLabel: v })} />
@@ -1413,9 +1414,9 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
         </div>
 
         {/* Section 2: Features */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">2</span>
+        <div className="bg-white rounded-sm border border-[#c3c4c7] p-5 shadow-sm">
+          <h2 className="text-[14px] font-semibold text-[#1d2327] mb-4 flex items-center gap-2 pb-2 border-b border-[#c3c4c7]">
+            <span className="w-5 h-5 rounded-sm bg-[#2271b1] text-white flex items-center justify-center text-[11px]">2</span>
             Tính năng (Features)
           </h2>
           <div className="space-y-4">
@@ -1431,7 +1432,7 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
               </div>
               <div className="space-y-3">
                 {(data.features.items || []).map((item: any, idx: number) => (
-                  <div key={idx} className="flex gap-3 items-start bg-gray-50 p-4 rounded-xl border border-gray-200">
+                  <div key={idx} className="flex gap-3 items-start bg-[#f0f0f1] p-4 rounded-[4px] border border-[#c3c4c7]">
                     <div className="flex-1 space-y-3">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <InputField label="Tiêu đề" value={item.title} onChange={(v: string) => { const newItems = [...data.features.items]; newItems[idx].title = v; updateData("features", { ...data.features, items: newItems }); }} />
@@ -1447,7 +1448,7 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
                   </div>
                 ))}
                 {(!data.features.items || data.features.items.length === 0) && (
-                  <p className="text-xs text-gray-400 italic text-center py-4 bg-gray-50 rounded-lg border border-dashed">Chưa có mục nào</p>
+                  <p className="text-xs text-gray-400 italic text-center py-4 bg-[#f0f0f1] rounded-[4px] border border-dashed">Chưa có mục nào</p>
                 )}
               </div>
             </div>
@@ -1455,9 +1456,9 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
         </div>
 
         {/* Section 3: Structure */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">3</span>
+        <div className="bg-white rounded-sm border border-[#c3c4c7] p-5 shadow-sm">
+          <h2 className="text-[14px] font-semibold text-[#1d2327] mb-4 flex items-center gap-2 pb-2 border-b border-[#c3c4c7]">
+            <span className="w-5 h-5 rounded-sm bg-[#2271b1] text-white flex items-center justify-center text-[11px]">3</span>
             Cấu trúc khóa học (Structure)
           </h2>
           <div className="space-y-4">
@@ -1472,7 +1473,7 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
               </div>
               <div className="space-y-3">
                 {(data.structure.items || []).map((mod: any, idx: number) => (
-                  <div key={idx} className="flex gap-3 items-start bg-gray-50 p-4 rounded-xl border border-gray-200">
+                  <div key={idx} className="flex gap-3 items-start bg-[#f0f0f1] p-4 rounded-[4px] border border-[#c3c4c7]">
                     <div className="flex-1 space-y-3">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <InputField label="Tên Module" value={mod.title} onChange={(v: string) => { const newItems = [...data.structure.items]; newItems[idx].title = v; updateData("structure", { ...data.structure, items: newItems }); }} />
@@ -1483,14 +1484,14 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
                       <div className="pl-4 border-l-2 border-blue-200">
                         <div className="flex justify-between items-center mb-1">
                           <label className="block text-xs font-semibold text-gray-600">Các điểm chính</label>
-                          <button onClick={() => { const newItems = [...data.structure.items]; newItems[idx].features = [...(newItems[idx].features || []), ""]; updateData("structure", { ...data.structure, items: newItems }); }} className="text-[10px] text-blue-600">
+                          <button onClick={() => { const newItems = [...data.structure.items]; newItems[idx].features = [...(newItems[idx].features || []), ""]; updateData("structure", { ...data.structure, items: newItems }); }} className="text-[10px] text-[#2271b1]">
                             + Thêm dòng
                           </button>
                         </div>
                         {(mod.features || []).map((feat: string, fIdx: number) => (
                           <div key={fIdx} className="flex gap-2 items-center mb-2">
-                            <input type="text" value={feat} onChange={(e) => { const newItems = [...data.structure.items]; newItems[idx].features[fIdx] = e.target.value; updateData("structure", { ...data.structure, items: newItems }); }} className="flex-1 px-2 py-1.5 bg-white border border-gray-300 rounded text-xs focus:ring-1 focus:ring-blue-500 outline-none" />
-                            <button onClick={() => { const newItems = [...data.structure.items]; newItems[idx].features = newItems[idx].features.filter((_: any, i: number) => i !== fIdx); updateData("structure", { ...data.structure, items: newItems }); }} className="text-red-400 hover:text-red-600">
+                            <input type="text" value={feat} onChange={(e) => { const newItems = [...data.structure.items]; newItems[idx].features[fIdx] = e.target.value; updateData("structure", { ...data.structure, items: newItems }); }} className="flex-1 px-2 py-1.5 bg-white border border-[#8c8f94] rounded-[4px] text-[13px] text-[#2c3338] focus:ring-1 focus:ring-[#2271b1] focus:border-[#2271b1] outline-none" />
+                            <button onClick={() => { const newItems = [...data.structure.items]; newItems[idx].features = newItems[idx].features.filter((_: any, i: number) => i !== fIdx); updateData("structure", { ...data.structure, items: newItems }); }} className="text-[#d63638] hover:text-red-700">
                               <Trash2 className="w-3 h-3" />
                             </button>
                           </div>
@@ -1510,9 +1511,9 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
         </div>
 
         {/* Section 4: Evaluation */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">4</span>
+        <div className="bg-white rounded-sm border border-[#c3c4c7] p-5 shadow-sm">
+          <h2 className="text-[14px] font-semibold text-[#1d2327] mb-4 flex items-center gap-2 pb-2 border-b border-[#c3c4c7]">
+            <span className="w-5 h-5 rounded-sm bg-[#2271b1] text-white flex items-center justify-center text-[11px]">4</span>
             Đánh giá / Phương pháp học (Evaluation)
           </h2>
           <div className="space-y-4">
@@ -1534,10 +1535,10 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
               <div className="space-y-2">
                 {(data.evaluation.methods || []).map((method: string, mIdx: number) => (
                   <div key={mIdx} className="flex gap-2 items-center">
-                    <input type="text" value={method} onChange={(e) => { const newMethods = [...data.evaluation.methods]; newMethods[mIdx] = e.target.value; updateData("evaluation", { ...data.evaluation, methods: newMethods }); }} className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
-                    <button onClick={() => updateData("evaluation", { ...data.evaluation, methods: moveItem(data.evaluation.methods, mIdx, -1) })} className="p-2 text-gray-400 hover:text-blue-600 border rounded-lg bg-gray-50"><ArrowUp className="w-4 h-4" /></button>
-                    <button onClick={() => updateData("evaluation", { ...data.evaluation, methods: moveItem(data.evaluation.methods, mIdx, 1) })} className="p-2 text-gray-400 hover:text-blue-600 border rounded-lg bg-gray-50"><ArrowDown className="w-4 h-4" /></button>
-                    <button onClick={() => { const newMethods = data.evaluation.methods.filter((_: any, i: number) => i !== mIdx); updateData("evaluation", { ...data.evaluation, methods: newMethods }); }} className="p-2 text-red-400 hover:text-red-600 border rounded-lg bg-gray-50"><Trash2 className="w-4 h-4" /></button>
+                    <input type="text" value={method} onChange={(e) => { const newMethods = [...data.evaluation.methods]; newMethods[mIdx] = e.target.value; updateData("evaluation", { ...data.evaluation, methods: newMethods }); }} className="flex-1 px-3 py-2 bg-white border border-[#8c8f94] rounded-[4px] text-[13px] text-[#2c3338] focus:ring-1 focus:ring-[#2271b1] focus:border-[#2271b1] outline-none" />
+                    <button onClick={() => updateData("evaluation", { ...data.evaluation, methods: moveItem(data.evaluation.methods, mIdx, -1) })} className="p-2 text-[#50575e] hover:text-[#2271b1] border border-[#c3c4c7] rounded bg-[#f6f7f7]"><ArrowUp className="w-4 h-4" /></button>
+                    <button onClick={() => updateData("evaluation", { ...data.evaluation, methods: moveItem(data.evaluation.methods, mIdx, 1) })} className="p-2 text-[#50575e] hover:text-[#2271b1] border border-[#c3c4c7] rounded bg-[#f6f7f7]"><ArrowDown className="w-4 h-4" /></button>
+                    <button onClick={() => { const newMethods = data.evaluation.methods.filter((_: any, i: number) => i !== mIdx); updateData("evaluation", { ...data.evaluation, methods: newMethods }); }} className="p-2 text-[#d63638] hover:text-red-700 border border-[#c3c4c7] rounded bg-[#f6f7f7]"><Trash2 className="w-4 h-4" /></button>
                   </div>
                 ))}
               </div>
@@ -1546,9 +1547,9 @@ export function CoursePageEditor({ slug }: CoursePageEditorProps) {
         </div>
 
         {/* Section 5: CTA Banner */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">5</span>
+        <div className="bg-white rounded-sm border border-[#c3c4c7] p-5 shadow-sm">
+          <h2 className="text-[14px] font-semibold text-[#1d2327] mb-4 flex items-center gap-2 pb-2 border-b border-[#c3c4c7]">
+            <span className="w-5 h-5 rounded-sm bg-[#2271b1] text-white flex items-center justify-center text-[11px]">5</span>
             CTA Banner (Kêu gọi hành động)
           </h2>
           <div className="space-y-4">
