@@ -168,7 +168,7 @@ export default async function ELearningCoursePage() {
                 <section className="relative min-h-[500px] lg:h-[600px] flex items-center overflow-hidden bg-[#001e3d] eval-section py-12 lg:py-0">
                     <div className="absolute right-0 top-0 w-1/2 h-full hidden lg:block">
                         <Image
-                            src={pageData.evaluation.image}
+                            src={pageData.evaluation.image || "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80"}
                             alt="Methodology"
                             fill
                             className="object-cover"
